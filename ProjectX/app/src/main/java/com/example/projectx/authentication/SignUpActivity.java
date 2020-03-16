@@ -25,24 +25,24 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         usersdb = new UsersDatabaseHelper(this);
-        final Button signUpBt = (Button) findViewById(R.id.createuserbt);
-        signUpBt.setOnClickListener(new View.OnClickListener() {
+        final Button SIGN_UP_BT = (Button) findViewById(R.id.createUser_bt);
+        SIGN_UP_BT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText nameEt = (EditText) findViewById(R.id.signupnameet);
-                EditText ageEt = (EditText) findViewById(R.id.signupage);
-                RadioGroup genderRg = (RadioGroup) findViewById(R.id.signupgenderrg);
+                EditText nameEt = (EditText) findViewById(R.id.signUpName_et);
+                EditText ageEt = (EditText) findViewById(R.id.signUpAge_et);
+                RadioGroup genderRg = (RadioGroup) findViewById(R.id.signUpGender_rg);
 
                 int id = genderRg.getCheckedRadioButtonId();
                 String gender;
-                if (id == R.id.signupmalerb) {
+                if (id == R.id.signUpMale_rb) {
                     gender = "Male";
                 }
                 else {
                     gender = "Female";
                 }
-                EditText emailEt = (EditText) findViewById(R.id.signupemailet);
-                EditText passwordEt = (EditText) findViewById(R.id.signuppasset);
+                EditText emailEt = (EditText) findViewById(R.id.signUpEmail_et);
+                EditText passwordEt = (EditText) findViewById(R.id.signUpPassword_et);
                 boolean errors = false;
                 if (emailEt.getError() != null ||
                         !android.util.Patterns.EMAIL_ADDRESS.matcher(emailEt.getText()).matches()){

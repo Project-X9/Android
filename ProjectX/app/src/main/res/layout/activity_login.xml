@@ -8,7 +8,7 @@
     tools:context=".authentication.LoginActivity">
 
     <EditText
-        android:id="@+id/emailet"
+        android:id="@+id/email_et"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.18" />
 
     <EditText
-        android:id="@+id/passwordet"
+        android:id="@+id/password_et"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -35,7 +35,7 @@
         app:passwordToggleEnabled="true" />
 
     <Button
-        android:id="@+id/loginbt"
+        android:id="@+id/login_bt"
         android:background = "@drawable/round_cornered_button"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/emailtv"
+        android:id="@+id/email_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Email"
@@ -58,7 +58,7 @@
         app:layout_constraintVertical_bias="0.13999999" />
 
     <TextView
-        android:id="@+id/passwordtv"
+        android:id="@+id/password_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Password"

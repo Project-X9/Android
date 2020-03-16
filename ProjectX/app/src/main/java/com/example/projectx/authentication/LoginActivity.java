@@ -2,6 +2,7 @@ package com.example.projectx.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.projectx.MainActivity;
 import com.example.projectx.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -23,46 +25,58 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         myDb = new UsersDatabaseHelper(this);
-        final EditText emailEt = (EditText) findViewById(R.id.emailet);
-        final EditText passwordEt = (EditText) findViewById(R.id.passwordet);
-        Button loginBt = (Button) findViewById(R.id.loginbt);
+
+        final EditText EMAIL_ET = (EditText) findViewById(R.id.email_et);
+        final EditText PASSWORD_ET = (EditText) findViewById(R.id.password_et);
+        Button loginBt = (Button) findViewById(R.id.login_bt);
+
         loginBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Log.e("button", "onclickListener activated.");
-                if(android.util.Patterns.EMAIL_ADDRESS.matcher(emailEt.getText()).matches() &&
-                        !emailEt.getText().toString().isEmpty()){
-                    Log.e("passed email test", "no errors in email");
-                    if(!passwordEt.getText().toString().isEmpty()) {
-                        Log.e("passed password test", "no errors in password");
-                        if(login(emailEt.getText().toString(), passwordEt.getText().toString())) {
-                            Log.e("reached login", "reached login");
-                            Toast.makeText(getBaseContext(), "Successfully signed in.", Toast.LENGTH_SHORT).show();
+                boolean emailIsValid = android.util.Patterns.EMAIL_ADDRESS
+                        .matcher(EMAIL_ET.getText()).matches();
+
+                if( emailIsValid && !EMAIL_ET.getText().toString().isEmpty()){
+                    if(!PASSWORD_ET.getText().toString().isEmpty()) {
+                        if(login(EMAIL_ET.getText().toString(), PASSWORD_ET.getText().toString())) {
+                            String successMessage = "Successfully signed in.";
+                            Toast.makeText(getBaseContext(), successMessage, Toast.LENGTH_SHORT)
+                                    .show();
+                            startActivity(new Intent(getBaseContext(), MainActivity.class));
                         }
                         else {
-                            Toast.makeText(getBaseContext(), "Email or password incorrect.", Toast.LENGTH_SHORT).show();
+                            String errorMessage = "Email or password incorrect.";
+                            Toast.makeText(getBaseContext(), errorMessage, Toast.LENGTH_SHORT)
+                                    .show();
                         }
                     }
                     else {
-                        Toast.makeText(getBaseContext(), "Password can't be empty.", Toast.LENGTH_SHORT).show();
+                        String errorMessage = "Password can't be empty.";
+                        Toast.makeText(getBaseContext(), errorMessage, Toast.LENGTH_SHORT)
+                                .show();
                     }
                 }
                 else{
-                    Toast.makeText(getBaseContext(), "Email is invalid.", Toast.LENGTH_SHORT).show();
+                    String errorMessage = "Password can't be empty.";
+                    Toast.makeText(getBaseContext(), errorMessage, Toast.LENGTH_SHORT)
+                            .show();
                 }
 
             }
         });
     }
     public boolean login(String email, String password) {
-        String query = "SELECT * FROM " + myDb.getTableName() + " WHERE " + myDb.getEmail() + " = \""
-                + email + "\" AND " + myDb.getPassword() + " = \"" + password + "\";";
+
+        String query = "SELECT * FROM " + myDb.getTableName() + " WHERE " + myDb.getEmail()
+                + " = \"" + email + "\" AND " + myDb.getPassword() + " = \"" + password + "\";";
+
         SQLiteDatabase db = myDb.getWritableDatabase();
         Cursor queryResults = db.rawQuery(query, null);
+
         if (queryResults.getCount() == 0) {
             return false;
         }
-        else{
+        else {
             loginCredentials = getSharedPreferences(credentialsFile, MODE_PRIVATE);
             SharedPreferences.Editor editor = loginCredentials.edit();
             editor.putString("email", email);

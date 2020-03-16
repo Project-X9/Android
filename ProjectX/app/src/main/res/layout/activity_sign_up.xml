@@ -8,9 +8,10 @@
     tools:context=".authentication.SignUpActivity">
 
     <EditText
-        android:id="@+id/signupnameet"
+        android:id="@+id/signUpName_et"
         android:layout_width="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
@@ -18,26 +19,30 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.16000003" />
+        app:layout_constraintVertical_bias="0.16000003"
+         />
 
     <EditText
-        android:id="@+id/signupemailet"
+        android:id="@+id/signUpEmail_et"
         android:hint = "Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.3"
+         />
 
     <EditText
-        android:id="@+id/signuppasset"
+        android:id="@+id/signUpPassword_et"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:ems="10"
         android:inputType="textPassword"
         android:hint = "Password"
@@ -47,10 +52,11 @@
         app:layout_constraintVertical_bias="0.43" />
 
     <RadioGroup
-        android:id="@+id/signupgenderrg"
+        android:id="@+id/signUpGender_rg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.53"
@@ -59,7 +65,7 @@
         app:layout_constraintVertical_bias="0.56">
 
         <RadioButton
-            android:id="@+id/signupmalerb"
+            android:id="@+id/signUpMale_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Male"
@@ -71,7 +77,7 @@
             app:layout_constraintVertical_bias="0.42000002" />
 
         <RadioButton
-            android:id="@+id/signupfemalerb"
+            android:id="@+id/signUpFemale_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Female"
@@ -84,10 +90,11 @@
     </RadioGroup>
 
     <EditText
-        android:id="@+id/signupage"
+        android:id="@+id/signUpAge_et"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:ems="10"
         android:inputType="number"
         android:hint = "Age"
@@ -98,7 +105,7 @@
         app:layout_constraintVertical_bias="0.7" />
 
     <Button
-        android:id="@+id/createuserbt"
+        android:id="@+id/createUser_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -112,7 +119,7 @@
         app:layout_constraintVertical_bias="0.85" />
 
     <TextView
-        android:id="@+id/agetv"
+        android:id="@+id/age_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Age"
@@ -124,7 +131,7 @@
         app:layout_constraintVertical_bias="0.65" />
 
     <TextView
-        android:id="@+id/gendertv"
+        android:id="@+id/gender_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gender"
@@ -136,7 +143,7 @@
         app:layout_constraintVertical_bias="0.53" />
 
     <TextView
-        android:id="@+id/signuppasswordtv"
+        android:id="@+id/signUpPassword_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Password"
@@ -148,7 +155,7 @@
         app:layout_constraintVertical_bias="0.39" />
 
     <TextView
-        android:id="@+id/signupemailtv"
+        android:id="@+id/signUpEmail_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Email"
@@ -160,7 +167,7 @@
         app:layout_constraintVertical_bias="0.26" />
 
     <TextView
-        android:id="@+id/signupnametv"
+        android:id="@+id/signUpName_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name"

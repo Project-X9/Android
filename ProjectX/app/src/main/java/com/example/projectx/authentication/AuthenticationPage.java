@@ -12,7 +12,7 @@ import com.example.projectx.R;
 
 public class AuthenticationPage extends AppCompatActivity {
 
-    private UsersDatabaseHelper usersdb;
+    //private UsersDatabaseHelper usersDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +20,7 @@ public class AuthenticationPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication_page);
 
-        final Button signUpBt = (Button) findViewById(R.id.signupbt);
-        final Button signInBt = (Button) findViewById(R.id.signinbt);
+        final Button signUpBt = (Button) findViewById(R.id.signUp_bt);
 
         signUpBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,11 +30,13 @@ public class AuthenticationPage extends AppCompatActivity {
 
         });
 
+        final Button signInBt = (Button) findViewById(R.id.signIn_bt);
         signInBt.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getBaseContext(), LoginActivity.class));
             }
         });
+
     }
 }

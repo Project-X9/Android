@@ -19,6 +19,11 @@ public class UsersDatabaseHelper extends SQLiteOpenHelper {
     private static final String EMAIL = "Email";
     private static final String PASSWORD = "Password";
 
+    public UsersDatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, 1);
+        SQLiteDatabase db = this.getWritableDatabase();
+    }
+
     public static String getName() {
         return NAME;
     }
@@ -33,12 +38,6 @@ public class UsersDatabaseHelper extends SQLiteOpenHelper {
 
     public static String getGender() {
         return GENDER;
-    }
-
-
-    public UsersDatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
-        SQLiteDatabase db = this.getWritableDatabase();
     }
 
     public static String getDBName() {
@@ -60,10 +59,10 @@ public class UsersDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate (SQLiteDatabase db) {
         //    System.out.println(java.time.LocalDate.now());
-
-        db.execSQL("CREATE TABLE " + TABLE_NAME + "(" + NAME + " TEXT, " + EMAIL + " TEXT,"
-                + PASSWORD + " TEXT," + AGE + " INT, "+ GENDER + " TEXT," + DATE_ADDED + " TEXT);");
-        Log.e("usersdb", "created Table");
+        String query = "CREATE TABLE " + TABLE_NAME + "(" + NAME + " TEXT, " + EMAIL + " TEXT,"
+                + PASSWORD + " TEXT," + AGE + " INT, "+ GENDER + " TEXT," + DATE_ADDED + " TEXT);";
+        db.execSQL(query);
+        //Log.e("usersdb", "created Table");
     }
 
     @Override
@@ -73,7 +72,8 @@ public class UsersDatabaseHelper extends SQLiteOpenHelper {
     }
     public void dropTable(SQLiteDatabase db)
     {
-        db.execSQL("DROP TABLE IF EXISTS USERS");
+        String query = "DROP TABLE IF EXISTS USERS;";
+        db.execSQL(query);
 
     }
 

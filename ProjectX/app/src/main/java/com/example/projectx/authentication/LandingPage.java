@@ -12,14 +12,15 @@ import com.example.projectx.R;
 
 public class LandingPage extends AppCompatActivity {
     SharedPreferences loginCredentials;
-    final String credentialsFile = "loginCreds";
+    final String CREDENTIALS_FILE = "loginCreds";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
-        loginCredentials = getSharedPreferences(credentialsFile, MODE_PRIVATE);
-        if (loginCredentials.getString("email", null) == null) {
-            Log.e("shared prefernces", loginCredentials.getString("email", null));
+
+        loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
+        String loggedIn = loginCredentials.getString("email", null);
+        if (loggedIn == null) {
             startActivity(new Intent(getBaseContext(), AuthenticationPage.class));
         }
         else {
