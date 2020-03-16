@@ -3,6 +3,7 @@ package com.example.projectx.authentication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.projectx.MainActivity;
 import com.example.projectx.R;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -109,6 +111,7 @@ public class SignUpActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = loginCredentials.edit();
             editor.putString("email", email);
             editor.commit();
+            startActivity(new Intent(getBaseContext(), MainActivity.class));
 
         }
         else {
