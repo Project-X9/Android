@@ -19,7 +19,7 @@ import com.example.projectx.R;
 public class LoginActivity extends AppCompatActivity {
     UsersDatabaseHelper myDb;
     SharedPreferences loginCredentials;
-    final String credentialsFile = "loginCreds";
+    final String CREDENTIALS_FILE = "loginCreds";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(getBaseContext(), successMessage, Toast.LENGTH_SHORT)
                                     .show();
                             startActivity(new Intent(getBaseContext(), MainActivity.class));
+                            finish();
                         }
                         else {
                             String errorMessage = "Email or password incorrect.";
@@ -77,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
         else {
-            loginCredentials = getSharedPreferences(credentialsFile, MODE_PRIVATE);
+            loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
             SharedPreferences.Editor editor = loginCredentials.edit();
             editor.putString("email", email);
             editor.commit();

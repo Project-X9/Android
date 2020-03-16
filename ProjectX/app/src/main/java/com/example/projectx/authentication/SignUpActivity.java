@@ -112,6 +112,7 @@ public class SignUpActivity extends AppCompatActivity {
             editor.putString("email", email);
             editor.commit();
             startActivity(new Intent(getBaseContext(), MainActivity.class));
+            finish();
 
         }
         else {

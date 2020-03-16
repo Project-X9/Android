@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.projectx.authentication.AuthenticationPage;
+import com.facebook.login.LoginManager;
 
 public class MainActivity extends AppCompatActivity {
     SharedPreferences loginCredentials;
@@ -25,7 +26,9 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = loginCredentials.edit();
                 editor.clear();
                 editor.commit();
+                LoginManager.getInstance().logOut();
                 startActivity(new Intent(getBaseContext(), AuthenticationPage.class));
+                finish();
 
 
             }

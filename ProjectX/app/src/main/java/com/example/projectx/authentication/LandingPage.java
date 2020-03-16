@@ -22,10 +22,11 @@ public class LandingPage extends AppCompatActivity {
         String loggedIn = loginCredentials.getString("email", null);
         if (loggedIn == null) {
             startActivity(new Intent(getBaseContext(), AuthenticationPage.class));
+            finish();
         }
         else {
             startActivity(new Intent(getBaseContext(), MainActivity.class));
-
+            finish();
         }
 
     }
