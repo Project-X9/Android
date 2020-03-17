@@ -2,12 +2,14 @@ package com.example.projectx.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.projectx.MainActivity;
@@ -26,12 +28,12 @@ public class AuthenticationPage extends AppCompatActivity {
     SharedPreferences loginCredentials;
     final String CREDENTIALS_FILE = "loginCreds";
     CallbackManager callbackManager;
+    public static Activity authenticationPage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        authenticationPage= this;
         super.onCreate(savedInstanceState);
-        //FacebookSdk.setApplicationId("248449706186804");
-        //FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_authentication_page);
 
         final Button signUpBt = (Button) findViewById(R.id.signUp_bt);
@@ -39,7 +41,9 @@ public class AuthenticationPage extends AppCompatActivity {
         signUpBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //starts the Sign up page if the user presses on the sign up button
                 startActivity(new Intent(getBaseContext(), SignUpActivity.class));
+
             }
 
         });
@@ -48,37 +52,35 @@ public class AuthenticationPage extends AppCompatActivity {
         signInBt.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                //starts the Sign in page if the user presses on the sign in button
                 startActivity(new Intent(getBaseContext(), LoginActivity.class));
             }
         });
 
-         callbackManager = CallbackManager.Factory.create();
+
+         callbackManager = CallbackManager.Factory.create(); //Facebook code
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        // App code
+                        //if Facebook login succeeds, get the user's ID from the access token
                         String userId = loginResult.getAccessToken().getUserId();
-
-                        loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
-                        SharedPreferences.Editor editor = loginCredentials.edit();
-                        editor.putString("email", userId);
-                        editor.commit();
+                        storeCredentials(CREDENTIALS_FILE, userId);
                         startActivity(new Intent(getBaseContext(), MainActivity.class));
+                        //starts the Main Activity on success
                         finish();
                     }
 
                     @Override
                     public void onCancel() {
-                        String errorMessage = "Connection interrupted.";
-                        Toast.makeText(getApplicationContext(),errorMessage, Toast.LENGTH_SHORT ).show();
+                        makeToast("Connection interrupted.");
+
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        String errorMessage = "Couldn't connect to Facebook.";
-                        Toast.makeText(getApplicationContext(),errorMessage, Toast.LENGTH_SHORT ).show();
+                        makeToast("Couldn't connect to Facebook.");
                         Log.e("Facebook exception", exception.toString());
                     }
                 });
@@ -89,4 +91,28 @@ public class AuthenticationPage extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    /**
+     * creates a toast message and displays it with duration Toast.LENGTH_SHORT
+     * @param message, string you want to show the user in a toast;
+     *
+     *
+     */
+    public void makeToast(String message) {
+        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Stores User credentials by opening a file and storing user email or Facebook ID, so user does
+     * not login every time
+     * @param credentialsFile  the name of the file to store user credentials in
+     * @param email  the user's email or Facebook ID
+     */
+    public void storeCredentials(String credentialsFile, String email) {
+        loginCredentials = getSharedPreferences(credentialsFile, MODE_PRIVATE);
+        SharedPreferences.Editor editor = loginCredentials.edit();
+        editor.putString("email", email);
+        editor.commit();
+    }
+
 }
