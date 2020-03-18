@@ -9,7 +9,8 @@
         android:launchMode="singleInstance"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+ >
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
@@ -32,11 +33,11 @@
         <activity android:name=".authentication.AuthenticationPage"></activity>
         <activity
             android:name=".authentication.SignUpActivity"
-            android:launchMode="singleInstance" />
+             />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".authentication.LoginActivity"
-            android:launchMode="singleInstance" />
+             />
 
         <activity android:name=".authentication.LandingPage">
             <intent-filter>

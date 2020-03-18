@@ -120,4 +120,8 @@ public class LoginActivity extends AppCompatActivity {
     public String stringify(EditText view) {
         return view.getText().toString();
     }
+    @Override
+    protected void onResume () {
+        super.onResume();
+    }
 }

@@ -43,20 +43,22 @@ public class AuthenticationPage extends AppCompatActivity {
             public void onClick(View v) {
                 //starts the Sign up page if the user presses on the sign up button
                 startActivity(new Intent(getBaseContext(), SignUpActivity.class));
+                signUpBt.setClickable(false);
+
 
             }
 
         });
-
         final Button signInBt = (Button) findViewById(R.id.signIn_bt);
         signInBt.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 //starts the Sign in page if the user presses on the sign in button
                 startActivity(new Intent(getBaseContext(), LoginActivity.class));
+                signInBt.setClickable(false);
+
             }
         });
-
 
          callbackManager = CallbackManager.Factory.create(); //Facebook code
 
@@ -113,6 +115,15 @@ public class AuthenticationPage extends AppCompatActivity {
         SharedPreferences.Editor editor = loginCredentials.edit();
         editor.putString("email", email);
         editor.commit();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("AuthenPage", "onResume reached.");
+        final Button signInBt = (Button) findViewById(R.id.signIn_bt);
+        final Button signUpBt = (Button) findViewById(R.id.signUp_bt);
+        signUpBt.setClickable(true);
+        signInBt.setClickable(true);
     }
 
 }

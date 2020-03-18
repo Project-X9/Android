@@ -12,12 +12,15 @@ import com.example.projectx.R;
 
 public class LandingPage extends AppCompatActivity {
     SharedPreferences loginCredentials;
+    SharedPreferences lastActivity;
+    final String ACTIVITY_FILE = "lastActivity";
     final String CREDENTIALS_FILE = "loginCreds";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
-
+        Log.e("landing oncreate", "Landing is active");
         loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
         String loggedIn = loginCredentials.getString("email", null);
         if (loggedIn == null) {
@@ -25,9 +28,23 @@ public class LandingPage extends AppCompatActivity {
             finish();
         }
         else {
-            startActivity(new Intent(getBaseContext(), MainActivity.class));
+            lastActivity = getSharedPreferences(ACTIVITY_FILE, MODE_PRIVATE);
+            String lastActivityName = lastActivity.getString("lastActivity", null);
+            Log.e("Last Activity stored", lastActivityName);
+            if (lastActivityName == null) {
+                startActivity(new Intent(getBaseContext(), MainActivity.class));
+            }
+            else {
+                startActivity(new Intent(getBaseContext(), AuthenticationPage.class));
+            }
             finish();
         }
 
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("landing",  "onResume of Landing activated");
     }
 }

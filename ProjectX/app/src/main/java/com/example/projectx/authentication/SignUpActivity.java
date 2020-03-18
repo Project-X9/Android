@@ -26,10 +26,13 @@ public class SignUpActivity extends AppCompatActivity {
     UsersDatabaseHelper usersdb;
     SharedPreferences loginCredentials;
     final String CREDENTIALS_FILE = "loginCreds";
+    SharedPreferences lastActivity;
+    final String ACTIVITY_FILE = "lastActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        Log.e("signup oncreate", "reached oncreate in sign up");
         usersdb = new UsersDatabaseHelper(this);
         final Button SIGN_UP_BT = (Button) findViewById(R.id.createUser_bt);
         SIGN_UP_BT.setOnClickListener(new View.OnClickListener() {
@@ -82,11 +85,11 @@ public class SignUpActivity extends AppCompatActivity {
         RadioGroup genderRg = (RadioGroup) findViewById(R.id.signUpGender_rg);
         EditText emailEt = (EditText) findViewById(R.id.signUpEmail_et);
         EditText passwordEt = (EditText) findViewById(R.id.signUpPassword_et);
-        boolean errors = false;
+        boolean correct = true;
         //checks if the email is valid
         if (emailEt.getError() != null ||
                 !android.util.Patterns.EMAIL_ADDRESS.matcher(emailEt.getText()).matches()){
-            errors = true;
+            correct = false;
             emailEt.setError("This Email is not valid.");
         }
 
@@ -96,25 +99,25 @@ public class SignUpActivity extends AppCompatActivity {
             nameEt.setError("Name must only consist of alphabet characters.");
         }
         if (ageEt.getError() != null) {
-            errors = true;
+            correct = false;
         }
         stringPattern = "[\\S]+$"; //checks the password does not contain any whitespace
         if (passwordEt.getError() != null || !stringify(passwordEt).matches(stringPattern)) {
-            errors = true;
+            correct = false;
             passwordEt.setError("Password can't be empty or contain any spaces.");
         }
         if (Integer.parseInt(stringify(ageEt)) < 9){
-            errors = true;
+            correct = false;
             makeToast("You must be 9 years or older to make an account on ProjectX");
         }
         if (Integer.parseInt(stringify(ageEt)) < 1) {
             makeToast("Age field is invalid");
         }
         if (ageEt.getError() != null || stringify(ageEt).equals("")){ //checks age field is not empty
-            errors = true;
+            correct = false;
             ageEt.setError("Age field can't be left empty");
         }
-        return errors;
+        return correct;
 
     }
 
@@ -128,7 +131,7 @@ public class SignUpActivity extends AppCompatActivity {
      * @param gender gender of user
      * @param password password user enters
      */
-    public void signUp(String name, String email, int age, String gender ,String password) {
+    public boolean signUp(String name, String email, int age, String gender ,String password) {
 
         SQLiteDatabase db = usersdb.getWritableDatabase();
         String query = "SELECT * FROM " + usersdb.getTableName() + " WHERE " +
@@ -149,9 +152,12 @@ public class SignUpActivity extends AppCompatActivity {
             db.insert(usersdb.getTableName(), null, content);
 
             makeToast("Sign up successful");
+            return true;
         }
         else {
             makeToast("We already have an account associated with that email");
+            Log.e("testing", "turns out it's wrong after all");
+            return false;
         }
     }
     /**
@@ -184,5 +190,21 @@ public class SignUpActivity extends AppCompatActivity {
      */
     public String stringify(EditText view) {
         return view.getText().toString();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e("signup onpause", "Reached on pause");
+        SharedPreferences prefs = getSharedPreferences(ACTIVITY_FILE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("lastActivity", getClass().getName());
+        editor.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("signup", "reached on resume");
     }
 }
