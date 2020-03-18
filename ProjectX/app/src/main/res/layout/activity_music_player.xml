@@ -82,14 +82,14 @@
         android:onClick="artistNamePressed"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="The Weeknd"
+        android:text="Artist Name"
         android:textColor="#B2B2B2"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/seekBar_ll"
+        app:layout_constraintBottom_toTopOf="@+id/seekBar_cl"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/songTitle_tv"
-        tools:text="The Weeknd" />
+        tools:text="Artist Name" />
 
     <TextView
         android:id="@+id/songTitle_tv"
@@ -108,39 +108,25 @@
         android:onClick="songTitlePressed"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="Starboy"
+        android:text="Song Title"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/songArtist_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Starboy" />
-
-    <ImageButton
-        android:id="@+id/shareButton_ib"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="32dp"
-        android:background="#00FFFFFF"
-        android:onClick="shareButtonPressed"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/share_song" />
+        tools:text="Song Title" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/musicControls_ll"
+        android:id="@+id/musicControls_cl"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/shareButton_ib"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomButtons_cl"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -204,14 +190,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/seekBar_ll"
+        android:id="@+id/seekBar_cl"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/musicControls_ll"
+        app:layout_constraintBottom_toTopOf="@+id/musicControls_cl"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -223,6 +209,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:onClick="seekBarPressed"
             android:progressDrawable="@drawable/track"
             android:thumbTint="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -279,6 +266,57 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/more_ib"
-        app:srcCompat="@drawable/album" />
+        app:srcCompat="@drawable/album_art_placeholder" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomButtons_cl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <ImageButton
+            android:id="@+id/shareButton_ib"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="#00FFFFFF"
+            android:onClick="shareButtonPressed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/share_song" />
+
+        <ImageButton
+            android:id="@+id/downloadButton_ib"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="#00FFFFFF"
+            android:onClick="downloadButtonPressed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/download_song" />
+
+        <ImageButton
+            android:id="@+id/repeatButton_ib"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="#00FFFFFF"
+            android:onClick="repeatButtonPressed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/shareButton_ib"
+            app:layout_constraintStart_toEndOf="@+id/downloadButton_ib"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/repeat_button" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
