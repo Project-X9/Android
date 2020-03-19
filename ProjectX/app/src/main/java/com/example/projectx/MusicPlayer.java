@@ -1,9 +1,5 @@
 package com.example.projectx;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.graphics.ColorUtils;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,12 +10,15 @@ import android.graphics.drawable.GradientDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.ColorUtils;
 
 import java.util.Random;
 import java.util.Timer;
@@ -79,7 +78,6 @@ public class MusicPlayer extends AppCompatActivity {
                 if ((!mediaPlayer.isLooping())) {
                     playSongAt(1);
                     mediaPlayer.start();
-                    Log.d("TAG", "onCompletion: inside setListeners()");
                 }
             }
         });
@@ -141,7 +139,7 @@ public class MusicPlayer extends AppCompatActivity {
             songTitle.setText("Beautiful");
             songArtists.setText("Bazzi");
         } else if (currentSong == 2) {
-            songTitle.setText("Mahtagan Bent El Geran");
+            songTitle.setText("Mahragan Bent El Geran");
             songArtists.setText("Hassan Shakosh");
         } else if (currentSong == 3) {
             songTitle.setText("Side To Side");
@@ -353,7 +351,6 @@ public class MusicPlayer extends AppCompatActivity {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 if (!mediaPlayer.isLooping()) {
-                    Log.d("TAG", "onCompletion: inside playingAt()");
                     playSongAt(1);
                     mediaPlayer.start();
                 }
@@ -439,7 +436,6 @@ public class MusicPlayer extends AppCompatActivity {
                 redBucket += Color.red(c);
                 greenBucket += Color.green(c);
                 blueBucket += Color.blue(c);
-                // does alpha matter?
             }
         }
 
@@ -493,7 +489,6 @@ public class MusicPlayer extends AppCompatActivity {
         seeking = false;
         switching = false;
 
-        //check if song is liked and set songliked variable, if song liked display dislike button instead
         //TODO: get song info and update textviews
 
     }
