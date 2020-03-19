@@ -209,7 +209,6 @@
             android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:onClick="seekBarPressed"
             android:progressDrawable="@drawable/track"
             android:thumbTint="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
