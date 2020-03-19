@@ -47,29 +47,26 @@ public class MusicPlayer extends AppCompatActivity {
         setListeners();
     }
 
+    /**
+     * Sets listeners for mediaplayer and seekbar
+     */
     private void setListeners() {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 songCurrentTime.setText(convertToTime(progress));
-                if (fromUser) {
-
-//                    mediaPlayer.seekTo(progress);
-                }
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 wasPlaying = mediaPlayer.isPlaying();
-                mediaPlayer.pause();
+                if (mediaPlayer.isPlaying())
+                    mediaPlayer.pause();
                 seeking = true;
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-//                if ((seekBar.getProgress() == seekBar.getMax()) && (mediaPlayer.isPlaying())) {
-//                    nextso
-//                }
                 if (wasPlaying)
                     mediaPlayer.start();
                 mediaPlayer.seekTo(seekBar.getProgress());
@@ -79,15 +76,18 @@ public class MusicPlayer extends AppCompatActivity {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                if (!mediaPlayer.isLooping()) {
-                    playNextSong();
+                if ((!mediaPlayer.isLooping())) {
+                    playSongAt(1);
                     mediaPlayer.start();
+                    Log.d("TAG", "onCompletion: inside setListeners()");
                 }
             }
         });
     }
 
-    //should be called on every new song
+    /**
+     * Gets called each time the song playing changes, this is responsible for getting info about the song and updating the UI
+     */
     private void updateActivityComponents() {
         updatePlaylistName();
         updateAlbumArt();
@@ -96,6 +96,9 @@ public class MusicPlayer extends AppCompatActivity {
         updateSongStats();
     }
 
+    /**
+     * updates album art depending on current song
+     */
     private void updateAlbumArt() {
         //TODO: get song cover from api call
         if (currentSong == 0) {
@@ -110,6 +113,9 @@ public class MusicPlayer extends AppCompatActivity {
         getBgGradient();
     }
 
+    /**
+     * Updates playlist name depending on current song
+     */
     private void updatePlaylistName() {
         //TODO:call api and get playlist current song
         if (currentSong == 0) {
@@ -123,6 +129,9 @@ public class MusicPlayer extends AppCompatActivity {
         }
     }
 
+    /**
+     * Updates song title and song artists depending on current song
+     */
     private void updateSongInfo() {
         //get song title and artist and check if liked and downloaded
         if (currentSong == 0) {
@@ -140,7 +149,9 @@ public class MusicPlayer extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Update duration of song, and change progress of seekBar at equal intervals
+     */
     private void updateSeekBar() {
         int time = mediaPlayer.getDuration();
         seekBar.setMax(time);
@@ -156,18 +167,30 @@ public class MusicPlayer extends AppCompatActivity {
         //TODO: get duration of current song
     }
 
+    /**
+     * Converts time in milliseconds to string in format 0:00
+     * @param millis: Time in milliseconds to be converted
+     * @return
+     */
     private String convertToTime(int millis) {
         long second = (millis / 1000) % 60;
         long minute = (millis / (1000 * 60)) % 60;
         return String.format("%01d:%02d", minute, second);
     }
 
+    /**
+     * Updates if song is liked, blacklisted and downloaded
+     */
     private void updateSongStats() {
         songLiked = false;
         songBlacklisted = false;
         songDownloaded = false;
     }
 
+    /**
+     * Closes music player activity and opens Song page
+     * @param V
+     */
     public void songTitlePressed(View V) {
         //TODO: collapse musicplayer and gotoSongPage(V);
         closeActivity(V);
@@ -176,10 +199,18 @@ public class MusicPlayer extends AppCompatActivity {
         //gotoSongPage(V);
     }
 
+    /**
+     * open context menu (Not currently implemented)
+     * @param V
+     */
     public void moreButtonPressed(View V) {
         //showcontext menu
     }
 
+    /**
+     * Shares link to current song
+     * @param V
+     */
     public void shareButtonPressed(View V) {
         //TODO: get song link via api call
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -193,6 +224,10 @@ public class MusicPlayer extends AppCompatActivity {
         startActivity(Intent.createChooser(shareIntent, "Share Using..."));
     }
 
+    /**
+     * Likes current song and adds it to liked playlist
+     * @param V
+     */
     public void likeButtonPressed(View V) {
         if (songLiked)   //song is liked and user wants to dislike
         {
@@ -206,6 +241,10 @@ public class MusicPlayer extends AppCompatActivity {
         }
     }
 
+    /**
+     * Downloads current song to device
+     * @param V
+     */
     public void downloadButtonPressed(View V) {
         if (songDownloaded)   //song is liked and user wants to dislike
         {
@@ -219,52 +258,91 @@ public class MusicPlayer extends AppCompatActivity {
         }
     }
 
+    /**
+     * Closes music player activity and opens album page
+     * @param V
+     */
     public void albumNamePressed(View V) {
         closeActivity(V);
         gotoAlbum(V);
     }
 
+    /**
+     * Closes music player activity and opens Artist page
+     * @param V
+     */
     public void artistNamePressed(View V) {
         closeActivity(V);
         gotoArtist(V);
     }
 
+    /**
+     * Closes music player activity and opens Artist page
+     * @param V
+     */
     public void gotoAlbum(View V) {
-        //TODO: goto album_art_starboy which current playing song belongs to
-        Log.d("TAG ", "gotoAlbum: clicked album_art_starboy");
+        //TODO: goto album which current playing song belongs to
     }
 
+    /**
+     * Closes music player activity
+     * @param V
+     */
     public void collapseButtonPressed(View V) {
         closeActivity(V);
     }
 
+    /**
+     * Closes music player activity
+     * @param V
+     */
     public void closeActivity(View V) {
         finish();
         //TODO: implement this function
     }
 
+    /**
+     * Opens Artist page
+     * @param V
+     */
     public void gotoArtist(View V) {
-        closeActivity(V);
         //TODO: call api to go to artist page
     }
 
+    /**
+     * Repeats the song if more than 10 seconds passed, otherwise starts current song
+     * @param V
+     */
     public void previousButtonPressed(View V) {
-        //TODO: implement this
+        if (mediaPlayer.getCurrentPosition() <= 10000)   //if player is at 10 seconds or less go back to previous song
+        {
+            playSongAt(-1);
+        } else mediaPlayer.seekTo(0);
     }
 
+    /**
+     * Plays the next song in the playlist
+     * @param V
+     */
     public void nextButtonPressed(View V) {
-        playNextSong();
+        playSongAt(1);
     }
 
-    private void playNextSong() {
+    /**
+     * Plays song either next or previous of the current track
+     * @param i: 1 play the next song, -1 play the previous song
+     */
+    private void playSongAt(int i) {
         switching = true;
         wasPlaying = mediaPlayer.isPlaying();
         boolean isLooping = mediaPlayer.isPlaying();
         mediaPlayer.stop();
         mediaPlayer.release();
-        int nextSong = (currentSong == 3) ? 0 : currentSong + 1;
-        currentSong = nextSong;
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), songs[nextSong]);
+        currentSong = currentSong + i;
+        currentSong = (currentSong < 0) ? 3 : currentSong;
+        currentSong = (currentSong > 3) ? 0 : currentSong;
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), songs[currentSong]);
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setLooping(isLooping);
         updateActivityComponents();
 
@@ -275,15 +353,20 @@ public class MusicPlayer extends AppCompatActivity {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 if (!mediaPlayer.isLooping()) {
-                    playNextSong();
+                    Log.d("TAG", "onCompletion: inside playingAt()");
+                    playSongAt(1);
                     mediaPlayer.start();
                 }
             }
         });
+//        setListeners();
         switching = false;
     }
 
-
+    /**
+     * Blacklist the current playing song
+     * @param V
+     */
     public void blacklistButtonPressed(View V) {
         if (songBlacklisted)   //song is liked and user wants to dislike
         {
@@ -297,6 +380,10 @@ public class MusicPlayer extends AppCompatActivity {
         }
     }
 
+    /**
+     * Loops the current Song
+     * @param V
+     */
     public void repeatButtonPressed(View V) {
         if (mediaPlayer.isLooping()) {
             repeatButton.setImageResource(R.drawable.repeat_button);
@@ -307,7 +394,10 @@ public class MusicPlayer extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Play/Pause the current song
+     * @param V
+     */
     public void playButtonPressed(View V) {
         if (mediaPlayer.isPlaying()) //music is playing and user wants to stop it
         {
@@ -321,25 +411,11 @@ public class MusicPlayer extends AppCompatActivity {
     }
 
     public void seekBarPressed(View V) {
-//        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                mediaPlayer.seekTo(progress);
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-////                mediaPlayer.pause();
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-////                mediaPlayer.start();
-////                mediaPlayer.seekTo(seekBar.getProgress());
-//            }
-//        });
     }
 
+    /**
+     * Sets the background gradient color of the music player depending on the album art
+     */
     private void getBgGradient() {
         Drawable albumArtDrawable = albumArt.getDrawable();
         int width = albumArtDrawable.getIntrinsicWidth();
@@ -383,6 +459,9 @@ public class MusicPlayer extends AppCompatActivity {
         L.setBackground(gd);
     }
 
+    /**
+     * Find and set views in the activity
+     */
     private void initializeActivityComponents() {
         currentSong = new Random().nextInt(4);
         mediaPlayer = MediaPlayer.create(this, songs[currentSong]);
