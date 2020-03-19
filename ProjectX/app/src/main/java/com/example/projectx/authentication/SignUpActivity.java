@@ -156,7 +156,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
         else {
             makeToast("We already have an account associated with that email");
-            Log.e("testing", "turns out it's wrong after all");
             return false;
         }
     }
@@ -195,7 +194,6 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e("signup onpause", "Reached on pause");
         SharedPreferences prefs = getSharedPreferences(ACTIVITY_FILE, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("lastActivity", getClass().getName());
@@ -205,6 +203,5 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("signup", "reached on resume");
     }
 }

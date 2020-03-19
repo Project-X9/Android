@@ -119,7 +119,6 @@ public class AuthenticationPage extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("AuthenPage", "onResume reached.");
         final Button signInBt = (Button) findViewById(R.id.signIn_bt);
         final Button signUpBt = (Button) findViewById(R.id.signUp_bt);
         signUpBt.setClickable(true);
