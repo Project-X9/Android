@@ -4,6 +4,11 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
+    testOptions {
+
+        unitTests.returnDefaultValues = true
+
+    }
     defaultConfig {
         applicationId "com.example.projectx"
         minSdkVersion 16
@@ -20,6 +25,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            java {
+                srcDirs 'src/main/java', 'src/main/java/Database', 'src/main/java/Authentication'
+            }
+        }
+    }
 
 }
 
@@ -28,6 +40,7 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+<<<<<<< HEAD
     //this for the sliding
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     //this is for the custom toolbar
@@ -36,7 +49,14 @@ dependencies {
     //for card and recycler viwer
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
+=======
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'com.facebook.android:facebook-login:[5,6)'
+>>>>>>> cb9cfee3b20a6e94ec436e9bf50adb0be9a72355
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

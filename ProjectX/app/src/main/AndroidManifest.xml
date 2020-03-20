@@ -6,13 +6,48 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:launchMode="singleInstance"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+<<<<<<< HEAD
         android:theme="@style/AppTheme">
         <activity android:name=".PlayListFull" android:configChanges="orientation" android:screenOrientation="portrait"></activity>
         <activity android:name=".SongList" android:configChanges="orientation" android:screenOrientation="portrait"></activity>
         <activity android:name=".PlaylistEmpty" android:configChanges="orientation" android:screenOrientation="portrait"></activity>
         <activity android:name=".MainActivity">
+=======
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+ >
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".authentication.AuthenticationPage"></activity>
+        <activity
+            android:name=".authentication.SignUpActivity"
+             />
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".authentication.LoginActivity"
+             />
+
+        <activity android:name=".authentication.LandingPage">
+>>>>>>> cb9cfee3b20a6e94ec436e9bf50adb0be9a72355
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,5 +55,7 @@
             </intent-filter>
         </activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
 
 </manifest>
