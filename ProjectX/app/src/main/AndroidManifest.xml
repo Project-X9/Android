@@ -9,14 +9,13 @@
         android:launchMode="singleInstance"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MusicPlayer" android:configChanges="orientation" android:screenOrientation="portrait"/>
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity android:name=".PlayListFull" android:configChanges="orientation" android:screenOrientation="portrait"></activity>
         <activity android:name=".SongList" android:configChanges="orientation" android:screenOrientation="portrait"></activity>
         <activity android:name=".PlaylistEmpty" android:configChanges="orientation" android:screenOrientation="portrait"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
- >
+        />
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
@@ -43,7 +42,7 @@
         <activity
             android:name=".authentication.LoginActivity"
              />
-
+        <activity android:name=".MusicPlayer" android:configChanges="orientation" android:screenOrientation="portrait"/>
         <activity android:name=".authentication.LandingPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

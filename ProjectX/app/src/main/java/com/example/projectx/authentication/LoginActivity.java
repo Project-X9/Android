@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
                         if(login(stringify(emailEt), stringify(passwordEt))) {   // retrieves account from database
                             makeToast("Successfully signed in.");
                             startActivity(new Intent(getBaseContext(), MainActivity.class)); //starts main activity
+                            storeCredentials(CREDENTIALS_FILE, stringify(emailEt));
                             AuthenticationPage.authenticationPage.finish(); //destroys the authentication page so that the
                                                                             //back button does not return to it
                             finish();

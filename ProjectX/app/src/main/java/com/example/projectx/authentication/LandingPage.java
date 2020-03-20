@@ -28,16 +28,9 @@ public class LandingPage extends AppCompatActivity {
             finish();
         }
         else {
-            lastActivity = getSharedPreferences(ACTIVITY_FILE, MODE_PRIVATE);
-            String lastActivityName = lastActivity.getString("lastActivity", null);
-            Log.e("Last Activity stored", lastActivityName);
-            if (lastActivityName == null) {
+
                 startActivity(new Intent(getBaseContext(), MainActivity.class));
-            }
-            else {
-                startActivity(new Intent(getBaseContext(), AuthenticationPage.class));
-            }
-            finish();
+                finish();
         }
 
 

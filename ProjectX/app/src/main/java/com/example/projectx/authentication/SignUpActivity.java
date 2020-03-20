@@ -194,10 +194,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        SharedPreferences prefs = getSharedPreferences(ACTIVITY_FILE, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("lastActivity", getClass().getName());
-        editor.commit();
+
     }
 
     @Override

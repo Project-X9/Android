@@ -20,6 +20,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        Intent intent = new Intent(this,PlaylistEmpty.class);
 //        startActivity(intent);
+        final Button playMusic = (Button) findViewById(R.id.playMusic);
+        playMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getBaseContext(), MusicPlayer.class));
+            }
+        });
         final Button LOG_OUT = (Button) findViewById(R.id.logOut_bt);
         LOG_OUT.setOnClickListener(new View.OnClickListener() {
             @Override
