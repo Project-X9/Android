@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,37 +17,56 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.Volley;
 import com.example.projectx.MainActivity;
 import com.example.projectx.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class SignUpActivity extends AppCompatActivity {
-    UsersDatabaseHelper usersdb;
     SharedPreferences loginCredentials;
     final String CREDENTIALS_FILE = "loginCreds";
     SharedPreferences lastActivity;
     final String ACTIVITY_FILE = "lastActivity";
+     boolean userAlreadyExists = false;
+     EditText nameEt;
+     EditText ageEt;
+     RadioGroup genderRg;
+     EditText emailEt;
+     EditText passwordEt ;
+     String age;
+     String gender;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         Log.e("signup oncreate", "reached oncreate in sign up");
-        usersdb = new UsersDatabaseHelper(this);
         final Button SIGN_UP_BT = (Button) findViewById(R.id.createUser_bt);
         SIGN_UP_BT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                EditText nameEt = (EditText) findViewById(R.id.signUpName_et);
-                EditText ageEt = (EditText) findViewById(R.id.signUpAge_et);
-                EditText emailEt = (EditText) findViewById(R.id.signUpEmail_et);
-                EditText passwordEt = (EditText) findViewById(R.id.signUpPassword_et);
-                RadioGroup genderRg = (RadioGroup) findViewById(R.id.signUpGender_rg);
-
+                 nameEt = (EditText) findViewById(R.id.signUpName_et);
+                 ageEt = (EditText) findViewById(R.id.signUpAge_et);
+                 emailEt = (EditText) findViewById(R.id.signUpEmail_et);
+                 passwordEt = (EditText) findViewById(R.id.signUpPassword_et);
+                 RadioGroup genderRg = (RadioGroup) findViewById(R.id.signUpGender_rg);
+                 age = stringify(ageEt);
                 int id = genderRg.getCheckedRadioButtonId();
-                String gender;
+
                 if (id == R.id.signUpMale_rb) {
                     gender = "Male";
                 }
@@ -58,20 +78,11 @@ public class SignUpActivity extends AppCompatActivity {
                     makeToast("Invalid field(s)");
                 }
                 else {
-                    int age = Integer.parseInt(ageEt.getText().toString());
-                    signUp( stringify(nameEt),
-                            stringify(emailEt),
-                            age,
-                            gender,
-                            stringify(passwordEt));
-                    storeCredentials(CREDENTIALS_FILE, stringify(emailEt));
-                    startActivity(new Intent(getBaseContext(), MainActivity.class));
-                    AuthenticationPage.authenticationPage.finish();
-                    finish();
+                    EmailAsyncTask emailAgent = new EmailAsyncTask();
+                    emailAgent.execute(stringify(emailEt));
                 }
         }
     });
-
     }
 
     /**
@@ -80,11 +91,7 @@ public class SignUpActivity extends AppCompatActivity {
      *         false if at least one EditText is errored
      */
     public boolean validateSignUpForm() {
-        EditText nameEt = (EditText) findViewById(R.id.signUpName_et);
-        EditText ageEt = (EditText) findViewById(R.id.signUpAge_et);
-        RadioGroup genderRg = (RadioGroup) findViewById(R.id.signUpGender_rg);
-        EditText emailEt = (EditText) findViewById(R.id.signUpEmail_et);
-        EditText passwordEt = (EditText) findViewById(R.id.signUpPassword_et);
+
         boolean correct = true;
         //checks if the email is valid
         if (emailEt.getError() != null ||
@@ -120,7 +127,6 @@ public class SignUpActivity extends AppCompatActivity {
         return correct;
 
     }
-
     /**
      * checks if the email entered is already associated with an account in the database, if the
      * email was not found, it creates a new account with the parameters in addition to the date of
@@ -131,34 +137,123 @@ public class SignUpActivity extends AppCompatActivity {
      * @param gender gender of user
      * @param password password user enters
      */
-    public boolean signUp(String name, String email, int age, String gender ,String password) {
+    public void signUp(String name, String email, String age, String gender ,String password) {
+        final String SIGNUP_URL = "http://192.168.1.15:3000/Users";
+        userAlreadyExists = false;
+        RequestFuture<JSONObject> future = RequestFuture.newFuture();
 
-        SQLiteDatabase db = usersdb.getWritableDatabase();
-        String query = "SELECT * FROM " + usersdb.getTableName() + " WHERE " +
-                usersdb.getEmail() + " = \"" + email + "\";";
-        Cursor cursor = db.rawQuery( query, null);
+        Log.e("after return", "this shouldn't be here");
+        Map<String, String> userInfo = new HashMap();
+        userInfo.put("Name", name);
+        userInfo.put("Email", email);
+        userInfo.put("Age", age);
+        userInfo.put("Gender", gender);
+        userInfo.put("Password", password);
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        userInfo.put("Date_Added", formatter.format(date));
+        JSONObject parameters = new JSONObject(userInfo);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, SIGNUP_URL,
+                parameters, future, future);
+        RequestQueue singUpRq = Volley.newRequestQueue(this);
+        singUpRq.add(request);
 
-        if (cursor.getCount() == 0) { //checks that there is no account associated with the email
-            ContentValues content = new ContentValues();
-            content.put(usersdb.getName(), name);
-            content.put(usersdb.getAge(), age);
-            content.put(usersdb.getGender(), gender);
-            content.put(usersdb.getDateAdded(),"datetime()");
-            content.put(usersdb.getEmail(), email);
-            content.put(usersdb.getPassword(), password);
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = new Date();
-            content.put(usersdb.getDateAdded(), formatter.format(date));
-            db.insert(usersdb.getTableName(), null, content);
-
-            makeToast("Sign up successful");
-            return true;
+        try {
+            JSONObject response = future.get();
+            Log.e("post result", response.toString());
         }
-        else {
-            makeToast("We already have an account associated with that email");
-            return false;
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+    }
+    private class SignUpAsyncTask extends AsyncTask<String, String, String[]> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+        @Override
+        protected String[] doInBackground(String... strings) {
+            signUp(strings[0],strings[1], strings[2], strings[3], strings[4]);
+            return strings;
+        }
+
+        @Override
+        protected void onPostExecute(String[] strings){
+            super.onPostExecute(strings);
+            if (!userAlreadyExists) {
+                Log.e("onpost", "this also shouldn't be here");
+
+                storeCredentials(CREDENTIALS_FILE, stringify(emailEt));
+                startActivity(new Intent(getBaseContext(), MainActivity.class));
+                AuthenticationPage.authenticationPage.finish();
+                finish();
+            }
+
         }
     }
+
+    private class EmailAsyncTask extends AsyncTask<String, String, String[]> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+        @Override
+        protected String[] doInBackground(String... strings) {
+            userAlreadyExists = false;
+            final String SIGNUP_URL = "http://192.168.1.15:3000/Users";
+            RequestFuture<JSONArray> futureArr = RequestFuture.newFuture();
+            JsonArrayRequest requestArr = new JsonArrayRequest(Request.Method.GET, SIGNUP_URL,
+                    null, futureArr, futureArr);
+
+            RequestQueue lookForEmailRq = Volley.newRequestQueue(getBaseContext());
+            lookForEmailRq.add(requestArr);
+            try {
+                JSONArray response = futureArr.get();
+                for(int i = 0; i<response.length(); i++){
+                    if(response.getJSONObject(i).getString("Email").equals(strings[0])) {
+                        userAlreadyExists = true;
+                        Log.e("User", "found in database");
+                    }
+                }
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return strings;
+        }
+
+        @Override
+        protected void onPostExecute(String[] strings){
+            super.onPostExecute(strings);
+            if(!userAlreadyExists) {
+                SignUpAsyncTask signUpAgent = new SignUpAsyncTask();
+                signUpAgent.execute(stringify(nameEt),
+                        stringify(emailEt),
+                        age,
+                        gender,
+                        stringify(passwordEt));
+            }
+            else {
+                makeToast("This email is associated with another account.");
+            }
+        }
+    }
+
+
     /**
      * creates a toast message and displays it with duration Toast.LENGTH_SHORT
      * @param message, string you want to show the user in a toast;

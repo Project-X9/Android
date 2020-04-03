@@ -43,6 +43,7 @@ public class AuthenticationPage extends AppCompatActivity {
             public void onClick(View v) {
                 //starts the Sign up page if the user presses on the sign up button
                 startActivity(new Intent(getBaseContext(), SignUpActivity.class));
+
                 signUpBt.setClickable(false);
 
 
