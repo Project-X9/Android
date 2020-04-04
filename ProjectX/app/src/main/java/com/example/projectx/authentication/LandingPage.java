@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.projectx.MainActivity;
 import com.example.projectx.R;
 
 public class LandingPage extends AppCompatActivity {
@@ -29,7 +28,7 @@ public class LandingPage extends AppCompatActivity {
         }
         else {
 
-                startActivity(new Intent(getBaseContext(), MainActivity.class));
+                //startActivity(new Intent(getBaseContext(), MainActivity.class));
                 finish();
         }
 

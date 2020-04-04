@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.projectx">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.projectx"
+    android:targetSandboxVersion="1">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -10,44 +14,53 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-        android:usesCleartextTraffic="true"
-        android:networkSecurityConfig="@xml/network_security_config"
-        >
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".authentication.LandingPage"
+            android:label="@string/title_activity_main"></activity>
+        <!-- android:networkSecurityConfig="@xml/network_security_config" -->
+        <activity
+            android:name=".PlayListFull"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SongList"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlaylistEmpty"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".PlayListFull" android:configChanges="orientation" android:screenOrientation="portrait"></activity>
-        <activity android:name=".SongList" android:configChanges="orientation" android:screenOrientation="portrait"></activity>
-        <activity android:name=".PlaylistEmpty" android:configChanges="orientation" android:screenOrientation="portrait"></activity>
-        <activity android:name=".MainActivity"
-        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-        />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".authentication.AuthenticationPage"></activity>
+        <activity android:name=".authentication.AuthenticationPage" />
+        <activity android:name=".authentication.SignUpActivity" />
+        <activity android:name=".authentication.LoginActivity" />
         <activity
-            android:name=".authentication.SignUpActivity"
-             />
-        <activity
-            android:name=".authentication.LoginActivity"
-             />
-        <activity android:name=".MusicPlayer" android:configChanges="orientation" android:screenOrientation="portrait"/>
-        <activity android:name=".authentication.LandingPage">
+            android:name=".MusicPlayer"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,7 +72,5 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
-
 
 </manifest>

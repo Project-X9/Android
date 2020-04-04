@@ -14,14 +14,10 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.projectx.MainActivity;
 import com.example.projectx.R;
 
 import org.json.JSONArray;
@@ -34,6 +30,8 @@ import java.util.concurrent.ExecutionException;
 public class LoginActivity extends AppCompatActivity {
     SharedPreferences loginCredentials;
     final String CREDENTIALS_FILE = "loginCreds";
+    SharedPreferences service;
+    final String SERVICE_FILE = "serviceChoice";
     ArrayList<JSONObject> Users = new ArrayList<JSONObject>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +52,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 if( emailIsValid && !stringify(emailEt).isEmpty() ) {  //checks if email is valid and not empty
                     if(!stringify(passwordEt).isEmpty()) {   //checks if password is not empty
-                        LoginAsyncTask loginAgent = new LoginAsyncTask();
-                        loginAgent.execute(stringify(emailEt), stringify(passwordEt));
+                        if (true) {
+                            LoginAsyncTask loginAgent = new LoginAsyncTask(true);
+                            loginAgent.execute(stringify(emailEt), stringify(passwordEt));
+                        }
+                        else{
+
+                        }
                     }
                     else {
                         makeToast("Password can't be empty.");
@@ -71,7 +74,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     private class LoginAsyncTask extends AsyncTask<String, String, String[]> {
-
+        String serviceUrl = "";
+        String mockServiceUrl = "";
+        Boolean mockState;
+        Boolean signedIn;
+        public LoginAsyncTask( Boolean mockState){
+            this.mockState = mockState;
+        }
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -79,34 +88,46 @@ public class LoginActivity extends AppCompatActivity {
         }
         @Override
         protected String[] doInBackground(String... strings) {
-            login(strings[0], strings[1]);
+            if(mockState){
+                login(strings[0], strings[1], mockServiceUrl, true);
+            }
+            else{
+                login(strings[0], strings[1], serviceUrl, false);
+            }
+
            return strings;
         }
 
         @Override
         protected void onPostExecute(String[] strings){
             super.onPostExecute(strings);
-            boolean found = false;
-            try {
-                for (int i = 0; i < Users.size(); i++) {
-
-                    if (Users.get(i).get("Email").equals(strings[0]) && Users.get(i).get("Password")
-                            .equals(strings[1])) {
-                        found = true;
-                        storeCredentials(CREDENTIALS_FILE, strings[0]);
-                        startActivity(new Intent(getBaseContext(), MainActivity.class));
-                        finish();
-
+            if (mockState){
+                boolean found = false;
+                try {
+                    for (int i = 0; i < Users.size(); i++) {
+                        if (Users.get(i).get("Email").equals(strings[0]) && Users.get(i).get("Password")
+                                .equals(strings[1])) {
+                            found = true;
+                            storeCredentials(CREDENTIALS_FILE, strings[0]);
+                           // startActivity(new Intent(getBaseContext(), MainActivity.class));
+                            finish();
+                        }
                     }
-                }
-                if (found == false) {
-                    makeToast("Email or password incorrect.");
-                }
+                    if (found == false) {
+                        makeToast("Email or password incorrect.");
+                    }
 
+                }
+                catch(JSONException e){
+                    Log.e("JSONException", "Failed to get JSONObject.");
+                    e.printStackTrace();
+                }
             }
-            catch(JSONException e){
-                Log.e("JSONException", "Failed to get JSONObject.");
-                e.printStackTrace();
+            else{
+                if (true)
+                storeCredentials(CREDENTIALS_FILE, strings[0]);
+               // startActivity(new Intent(getBaseContext(), MainActivity.class));
+                finish();
             }
         }
     }
@@ -117,29 +138,53 @@ public class LoginActivity extends AppCompatActivity {
      * @return true if the email and password belong to an account in the database
      *         false if the email exists with a different password or the email doesn't exist at all
      */
-    public void login(final String email, final String password) {
-        final String LOGIN_URL = "http://192.168.1.15:3000/Users";
-        RequestFuture<JSONArray> future = RequestFuture.newFuture();
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, LOGIN_URL, null, future, future);
-        RequestQueue rq = Volley.newRequestQueue(this);
-        rq.add(request);
+    public boolean login(final String email, final String password, String serviceURL, boolean mockState) {
+       if(mockState) {
+           RequestFuture<JSONArray> future = RequestFuture.newFuture();
+           JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, serviceURL, null, future, future);
+           RequestQueue rq = Volley.newRequestQueue(this);
+           rq.add(request);
 
-        try {
-             JSONArray response = future.get();
-            for(int i = 0; i<response.length(); i++){
-                Users.add(response.getJSONObject(i));
-            }
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
+           try {
+               JSONArray response = future.get();
+               for (int i = 0; i < response.length(); i++) {
+                   Users.add(response.getJSONObject(i));
+               }
+           } catch (InterruptedException e) {
+               e.printStackTrace();
+           } catch (ExecutionException e) {
+               e.printStackTrace();
+           } catch (JSONException e) {
+               e.printStackTrace();
+           }
+       }
+       else {
+           RequestFuture<JSONObject> future = RequestFuture.newFuture();
+           JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, serviceURL, null, future, future);
+           RequestQueue rq = Volley.newRequestQueue(this);
+           rq.add(request);
+           try {
+               JSONObject response = future.get();
+                if (response.getString("response").equals("400")){
+                    makeToast("Bad request. Make sure you entered your full name.");
+                }
+                else if (response.getString("response").equals("500")) {
+                    makeToast("Seems the server down. Sorry!");
+                }
+                else {
 
+                    return true;
+                }
+           } catch (InterruptedException e) {
+               e.printStackTrace();
+           } catch (ExecutionException e) {
+               e.printStackTrace();
+           } catch (JSONException e) {
+               e.printStackTrace();
+           }
+       }
+
+        return true;
     }
 
 

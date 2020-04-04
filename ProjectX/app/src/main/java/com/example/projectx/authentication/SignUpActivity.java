@@ -2,11 +2,7 @@ package com.example.projectx.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -23,15 +18,12 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
-import com.example.projectx.MainActivity;
 import com.example.projectx.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -53,7 +45,6 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        Log.e("signup oncreate", "reached oncreate in sign up");
         final Button SIGN_UP_BT = (Button) findViewById(R.id.createUser_bt);
         SIGN_UP_BT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,8 +69,14 @@ public class SignUpActivity extends AppCompatActivity {
                     makeToast("Invalid field(s)");
                 }
                 else {
-                    EmailAsyncTask emailAgent = new EmailAsyncTask();
-                    emailAgent.execute(stringify(emailEt));
+                    //EmailAsyncTask emailAgent = new EmailAsyncTask();
+                    //emailAgent.execute(stringify(emailEt));
+                    SignUpAsyncTask signUpAgent = new SignUpAsyncTask();
+                    signUpAgent.execute(stringify(nameEt),
+                            stringify(emailEt),
+                            age,
+                            gender,
+                            stringify(passwordEt));
                 }
         }
     });
@@ -138,25 +135,23 @@ public class SignUpActivity extends AppCompatActivity {
      * @param password password user enters
      */
     public void signUp(String name, String email, String age, String gender ,String password) {
-        final String SIGNUP_URL = "http://192.168.1.15:3000/Users";
+        final String SIGNUP_URL = "http://ec2-18-216-80-18.us-east-2.compute.amazonaws.com:3000/api/v1/users/";
         userAlreadyExists = false;
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
 
         Log.e("after return", "this shouldn't be here");
         Map<String, String> userInfo = new HashMap();
-        userInfo.put("Name", name);
-        userInfo.put("Email", email);
-        userInfo.put("Age", age);
-        userInfo.put("Gender", gender);
-        userInfo.put("Password", password);
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        userInfo.put("Date_Added", formatter.format(date));
+        userInfo.put("name", name);
+        userInfo.put("email", email);
+        userInfo.put("age", age);
+        userInfo.put("gender", gender);
+        userInfo.put("password", password);
         JSONObject parameters = new JSONObject(userInfo);
+        Log.e("json", parameters.toString());
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, SIGNUP_URL,
                 parameters, future, future);
-        RequestQueue singUpRq = Volley.newRequestQueue(this);
-        singUpRq.add(request);
+        RequestQueue signUpRq = Volley.newRequestQueue(this);
+        signUpRq.add(request);
 
         try {
             JSONObject response = future.get();
@@ -186,14 +181,16 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String[] strings){
             super.onPostExecute(strings);
-            if (!userAlreadyExists) {
+           // if (!userAlreadyExists) {
                 Log.e("onpost", "this also shouldn't be here");
-
+                /*
                 storeCredentials(CREDENTIALS_FILE, stringify(emailEt));
                 startActivity(new Intent(getBaseContext(), MainActivity.class));
                 AuthenticationPage.authenticationPage.finish();
                 finish();
-            }
+
+                 */
+           // }
 
         }
     }
