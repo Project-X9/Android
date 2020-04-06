@@ -33,9 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     final String CREDENTIALS_FILE = "loginCreds";
     SharedPreferences service;
     final String SERVICE_FILE = "serviceChoice";
-    //ArrayList<JSONObject> Users = new ArrayList<JSONObject>();
     JSONObject result;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 else{
-                    makeToast("Email can't be empty.");
+                    makeToast("Email is empty or invalid.");
 
                 }
 
