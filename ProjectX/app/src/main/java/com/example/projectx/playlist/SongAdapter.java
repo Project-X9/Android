@@ -1,4 +1,4 @@
-package com.example.projectx;
+package com.example.projectx.playlist;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.projectx.R;
 
 import java.util.ArrayList;
 
@@ -27,8 +29,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         public SongViewHolder(@NonNull View itemView) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.song_iv);
-            mTextView1 = itemView.findViewById(R.id.singer_tv);
-            mTextView2 = itemView.findViewById(R.id.song_name_tv);
+            mTextView1 = itemView.findViewById(R.id.song_name_tv);
+            mTextView2 = itemView.findViewById(R.id.singer_name_tv);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.projectx;
+package com.example.projectx.playlist;
 
 public class SongList  {
 
