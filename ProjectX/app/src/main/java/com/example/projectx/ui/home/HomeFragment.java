@@ -14,8 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.projectx.AboutActivity;
 import com.example.projectx.PlayListFull;
 import com.example.projectx.R;
+
+import org.w3c.dom.Text;
 
 public class HomeFragment extends Fragment {
 
@@ -56,6 +59,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), PlayListFull.class));
+            }
+        });
+
+        TextView about = (TextView) root.findViewById(R.id.about);
+        about.setOnClickListener(new View.OnClickListener(
+        ) {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), AboutActivity.class));
             }
         });
         return root;
