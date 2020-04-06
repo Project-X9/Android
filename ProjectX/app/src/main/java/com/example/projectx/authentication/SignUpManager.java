@@ -53,9 +53,7 @@ import java.util.concurrent.ExecutionException;
 
 public class SignUpManager  {
 
-    boolean mockState;
     Context context;
-    boolean mockServiceError;
     public SignUpManager(Context context){
         this.context = context;
     }
@@ -71,7 +69,6 @@ public class SignUpManager  {
         else {
             usedUrl = SIGNUP_URL;
         }
-        //userAlreadyExists = false;
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
 
 

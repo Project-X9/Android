@@ -18,6 +18,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
+import com.example.projectx.MainActivity;
 import com.example.projectx.R;
 
 import org.json.JSONArray;
@@ -32,7 +33,9 @@ public class LoginActivity extends AppCompatActivity {
     final String CREDENTIALS_FILE = "loginCreds";
     SharedPreferences service;
     final String SERVICE_FILE = "serviceChoice";
-    ArrayList<JSONObject> Users = new ArrayList<JSONObject>();
+    //ArrayList<JSONObject> Users = new ArrayList<JSONObject>();
+    JSONObject result;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,19 +55,15 @@ public class LoginActivity extends AppCompatActivity {
 
                 if( emailIsValid && !stringify(emailEt).isEmpty() ) {  //checks if email is valid and not empty
                     if(!stringify(passwordEt).isEmpty()) {   //checks if password is not empty
-                        if (true) {
                             LoginAsyncTask loginAgent = new LoginAsyncTask(true);
                             loginAgent.execute(stringify(emailEt), stringify(passwordEt));
                         }
-                        else{
-
-                        }
-                    }
                     else {
                         makeToast("Password can't be empty.");
 
                     }
                 }
+
                 else{
                     makeToast("Email can't be empty.");
 
@@ -72,121 +71,60 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-    }
-    private class LoginAsyncTask extends AsyncTask<String, Integer, String[]> {
-        String serviceUrl = "";
-        String mockServiceUrl = "";
+}
+    private class LoginAsyncTask extends AsyncTask<String, Integer, JSONObject> {
         Boolean mockState;
         Boolean signedIn;
-        public LoginAsyncTask( Boolean mockState){
+
+        public LoginAsyncTask(Boolean mockState) {
             this.mockState = mockState;
         }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
         }
+
         @Override
-        protected String[] doInBackground(String... strings) {
-            if(mockState){
-                login(strings[0], strings[1], mockServiceUrl, true);
-            }
-            else{
-                login(strings[0], strings[1], serviceUrl, false);
+        protected JSONObject doInBackground(String... strings) {
+            SignInManager signInAgent = new SignInManager(getBaseContext());
+            if (mockState) {
+                result = signInAgent.login(strings[0], strings[1], true);
+            } else {
+                result = signInAgent.login(strings[0], strings[1], false);
             }
 
-           return strings;
+            return result;
         }
 
         @Override
-        protected void onPostExecute(String[] strings){
-            super.onPostExecute(strings);
-            if (mockState){
-                boolean found = false;
+        protected void onPostExecute(JSONObject result) {
+            super.onPostExecute(result);
+            if (mockState) {
                 try {
-                    for (int i = 0; i < Users.size(); i++) {
-                        if (Users.get(i).get("Email").equals(strings[0]) && Users.get(i).get("Password")
-                                .equals(strings[1])) {
-                            found = true;
-                            storeCredentials(CREDENTIALS_FILE, strings[0]);
-                           // startActivity(new Intent(getBaseContext(), MainActivity.class));
-                            finish();
-                        }
+                    if (result.getString("status").equals("success")) {
+                        storeCredentials(CREDENTIALS_FILE, result.getString("id"));
+                        startActivity(new Intent(getBaseContext(), MainActivity.class));
+                        finish();
                     }
-                    if (found == false) {
-                        makeToast("Email or password incorrect.");
-                    }
-
+                } catch (JSONException ex) {
+                    ex.printStackTrace();
                 }
-                catch(JSONException e){
-                    Log.e("JSONException", "Failed to get JSONObject.");
+            } else {
+                try {
+                    if (!result.getString("status").equals("failure")) {
+                        storeCredentials(CREDENTIALS_FILE, result.getString("id"));
+                        startActivity(new Intent(getBaseContext(), MainActivity.class));
+                        finish();
+                    }
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-            else{
-                if (true)
-                storeCredentials(CREDENTIALS_FILE, strings[0]);
-               // startActivity(new Intent(getBaseContext(), MainActivity.class));
-                finish();
-            }
+
         }
     }
-    /**
-     *  This function checks if the user entered email and password that are present in the database
-     * @param email
-     * @param password
-     * @return true if the email and password belong to an account in the database
-     *         false if the email exists with a different password or the email doesn't exist at all
-     */
-    public boolean login(final String email, final String password, String serviceURL, boolean mockState) {
-       if(mockState) {
-           RequestFuture<JSONArray> future = RequestFuture.newFuture();
-           JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, serviceURL, null, future, future);
-           RequestQueue rq = Volley.newRequestQueue(this);
-           rq.add(request);
-
-           try {
-               JSONArray response = future.get();
-               for (int i = 0; i < response.length(); i++) {
-                   Users.add(response.getJSONObject(i));
-               }
-           } catch (InterruptedException e) {
-               e.printStackTrace();
-           } catch (ExecutionException e) {
-               e.printStackTrace();
-           } catch (JSONException e) {
-               e.printStackTrace();
-           }
-       }
-       else {
-           RequestFuture<JSONObject> future = RequestFuture.newFuture();
-           JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, serviceURL, null, future, future);
-           RequestQueue rq = Volley.newRequestQueue(this);
-           rq.add(request);
-           try {
-               JSONObject response = future.get();
-                if (response.getString("response").equals("400")){
-                    makeToast("Bad request. Make sure you entered your full name.");
-                }
-                else if (response.getString("response").equals("500")) {
-                    makeToast("Seems the server down. Sorry!");
-                }
-                else {
-
-                    return true;
-                }
-           } catch (InterruptedException e) {
-               e.printStackTrace();
-           } catch (ExecutionException e) {
-               e.printStackTrace();
-           } catch (JSONException e) {
-               e.printStackTrace();
-           }
-       }
-
-        return true;
-    }
-
 
     /**
      * creates a toast message and displays it with duration Toast.LENGTH_SHORT
