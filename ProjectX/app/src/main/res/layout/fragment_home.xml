@@ -19,8 +19,65 @@
         android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHorizontal_bias="0.16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:layout_width="409dp"
+        android:layout_height="582dp"
+        android:padding = "10dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="76dp"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="220dp"
+                android:src = "@drawable/newreleases"
+                android:layout_marginEnd = "10dp"
+                ></ImageView>
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="220dp"
+                android:src = "@drawable/likedtracks"
+                ></ImageView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+            <ImageView
+                android:clickable="true"
+                android:layout_width="150dp"
+                android:layout_height="220dp"
+                android:src = "@drawable/popular"
+                android:layout_marginEnd = "10dp"
+                ></ImageView>
+            <ImageView
+                android:clickable = "true"
+                android:layout_width="150dp"
+                android:layout_height="220dp"
+                android:src = "@drawable/recommended"
+                ></ImageView>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

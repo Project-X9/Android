@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    private class LoginAsyncTask extends AsyncTask<String, String, String[]> {
+    private class LoginAsyncTask extends AsyncTask<String, Integer, String[]> {
         String serviceUrl = "";
         String mockServiceUrl = "";
         Boolean mockState;

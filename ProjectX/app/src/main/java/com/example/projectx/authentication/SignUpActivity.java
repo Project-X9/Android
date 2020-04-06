@@ -2,38 +2,31 @@ package com.example.projectx.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
-import com.android.volley.toolbox.Volley;
+import com.example.projectx.MainActivity;
 import com.example.projectx.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
 public class SignUpActivity extends AppCompatActivity {
-    SharedPreferences loginCredentials;
-    final String CREDENTIALS_FILE = "loginCreds";
-    SharedPreferences lastActivity;
-    final String ACTIVITY_FILE = "lastActivity";
+     SharedPreferences loginCredentials;
+     final String CREDENTIALS_FILE = "loginCreds";
+     SharedPreferences lastActivity;
+     final String ACTIVITY_FILE = "lastActivity";
      boolean userAlreadyExists = false;
+     SharedPreferences service;
+     final String SERVICE_FILE = "serviceChoice";
+     String mockState;
      EditText nameEt;
      EditText ageEt;
      RadioGroup genderRg;
@@ -41,11 +34,14 @@ public class SignUpActivity extends AppCompatActivity {
      EditText passwordEt ;
      String age;
      String gender;
+     JSONObject result;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         final Button SIGN_UP_BT = (Button) findViewById(R.id.createUser_bt);
+        SharedPreferences mocking = getSharedPreferences(SERVICE_FILE, MODE_PRIVATE);
+        mockState = mocking.getString("Mocked", null);
         SIGN_UP_BT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +73,7 @@ public class SignUpActivity extends AppCompatActivity {
                             age,
                             gender,
                             stringify(passwordEt));
+
                 }
         }
     });
@@ -124,48 +121,8 @@ public class SignUpActivity extends AppCompatActivity {
         return correct;
 
     }
-    /**
-     * checks if the email entered is already associated with an account in the database, if the
-     * email was not found, it creates a new account with the parameters in addition to the date of
-     * the day the account was created.
-     * @param name Name of the profile the user enters
-     * @param email email user enters
-     * @param age age of the user
-     * @param gender gender of user
-     * @param password password user enters
-     */
-    public void signUp(String name, String email, String age, String gender ,String password) {
-        final String SIGNUP_URL = "http://ec2-18-216-80-18.us-east-2.compute.amazonaws.com:3000/api/v1/users/";
-        userAlreadyExists = false;
-        RequestFuture<JSONObject> future = RequestFuture.newFuture();
 
-        Log.e("after return", "this shouldn't be here");
-        Map<String, String> userInfo = new HashMap();
-        userInfo.put("name", name);
-        userInfo.put("email", email);
-        userInfo.put("age", age);
-        userInfo.put("gender", gender);
-        userInfo.put("password", password);
-        JSONObject parameters = new JSONObject(userInfo);
-        Log.e("json", parameters.toString());
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, SIGNUP_URL,
-                parameters, future, future);
-        RequestQueue signUpRq = Volley.newRequestQueue(this);
-        signUpRq.add(request);
-
-        try {
-            JSONObject response = future.get();
-            Log.e("post result", response.toString());
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-    }
-    private class SignUpAsyncTask extends AsyncTask<String, String, String[]> {
+    private class SignUpAsyncTask extends AsyncTask<String, String, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -173,82 +130,41 @@ public class SignUpActivity extends AppCompatActivity {
 
         }
         @Override
-        protected String[] doInBackground(String... strings) {
-            signUp(strings[0],strings[1], strings[2], strings[3], strings[4]);
-            return strings;
-        }
-
-        @Override
-        protected void onPostExecute(String[] strings){
-            super.onPostExecute(strings);
-           // if (!userAlreadyExists) {
-                Log.e("onpost", "this also shouldn't be here");
-                /*
-                storeCredentials(CREDENTIALS_FILE, stringify(emailEt));
-                startActivity(new Intent(getBaseContext(), MainActivity.class));
-                AuthenticationPage.authenticationPage.finish();
-                finish();
-
-                 */
-           // }
-
-        }
-    }
-
-    private class EmailAsyncTask extends AsyncTask<String, String, String[]> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-        @Override
-        protected String[] doInBackground(String... strings) {
-            userAlreadyExists = false;
-            final String SIGNUP_URL = "http://192.168.1.15:3000/Users";
-            RequestFuture<JSONArray> futureArr = RequestFuture.newFuture();
-            JsonArrayRequest requestArr = new JsonArrayRequest(Request.Method.GET, SIGNUP_URL,
-                    null, futureArr, futureArr);
-
-            RequestQueue lookForEmailRq = Volley.newRequestQueue(getBaseContext());
-            lookForEmailRq.add(requestArr);
-            try {
-                JSONArray response = futureArr.get();
-                for(int i = 0; i<response.length(); i++){
-                    if(response.getJSONObject(i).getString("Email").equals(strings[0])) {
-                        userAlreadyExists = true;
-                        Log.e("User", "found in database");
-                    }
-                }
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return strings;
-        }
-
-        @Override
-        protected void onPostExecute(String[] strings){
-            super.onPostExecute(strings);
-            if(!userAlreadyExists) {
-                SignUpAsyncTask signUpAgent = new SignUpAsyncTask();
-                signUpAgent.execute(stringify(nameEt),
-                        stringify(emailEt),
-                        age,
-                        gender,
-                        stringify(passwordEt));
+        protected Void doInBackground(String... strings) {
+            if (mockState.equals("true")) {
+                SignUpManager signUpManager = new SignUpManager(getBaseContext());
+                result = signUpManager.signUp(true, strings[0],strings[1], strings[2],
+                        strings[3], strings[4]);
             }
             else {
-                makeToast("This email is associated with another account.");
+                SignUpManager signUpManager = new SignUpManager(getBaseContext());
+                result = signUpManager.signUp(false, strings[0], strings[1], strings[2]
+                        , strings[3], strings[4]);
             }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v){
+            super.onPostExecute(v);
+            try {
+                if (result.getString("status").equals("success")) {
+                    storeCredentials(CREDENTIALS_FILE, stringify(emailEt));
+                    startActivity(new Intent(getBaseContext(), MainActivity.class));
+                    finish();
+                }
+                else
+                {
+                    makeToast("Error receiving response from server.");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
+
+
 
 
     /**
