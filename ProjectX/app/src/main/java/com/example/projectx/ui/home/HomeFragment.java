@@ -30,6 +30,7 @@ public class HomeFragment extends Fragment {
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_home, container, false);
         final TextView textView = root.findViewById(R.id.text_home);
+
         ImageView recommended = (ImageView) root.findViewById(R.id.recommended);
         ImageView likes = (ImageView) root.findViewById(R.id.likedTracks);
         ImageView mostPopular = (ImageView) root.findViewById(R.id.popular);

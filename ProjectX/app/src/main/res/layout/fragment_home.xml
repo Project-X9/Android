@@ -46,14 +46,14 @@
                 android:id = "@+id/newReleases"
                 android:layout_width="150dp"
                 android:layout_height="220dp"
-                android:src = "@drawable/newreleases"
+                android:src="@drawable/default_playlist_pictuer"
                 android:layout_marginEnd = "10dp"
                 ></ImageView>
             <ImageView
                 android:id = "@+id/likedTracks"
                 android:layout_width="150dp"
                 android:layout_height="220dp"
-                android:src = "@drawable/likedtracks"
+                android:src="@drawable/default_playlist_pictuer"
                 ></ImageView>
 
         </LinearLayout>
@@ -69,7 +69,7 @@
                 android:clickable="true"
                 android:layout_width="150dp"
                 android:layout_height="220dp"
-                android:src = "@drawable/popular"
+                android:src="@drawable/default_playlist_pictuer"
                 android:layout_marginEnd = "10dp"
                 ></ImageView>
             <ImageView
@@ -77,7 +77,7 @@
                 android:clickable = "true"
                 android:layout_width="150dp"
                 android:layout_height="220dp"
-                android:src = "@drawable/recommended"
+                android:src="@drawable/default_playlist_pictuer"
                 ></ImageView>
 
         </LinearLayout>
