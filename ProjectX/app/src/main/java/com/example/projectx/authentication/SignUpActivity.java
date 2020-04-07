@@ -186,7 +186,7 @@ public class SignUpActivity extends AppCompatActivity {
     public void storeCredentials(String credentialsFile, String email) {
         loginCredentials = getSharedPreferences(credentialsFile, MODE_PRIVATE);
         SharedPreferences.Editor editor = loginCredentials.edit();
-        editor.putString("email", email);
+        editor.putString("id", email);
         editor.commit();
     }
 

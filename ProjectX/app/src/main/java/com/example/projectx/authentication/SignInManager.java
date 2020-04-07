@@ -1,12 +1,14 @@
 package com.example.projectx.authentication;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
@@ -15,6 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class SignInManager {
@@ -28,6 +32,7 @@ public class SignInManager {
         final String MOCK_SERVICE_URL = "http://192.168.1.15:8000/Users";
         ArrayList<JSONObject> Users  = new ArrayList<JSONObject>();
         if(mockState) {
+            Log.e("mock", "true");
             RequestFuture<JSONArray> future = RequestFuture.newFuture();
             JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, MOCK_SERVICE_URL,
                     null, future, future);
@@ -64,8 +69,12 @@ public class SignInManager {
         }
         else {
             RequestFuture<JSONObject> future = RequestFuture.newFuture();
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, SERVICE_URL,
-                    null, future, future);
+            Map<String, String> userInfo = new HashMap();
+            userInfo.put("email", email);
+            userInfo.put("password", password);
+            JSONObject parameters = new JSONObject(userInfo);
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, SERVICE_URL,
+                    parameters, future, future);
             RequestQueue rq = Volley.newRequestQueue(this.context);
             rq.add(request);
             try {

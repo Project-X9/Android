@@ -20,6 +20,7 @@ import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.example.projectx.MainActivity;
 import com.example.projectx.R;
+import com.facebook.login.LoginManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if( emailIsValid && !stringify(emailEt).isEmpty() ) {  //checks if email is valid and not empty
                     if(!stringify(passwordEt).isEmpty()) {   //checks if password is not empty
-                            LoginAsyncTask loginAgent = new LoginAsyncTask(true);
+                            LoginAsyncTask loginAgent = new LoginAsyncTask(false);
                             loginAgent.execute(stringify(emailEt), stringify(passwordEt));
                         }
                     else {
@@ -69,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
 }
     private class LoginAsyncTask extends AsyncTask<String, Integer, JSONObject> {
         Boolean mockState;
@@ -112,7 +114,8 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 try {
                     if (!result.getString("status").equals("failure")) {
-                        storeCredentials(CREDENTIALS_FILE, result.getString("id"));
+
+                        storeCredentials(CREDENTIALS_FILE, result.getJSONObject("user").getString("_id"));
                         startActivity(new Intent(getBaseContext(), MainActivity.class));
                         finish();
                     }
@@ -143,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
     public void storeCredentials(String credentialsFile, String email) {
         loginCredentials = getSharedPreferences(credentialsFile, MODE_PRIVATE);
         SharedPreferences.Editor editor = loginCredentials.edit();
-        editor.putString("email", email);
+        editor.putString("id", email);
         editor.commit();
     }
 

@@ -1,10 +1,12 @@
 package com.example.projectx.ui.home;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +19,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.projectx.AboutActivity;
 import com.example.projectx.PlayListFull;
 import com.example.projectx.R;
+import com.example.projectx.authentication.AuthenticationPage;
+import com.facebook.login.LoginManager;
 
 import org.w3c.dom.Text;
 
@@ -71,6 +75,10 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(getContext(), AboutActivity.class));
             }
         });
+
+
         return root;
     }
+
+
 }
