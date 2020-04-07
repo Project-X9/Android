@@ -149,7 +149,7 @@ public class SignUpActivity extends AppCompatActivity {
             super.onPostExecute(v);
             try {
                 if (result.getString("status").equals("success")) {
-                    storeCredentials(CREDENTIALS_FILE, stringify(emailEt));
+                    storeCredentials(CREDENTIALS_FILE, result.getString("id"));
                     startActivity(new Intent(getBaseContext(), MainActivity.class));
                     finish();
                 }
