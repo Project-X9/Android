@@ -9,23 +9,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
-import com.example.projectx.MainActivity;
 import com.example.projectx.R;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
 
 public class AuthenticationPage extends AppCompatActivity {
 
-    //private UsersDatabaseHelper usersDb;
     SharedPreferences loginCredentials;
+    SharedPreferences service;
+    final String SERVICE_FILE = "serviceChoice";
     final String CREDENTIALS_FILE = "loginCreds";
     CallbackManager callbackManager;
     public static Activity authenticationPage;
@@ -38,11 +37,14 @@ public class AuthenticationPage extends AppCompatActivity {
 
         final Button signUpBt = (Button) findViewById(R.id.signUp_bt);
 
+        final Switch mockSwitch = (Switch) findViewById(R.id.mock);
+
         signUpBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //starts the Sign up page if the user presses on the sign up button
                 startActivity(new Intent(getBaseContext(), SignUpActivity.class));
+                saveMockStatus(mockSwitch);
                 signUpBt.setClickable(false);
 
 
@@ -56,6 +58,7 @@ public class AuthenticationPage extends AppCompatActivity {
                 //starts the Sign in page if the user presses on the sign in button
                 startActivity(new Intent(getBaseContext(), LoginActivity.class));
                 signInBt.setClickable(false);
+                saveMockStatus(mockSwitch);
 
             }
         });
@@ -69,8 +72,9 @@ public class AuthenticationPage extends AppCompatActivity {
                         //if Facebook login succeeds, get the user's ID from the access token
                         String userId = loginResult.getAccessToken().getUserId();
                         storeCredentials(CREDENTIALS_FILE, userId);
-                        startActivity(new Intent(getBaseContext(), MainActivity.class));
+                        //startActivity(new Intent(getBaseContext(), MainActivity.class));
                         //starts the Main Activity on success
+                        saveMockStatus(mockSwitch);
                         finish();
                     }
 
@@ -124,5 +128,18 @@ public class AuthenticationPage extends AppCompatActivity {
         signUpBt.setClickable(true);
         signInBt.setClickable(true);
     }
-
+    public void saveMockStatus(Switch mockSwitch){
+        if (mockSwitch.isChecked()){
+            service = getSharedPreferences(SERVICE_FILE, MODE_PRIVATE);
+            SharedPreferences.Editor editor = service.edit();
+            editor.putString("Mocked","true");
+            editor.commit();
+        }
+        else{
+            service = getSharedPreferences(SERVICE_FILE, MODE_PRIVATE);
+            SharedPreferences.Editor editor = service.edit();
+            editor.putString("Mocked","false");
+            editor.commit();
+        }
+    }
 }

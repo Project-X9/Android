@@ -12,8 +12,6 @@ import com.example.projectx.R;
 
 public class LandingPage extends AppCompatActivity {
     SharedPreferences loginCredentials;
-    SharedPreferences lastActivity;
-    final String ACTIVITY_FILE = "lastActivity";
     final String CREDENTIALS_FILE = "loginCreds";
 
     @Override
@@ -22,7 +20,7 @@ public class LandingPage extends AppCompatActivity {
         setContentView(R.layout.activity_landing_page);
         Log.e("landing oncreate", "Landing is active");
         loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
-        String loggedIn = loginCredentials.getString("email", null);
+        String loggedIn = loginCredentials.getString("id", null);
         if (loggedIn == null) {
             startActivity(new Intent(getBaseContext(), AuthenticationPage.class));
             finish();
