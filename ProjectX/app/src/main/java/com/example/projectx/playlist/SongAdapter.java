@@ -19,23 +19,34 @@ import java.util.ArrayList;
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
     private ArrayList<Song> mSongItems;
     private Context context;
+    private onSongListner mOnSongListner;
 
-    public SongAdapter(ArrayList<Song> SongItems , Context context) {
+    public SongAdapter(ArrayList<Song> SongItems , Context context , onSongListner onSongListner) {
         mSongItems=SongItems;
         this.context=context;
+        this.mOnSongListner=onSongListner;
     }
 
-    public static class SongViewHolder extends RecyclerView.ViewHolder {
+    public static class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView mImageView;
         public TextView mTextView1;
         public TextView mTextView2;
+        onSongListner onSongListner;
 
-        public SongViewHolder(@NonNull View itemView) {
+        public SongViewHolder(@NonNull View itemView , onSongListner onSongListner) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.song_iv);
             mTextView1 = itemView.findViewById(R.id.song_name_tv);
             mTextView2 = itemView.findViewById(R.id.singer_name_tv);
+            this.onSongListner=onSongListner;
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onSongListner.onSongClick(getAdapterPosition());
         }
     }
 
@@ -43,7 +54,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     @Override
     public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_song_list,parent,false);
-        SongViewHolder evh = new SongViewHolder(v);
+        SongViewHolder evh = new SongViewHolder(v,mOnSongListner);
         return  evh;
     }
 
@@ -68,5 +79,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     @Override
     public int getItemCount() {
         return mSongItems.size();
+    }
+
+    public interface onSongListner{
+        void onSongClick(int position);
     }
 }

@@ -17,6 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
+import com.example.projectx.Artist.RecyclerTouchListener;
 import com.example.projectx.R;
 import com.example.projectx.Song;
 
@@ -28,13 +29,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class PlayListFull extends AppCompatActivity {
+public class PlayListFull extends AppCompatActivity implements SongAdapter.onSongListner  {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView playlistName;
     static ArrayList<Song> songArrayList;
+    static ArrayList<String> SongIDArrayList;
+    static String ClickedSongId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +51,22 @@ public class PlayListFull extends AppCompatActivity {
         mLayoutManager =  new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        for(int i=0;i<songArrayList.size();i++){
+            SongIDArrayList.add(songArrayList.get(i).id);
+        }
+
+
     }
     public void returenBack(View v){
         Intent intent = new Intent(this, PlaylistEmpty.class);
         startActivity(intent);
     }
+    @Override
+    public void onSongClick(int position) {
+        ClickedSongId=songArrayList.get(position).id;
+    }
 
-    private class FetchPlaylist extends AsyncTask<String, String, String> {
+    private class FetchPlaylist extends AsyncTask<String, String, String> implements SongAdapter.onSongListner {
 
          String mNamePlaylist;
 
@@ -75,8 +87,13 @@ public class PlayListFull extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             playlistName.setText(s);
-            mAdapter = new SongAdapter(songArrayList,getApplicationContext());
+            mAdapter = new SongAdapter(songArrayList,getApplicationContext(),this);
             mRecyclerView.setAdapter(mAdapter);
+        }
+
+        @Override
+        public void onSongClick(int position) {
+            ClickedSongId=songArrayList.get(position).id;
         }
     }
 
