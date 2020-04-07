@@ -18,6 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.example.projectx.Artist.RecyclerTouchListener;
+import com.example.projectx.MusicPlayer;
 import com.example.projectx.R;
 import com.example.projectx.Song;
 
@@ -36,7 +37,7 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView playlistName;
     static ArrayList<Song> songArrayList;
-    static ArrayList<String> SongIDArrayList;
+    static String [] SongIDStringArray;
     static String ClickedSongId;
 
     @Override
@@ -52,9 +53,10 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         for(int i=0;i<songArrayList.size();i++){
-            SongIDArrayList.add(songArrayList.get(i).id);
+            SongIDStringArray[i]=songArrayList.get(i).id;
         }
-
+        mAdapter = new SongAdapter(songArrayList,getApplicationContext(),this);
+        mRecyclerView.setAdapter(mAdapter);
 
     }
     public void returenBack(View v){
@@ -63,10 +65,18 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
     }
     @Override
     public void onSongClick(int position) {
+
         ClickedSongId=songArrayList.get(position).id;
+
+        Intent i=new Intent(this, MusicPlayer.class);
+        Bundle extras=new Bundle();
+        extras.putStringArray("songslistarray", SongIDStringArray);
+        extras.putString("songid",ClickedSongId);
+        i.putExtras(extras);
+        startActivity(i);
     }
 
-    private class FetchPlaylist extends AsyncTask<String, String, String> implements SongAdapter.onSongListner {
+    private class FetchPlaylist extends AsyncTask<String, String, String>  {
 
          String mNamePlaylist;
 
@@ -87,14 +97,9 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             playlistName.setText(s);
-            mAdapter = new SongAdapter(songArrayList,getApplicationContext(),this);
-            mRecyclerView.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
         }
 
-        @Override
-        public void onSongClick(int position) {
-            ClickedSongId=songArrayList.get(position).id;
-        }
     }
 
     public String Playlist(String mNamePlaylist ) {
