@@ -6,21 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#323232"
-    tools:context=".MusicPlayer"
     android:fitsSystemWindows="true"
-    >
-
-    <ImageButton
-        android:id="@+id/more_ib"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="4dp"
-        android:background="#00FFFFFF"
-        android:contentDescription="TODO"
-        android:onClick="moreButtonPressed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/more_options" />
+    tools:context=".MusicPlayer">
 
     <ImageButton
         android:id="@+id/collapse_ib"
@@ -45,7 +32,7 @@
         android:singleLine="true"
         android:text="Album Name"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toStartOf="@+id/more_ib"
+        app:layout_constraintEnd_toEndOf="@+id/playingFrom_tv"
         app:layout_constraintStart_toEndOf="@+id/collapse_ib"
         app:layout_constraintTop_toBottomOf="@+id/playingFrom_tv"
         tools:text="Album Name" />
@@ -55,6 +42,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginRight="55dp"
         android:clickable="true"
         android:fontFamily="@font/encore_font_circular_book"
         android:gravity="center_horizontal|center_vertical"
@@ -62,7 +51,7 @@
         android:textAllCaps="true"
         android:textColor="#FFFFFF"
         android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/more_ib"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/collapse_ib"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -264,7 +253,7 @@
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/more_ib"
+        app:layout_constraintTop_toBottomOf="@+id/collapse_ib"
         app:srcCompat="@drawable/album_art_placeholder" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -317,5 +306,12 @@
             app:srcCompat="@drawable/repeat_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="357dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

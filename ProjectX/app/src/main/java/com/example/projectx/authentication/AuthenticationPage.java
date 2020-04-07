@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.projectx.MainActivity;
+import com.example.projectx.MusicPlayer;
 import com.example.projectx.R;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -24,17 +25,28 @@ import com.facebook.login.LoginResult;
 
 public class AuthenticationPage extends AppCompatActivity {
 
+    public String[] songIdsList = new String[]{"5e86459124471028e4d3539b"};                      //this songlist is either passed to music player, or it is fetched from playlistid
+    public String currentSong = "5e86459124471028e4d3539b";
+
     //private UsersDatabaseHelper usersDb;
     SharedPreferences loginCredentials;
     final String CREDENTIALS_FILE = "loginCreds";
     CallbackManager callbackManager;
     public static Activity authenticationPage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        authenticationPage= this;
+        authenticationPage = this;
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_authentication_page);
+
+        Intent i=new Intent(this, MusicPlayer.class);
+        Bundle extras=new Bundle();
+        extras.putStringArray("songslistarray", songIdsList);
+        extras.putString("songid",currentSong);
+        i.putExtras(extras);
+        startActivity(i);
 
         final Button signUpBt = (Button) findViewById(R.id.signUp_bt);
 
@@ -51,7 +63,7 @@ public class AuthenticationPage extends AppCompatActivity {
 
         });
         final Button signInBt = (Button) findViewById(R.id.signIn_bt);
-        signInBt.setOnClickListener(new View.OnClickListener(){
+        signInBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //starts the Sign in page if the user presses on the sign in button
@@ -61,7 +73,7 @@ public class AuthenticationPage extends AppCompatActivity {
             }
         });
 
-         callbackManager = CallbackManager.Factory.create(); //Facebook code
+        callbackManager = CallbackManager.Factory.create(); //Facebook code
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -97,9 +109,8 @@ public class AuthenticationPage extends AppCompatActivity {
 
     /**
      * creates a toast message and displays it with duration Toast.LENGTH_SHORT
+     *
      * @param message, string you want to show the user in a toast;
-     *
-     *
      */
     public void makeToast(String message) {
         Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
@@ -108,8 +119,9 @@ public class AuthenticationPage extends AppCompatActivity {
     /**
      * Stores User credentials by opening a file and storing user email or Facebook ID, so user does
      * not login every time
-     * @param credentialsFile  the name of the file to store user credentials in
-     * @param email  the user's email or Facebook ID
+     *
+     * @param credentialsFile the name of the file to store user credentials in
+     * @param email           the user's email or Facebook ID
      */
     public void storeCredentials(String credentialsFile, String email) {
         loginCredentials = getSharedPreferences(credentialsFile, MODE_PRIVATE);
@@ -117,6 +129,7 @@ public class AuthenticationPage extends AppCompatActivity {
         editor.putString("email", email);
         editor.commit();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
