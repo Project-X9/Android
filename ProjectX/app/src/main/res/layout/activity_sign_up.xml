@@ -8,6 +8,7 @@
     tools:context=".authentication.SignUpActivity">
 
     <EditText
+        android:textColor="#FFFFFF"
         android:id="@+id/signUpName_et"
         android:layout_width="wrap_content"
         android:layout_marginStart="20dp"
@@ -23,6 +24,7 @@
          />
 
     <EditText
+        android:textColor="#FFFFFF"
         android:id="@+id/signUpEmail_et"
         android:hint = "Email"
         android:layout_width="wrap_content"
@@ -38,6 +40,7 @@
          />
 
     <EditText
+        android:textColor="#FFFFFF"
         android:id="@+id/signUpPassword_et"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,6 +55,7 @@
         app:layout_constraintVertical_bias="0.43" />
 
     <RadioGroup
+
         android:id="@+id/signUpGender_rg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,6 +69,7 @@
         app:layout_constraintVertical_bias="0.56">
 
         <RadioButton
+            android:textColor="#FFFFFF"
             android:id="@+id/signUpMale_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -77,6 +82,7 @@
             app:layout_constraintVertical_bias="0.42000002" />
 
         <RadioButton
+            android:textColor="#FFFFFF"
             android:id="@+id/signUpFemale_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -90,6 +96,7 @@
     </RadioGroup>
 
     <EditText
+        android:textColor="#FFFFFF"
         android:id="@+id/signUpAge_et"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
@@ -105,6 +112,7 @@
         app:layout_constraintVertical_bias="0.7" />
 
     <Button
+        android:textColor="#FFFFFF"
         android:id="@+id/createUser_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -119,6 +127,7 @@
         app:layout_constraintVertical_bias="0.85" />
 
     <TextView
+        android:textColor="#FFFFFF"
         android:id="@+id/age_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -131,6 +140,7 @@
         app:layout_constraintVertical_bias="0.65" />
 
     <TextView
+        android:textColor="#FFFFFF"
         android:id="@+id/gender_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -143,6 +153,7 @@
         app:layout_constraintVertical_bias="0.53" />
 
     <TextView
+        android:textColor="#FFFFFF"
         android:id="@+id/signUpPassword_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -155,6 +166,7 @@
         app:layout_constraintVertical_bias="0.39" />
 
     <TextView
+        android:textColor="#FFFFFF"
         android:id="@+id/signUpEmail_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -167,6 +179,7 @@
         app:layout_constraintVertical_bias="0.26" />
 
     <TextView
+        android:textColor="#FFFFFF"
         android:id="@+id/signUpName_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

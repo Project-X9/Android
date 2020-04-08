@@ -56,7 +56,6 @@ public class ArtistFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        Log.e("android", "3aaaaaaaaaaaaaaaaaaaaa");
         mViewModel =
                 ViewModelProviders.of(this).get(ArtistViewModel.class);
          root = inflater.inflate(R.layout.artist_fragment, container, false);

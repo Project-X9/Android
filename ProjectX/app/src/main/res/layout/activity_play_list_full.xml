@@ -56,7 +56,7 @@
         app:umanoOverlay="false"
         app:umanoPanelHeight="350dp"
         app:umanoParallaxOffset="100dp"
-        tools:context=".Playlist">>
+        tools:context=".Playlist">
 
         <RelativeLayout
             android:id="@+id/outer_rl"

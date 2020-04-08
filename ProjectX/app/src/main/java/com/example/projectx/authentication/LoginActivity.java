@@ -116,6 +116,10 @@ public class LoginActivity extends AppCompatActivity {
                     if (!result.getString("status").equals("failure")) {
 
                         storeCredentials(CREDENTIALS_FILE, result.getJSONObject("user").getString("_id"));
+                        loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = loginCredentials.edit();
+                        editor.putString("token", result.getString("token"));
+                        editor.commit();
                         startActivity(new Intent(getBaseContext(), MainActivity.class));
                         finish();
                     }

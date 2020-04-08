@@ -17,7 +17,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/custom_tb"
-        app:umanoDragView="@id/dr"
         app:umanoOverlay="false"
         app:umanoPanelHeight="350dp"
         app:umanoParallaxOffset="100dp"
