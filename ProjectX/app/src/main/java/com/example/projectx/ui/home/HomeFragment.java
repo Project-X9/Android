@@ -17,7 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.projectx.AboutActivity;
-import com.example.projectx.PlayListFull;
+import com.example.projectx.playlist.PlayListFull;
 import com.example.projectx.R;
 import com.example.projectx.authentication.AuthenticationPage;
 import com.facebook.login.LoginManager;
