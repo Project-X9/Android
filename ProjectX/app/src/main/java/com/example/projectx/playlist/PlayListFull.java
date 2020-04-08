@@ -44,19 +44,20 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_play_list_full);
+
+        Intent intent = getIntent();
+        Bundle b = intent.getExtras();
+        String temp = b.getString("PlaylistIDs");
+        playlistId = temp;
         FetchPlaylist fetchPlaylist = new FetchPlaylist();
         fetchPlaylist.execute();
-        super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_play_list_full);
         playlistName = findViewById(R.id.playlistName_tv);
         mRecyclerView = findViewById(R.id.recyclerView);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-//        mRecyclerView.setAdapter(mAdapter);
-//        for (int i = 0; i < songArrayList.size(); i++) {
-//            SongIDStringArray[i] = songArrayList.get(i).id;
-//        }
         mAdapter = new SongAdapter(songArrayList, getApplicationContext(), this);
         mRecyclerView.setAdapter(mAdapter);
 
