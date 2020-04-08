@@ -104,6 +104,9 @@ public class fetchMusicData extends AsyncTask<Void, Void, Void> {
                 MusicPlayer.loading = false;
                 return;
             }
+
+//            MusicPlayer.mediaPlayer.reset();
+
             MusicPlayer.mediaPlayer.setDataSource(MusicPlayer.currentSong.url);
         } catch (IOException e) {
             e.printStackTrace();

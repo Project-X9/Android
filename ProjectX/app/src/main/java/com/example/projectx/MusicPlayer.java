@@ -71,15 +71,19 @@ public class MusicPlayer extends AppCompatActivity {
     }
 
     private void initializeSongsInfo() {
-        if (targetSongId != null) return;
+//        if (targetSongId != null) return;
         if (onlineTesting) {
             songIdsList = new String[]{"5e86459124471028e4d3539b"};
             targetSongId = "5e86459124471028e4d3539b";
         } else {
             Intent intent = getIntent();
             Bundle b = intent.getExtras();
-            songIdsList = b.getStringArray("songslistarray");
-            targetSongId = b.getString("songid");
+            String temp = b.getString("songid");
+            if (temp != currentSong.id) {
+                targetSongId = temp;
+                songIdsList = b.getStringArray("songslistarray");
+                changedSong = true;
+            }
         }
         Log.d("TAG", "initializeSongsInfo: called " + targetSongId);
     }
@@ -91,6 +95,7 @@ public class MusicPlayer extends AppCompatActivity {
             process.setURL(TRACK_FETCH_SERVER + targetSongId);
             disableButtons();
             loading = true;
+            changedSong = false;
             process.execute();
         }
     }
@@ -148,8 +153,6 @@ public class MusicPlayer extends AppCompatActivity {
                     if (wasPlaying)
                         mediaPlayer.start();
                     mediaPlayer.seekTo(seekBar.getProgress());
-//                    buffering = true;
-//                    disableControlButtons();
                     seeking = false;
                 }
             });
