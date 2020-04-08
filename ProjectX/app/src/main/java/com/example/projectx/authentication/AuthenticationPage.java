@@ -63,7 +63,7 @@ public class AuthenticationPage extends AppCompatActivity {
             }
         });
 
-         callbackManager = CallbackManager.Factory.create(); //Facebook code
+        callbackManager = CallbackManager.Factory.create(); //Facebook code
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {

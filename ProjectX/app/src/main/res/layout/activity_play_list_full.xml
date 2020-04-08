@@ -22,7 +22,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
         android:background="#00FFFFFF"
-        android:onClick="returenBack"
+        android:onClick="returnBack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/abc_vector_test" />
