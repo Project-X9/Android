@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -148,8 +149,10 @@ public class SignUpActivity extends AppCompatActivity {
         protected void onPostExecute(Void v){
             super.onPostExecute(v);
             try {
+                Log.e("reached", "postexecute");
                 if (result.getString("status").equals("success")) {
-                    storeCredentials(CREDENTIALS_FILE, result.getString("id"));
+                    storeCredentials(CREDENTIALS_FILE, result.getJSONObject("data").
+                            getJSONObject("user").getString("_id"));
                     startActivity(new Intent(getBaseContext(), MainActivity.class));
                     finish();
                 }

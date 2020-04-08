@@ -38,7 +38,7 @@ public class AuthenticationPage extends AppCompatActivity {
         final Button signUpBt = (Button) findViewById(R.id.signUp_bt);
 
         final Switch mockSwitch = (Switch) findViewById(R.id.mock);
-
+        mockSwitch.setClickable(false);
         signUpBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -369,14 +369,7 @@ public class MusicPlayer extends AppCompatActivity {
         //gotoSongPage(V);
     }
 
-//    /**
-//     * open context menu (Not currently implemented)
-//     *
-//     * @param V
-//     */
-//    public void moreButtonPressed(View V) {
-//        //showcontext menu
-//    }
+
 
     /**
      * Shares link to current song
