@@ -18,7 +18,7 @@
             android:padding="2dp" />
 
         <TextView
-            android:id="@+id/singer_tv"
+            android:id="@+id/song_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -30,10 +30,10 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/song_name_tv"
+            android:id="@+id/singer_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/singer_tv"
+            android:layout_below="@+id/song_name_tv"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_toEndOf="@+id/song_iv"

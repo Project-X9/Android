@@ -17,6 +17,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.projectx.ArtistFragment.ArtistFragment;
 import com.example.projectx.authentication.AuthenticationPage;
 import com.example.projectx.authentication.SignInManager;
+import com.example.projectx.playlist.PlayListFull;
 import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

@@ -41,6 +41,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="321dp"
             android:background="#00FFFFFF"
+            android:onClick="showMenu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_more_vert_black_24dp" />
@@ -63,13 +64,17 @@
                 android:background="@drawable/default_playlist_pictuer" />
 
             <me.grantland.widget.AutofitTextView
-                android:id="@id/title"
+                android:id="@+id/user_aftv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24.0dip"
                 android:ellipsize="end"
+                android:fontFamily="@font/encore_font_circular_book"
                 android:gravity="center"
-                android:maxLines="2" />
+                android:maxLines="2"
+                android:text="Test User"
+                android:textColor="#ffffffff"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/subtitle"
@@ -77,7 +82,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8.0dip"
-                android:maxLines="1" />
+                android:gravity="center_horizontal"
+                android:maxLines="1"
+                android:text="by hqq8f71xwupy0jjvnnb9ir1c7"
+                android:textColor="#66ffffff" />
         </LinearLayout>
 
         <LinearLayout
@@ -96,6 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18.0dip"
                 android:layout_marginBottom="0.0dip"
+                android:fontFamily="@font/encore_font_circular_bold"
                 android:text="Let's find some songs for your playlist."
                 android:textColor="#ffffffff"
                 android:textSize="16.0sp"

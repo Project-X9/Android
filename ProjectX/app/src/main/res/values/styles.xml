@@ -11,5 +11,9 @@
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+    <style name="AppTheme.PopMenuTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
 
 </resources>
