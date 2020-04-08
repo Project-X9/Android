@@ -54,6 +54,7 @@ public class MusicPlayer extends AppCompatActivity {
     boolean isLooping = false;
     private boolean onlineTesting = false;
     private boolean autoNextSong = false;
+    static boolean newSong = false;
 //    SharedPreferences
 
     //I have the track id that is passed from the intent, I will get the details from a json request and update ui based on this
@@ -82,20 +83,28 @@ public class MusicPlayer extends AppCompatActivity {
             if (temp != currentSong.id) {
                 targetSongId = temp;
                 songIdsList = b.getStringArray("songslistarray");
-                changedSong = true;
+                newSong = true;
             }
         }
         Log.d("TAG", "initializeSongsInfo: called " + targetSongId);
     }
 
     private void fetchSongData() {
-        if ((currentSong.url == null) || changedSong)    //if no song is currently playing this means, and this means app did not close and start again
+        if ((currentSong.url == null) || changedSong || newSong)    //if no song is currently playing this means, and this means app did not close and start again
         {
             fetchMusicData process = new fetchMusicData();
             process.setURL(TRACK_FETCH_SERVER + targetSongId);
             disableButtons();
             loading = true;
-            changedSong = false;
+
+            if (newSong) {
+                MusicPlayer.mediaPlayer.stop();
+                MusicPlayer.mediaPlayer.reset();
+                MusicPlayer.mediaPlayer.release();
+                MusicPlayer.mediaPlayer = null;
+                initializeMediaPlayer();
+                newSong = false;
+            }
             process.execute();
         }
     }
@@ -590,7 +599,7 @@ public class MusicPlayer extends AppCompatActivity {
                         if (i + 1 >= songIdsList.length)
                             targetSongId = songIdsList[songIdsList.length - 1];
                         else
-                            targetSongId = songIdsList[i];
+                            targetSongId = songIdsList[i + 1];
                         fetchSongData();
                         switching = false;
                         return;
@@ -603,7 +612,7 @@ public class MusicPlayer extends AppCompatActivity {
                         if (i - 1 < 0)
                             targetSongId = songIdsList[0];
                         else
-                            targetSongId = songIdsList[i];
+                            targetSongId = songIdsList[i - 1];
                         fetchSongData();
                         switching = false;
                         return;
