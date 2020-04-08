@@ -149,7 +149,7 @@ public class SignUpActivity extends AppCompatActivity {
         protected void onPostExecute(Void v){
             super.onPostExecute(v);
             try {
-                //sadf
+                //.
                 Log.e("reached", "postexecute");
                 if (result.getString("status").equals("success")) {
                     storeCredentials(CREDENTIALS_FILE, result.getJSONObject("data").
