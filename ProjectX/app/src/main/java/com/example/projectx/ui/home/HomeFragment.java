@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +41,8 @@ import java.util.concurrent.ExecutionException;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    String [] playlistIDs;
+    String[] playlistIDs = new String[4];
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -56,28 +59,64 @@ public class HomeFragment extends Fragment {
         recommended.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), PlayListFull.class));
+//                startActivity(new Intent(getContext(), PlayListFull.class));
+                Intent i = new Intent(getContext(), PlayListFull.class);
+                Bundle extras = new Bundle();
+                if (playlistIDs[0] == null) {
+                    Toast.makeText(getContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                extras.putString("PlaylistIDs", playlistIDs[0]);
+                i.putExtras(extras);
+                startActivity(i);
             }
         });
 
         likes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), PlayListFull.class));
+//                startActivity(new Intent(getContext(), PlayListFull.class));
+                Intent i = new Intent(getContext(), PlayListFull.class);
+                Bundle extras = new Bundle();
+                if (playlistIDs[1] == null) {
+                    Toast.makeText(getContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                extras.putString("PlaylistIDs", playlistIDs[1]);
+                i.putExtras(extras);
+                startActivity(i);
             }
         });
 
         mostPopular.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), PlayListFull.class));
+//                startActivity(new Intent(getContext(), PlayListFull.class));
+                Intent i = new Intent(getContext(), PlayListFull.class);
+                Bundle extras = new Bundle();
+                if (playlistIDs[2] == null) {
+                    Toast.makeText(getContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                extras.putString("PlaylistIDs", playlistIDs[2]);
+                i.putExtras(extras);
+                startActivity(i);
             }
         });
 
         newReleases.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), PlayListFull.class));
+//                startActivity(new Intent(getContext(), PlayListFull.class));
+                Intent i = new Intent(getContext(), PlayListFull.class);
+                Bundle extras = new Bundle();
+                if (playlistIDs[3] == null) {
+                    Toast.makeText(getContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                extras.putString("PlaylistIDs", playlistIDs[3]);
+                i.putExtras(extras);
+                startActivity(i);
             }
         });
 
@@ -93,11 +132,14 @@ public class HomeFragment extends Fragment {
 
         return root;
     }
+
     private class PlaylistAsyncTask extends AsyncTask<String, Integer, String[]> {
         private Context context;
-        public PlaylistAsyncTask (Context c){
+
+        public PlaylistAsyncTask(Context c) {
             this.context = c;
         }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -112,20 +154,20 @@ public class HomeFragment extends Fragment {
                     null, future, future);
             RequestQueue getUserQueue = Volley.newRequestQueue(this.context);
             getUserQueue.add(getPlaylists);
-            try{
-                JSONObject playlists =  future.get();
-                JSONArray playlistsArray = playlists.getJSONArray("playlists");
-                String [] playlistIds = new String[playlistsArray.length()];
-                for (int i = 0; i<playlistsArray.length(); i++) {
+            try {
+                JSONObject playlists = future.get();
+                JSONArray playlistsArray = playlists.getJSONObject("data").getJSONArray("playlists");
+                String[] playlistIds = new String[playlistsArray.length()];
+                Log.e("tag", playlists.toString());
+                for (int i = 0; i < playlistsArray.length(); i++) {
                     playlistIds[i] = playlistsArray.getJSONObject(i).getString("_id");
                 }
                 playlistIDs = playlistIds;
                 return playlistIds;
 
-            }catch(ExecutionException e){
+            } catch (ExecutionException e) {
                 e.printStackTrace();
-            }
-            catch(InterruptedException e ){
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
