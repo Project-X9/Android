@@ -124,22 +124,22 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
 
         try {
             JSONObject response = future.get();
-            JSONObject Data = response.getJSONObject("data");
-            JSONObject Dplaylist = Data.getJSONObject("playlist");
-            mNamePlaylist = Dplaylist.getString("name");
-            JSONArray Tracks = Dplaylist.getJSONArray("tracks");
+            JSONObject data = response.getJSONObject("data");
+            JSONObject dPlaylist = data.getJSONObject("playlist");
+            mNamePlaylist = dPlaylist.getString("name");
+            JSONArray Tracks = dPlaylist.getJSONArray("tracks");
             for (int i = 0; i < Tracks.length(); i++) {
                 JSONObject json = Tracks.getJSONObject(i);
                 jsonObjectArray.add(json);
             }
             for (int i = 0; i < jsonObjectArray.size(); i++) {
-                String Track_id = jsonObjectArray.get(i).getString("_id");
-                String Track_description = jsonObjectArray.get(i).getString("description");
-                String Track_name = jsonObjectArray.get(i).getString("name");
-                String Track_playcount = jsonObjectArray.get(i).getString("playcount");
-                String Track_url = jsonObjectArray.get(i).getString("url");
-                String Track_duration = jsonObjectArray.get(i).getString("duration");
-                String Track_imageUrl = jsonObjectArray.get(i).getString("imageUrl");
+                String trackId = jsonObjectArray.get(i).getString("_id");
+                String trackDescription = jsonObjectArray.get(i).getString("description");
+                String trackNames = jsonObjectArray.get(i).getString("name");
+                String trackPlaycount = jsonObjectArray.get(i).getString("playcount");
+                String trackUrl = jsonObjectArray.get(i).getString("url");
+                String trackDuration = jsonObjectArray.get(i).getString("duration");
+                String trackImageUrl = jsonObjectArray.get(i).getString("imageUrl");
                 JSONArray artists =  jsonObjectArray.get(i).getJSONArray("artists");
 
                 ArrayList<JSONObject> jsonObjectArray1 = new ArrayList<>();
@@ -147,13 +147,13 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
                     JSONObject json = artists.getJSONObject(j);
                     jsonObjectArray1.add(json);
                 }
-                ArrayList<String> ArtistIDArrayList = new ArrayList<>();
-                ArrayList<String> ArtistNameArrayList = new ArrayList<>();
+                ArrayList<String> artistIdArrayList = new ArrayList<>();
+                ArrayList<String> artistNameArrayList = new ArrayList<>();
                 for (int k=0; k <  jsonObjectArray1.size(); k++){
                     String Artist_id = jsonObjectArray1.get(k).getString("_id");
                     String Artist_name = jsonObjectArray1.get(k).getString("name");
-                    ArtistIDArrayList.add(Artist_id);
-                    ArtistNameArrayList.add(Artist_name);
+                    artistIdArrayList.add(Artist_id);
+                    artistNameArrayList.add(Artist_name);
                 }
                 JSONArray genres =  jsonObjectArray.get(i).getJSONArray("genres");
 
@@ -162,22 +162,22 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
                     JSONObject json = genres.getJSONObject(j);
                     jsonObjectArray2.add(json);
                 }
-                ArrayList<String> GenresIDArrayList = new ArrayList<>();
+                ArrayList<String> genresIdarraylist = new ArrayList<>();
                 for (int k=0; k <  jsonObjectArray2.size(); k++){
                     String Genres_id = jsonObjectArray2.get(k).getString("_id");
-                    GenresIDArrayList.add(Genres_id);
+                    genresIdarraylist.add(Genres_id);
                 }
                 Song mSong = new Song();
-                mSong.id=Track_id;
-                mSong.description=Track_description;
-                mSong.name=Track_name;
-                mSong.playcount=Track_playcount;
-                mSong.url=Track_url;
-                mSong.duration=Track_duration;
-                mSong.imageUrl=Track_imageUrl;
-                mSong.artists=ArtistIDArrayList;
-                mSong.genres=GenresIDArrayList;
-                mSong.artist_name=ArtistNameArrayList;
+                mSong.id=trackId;
+                mSong.description=trackDescription;
+                mSong.name=trackNames;
+                mSong.playcount=trackPlaycount;
+                mSong.url=trackUrl;
+                mSong.duration=trackDuration;
+                mSong.imageUrl=trackImageUrl;
+                mSong.artists=artistIdArrayList;
+                mSong.genres=genresIdarraylist;
+                mSong.artist_name=artistNameArrayList;
                 songArrayList.add(mSong);
             }
         }

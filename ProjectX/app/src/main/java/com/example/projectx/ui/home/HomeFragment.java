@@ -78,11 +78,11 @@ public class HomeFragment extends Fragment {
 //                startActivity(new Intent(getContext(), PlayListFull.class));
                 Intent i = new Intent(getContext(), PlayListFull.class);
                 Bundle extras = new Bundle();
-                if (playlistIDs[1] == null) {
+                if (playlistIDs[0] == null) {
                     Toast.makeText(getContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                extras.putString("PlaylistIDs", playlistIDs[1]);
+                extras.putString("PlaylistIDs", playlistIDs[0]);
                 i.putExtras(extras);
                 startActivity(i);
             }
