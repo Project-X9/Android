@@ -2,6 +2,7 @@ package com.example.projectx;
 
 import android.content.Context;
 
+import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
@@ -12,6 +13,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static androidx.test.espresso.Espresso.closeSoftKeyboard;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static java.lang.Thread.sleep;
 import static org.junit.Assert.*;
 
 /**
@@ -25,7 +34,36 @@ public class ExampleInstrumentedTest {
     public ActivityTestRule<SignUpActivity> menuActivityTestRule =
             new ActivityTestRule<>(SignUpActivity.class, true, true);
 
-    public void test
+        @Test
+    public void TestView()
+    {
+        onView(withId(R.id.createUser_bt)).check(ViewAssertions.matches(withText("Create User")));
+        closeSoftKeyboard();
+
+        onView(withId(R.id.signUpEmail_et)).perform(replaceText("Ahmad@gmail.com"));
+        closeSoftKeyboard();
+
+        onView(withId(R.id.signUpPassword_et)).perform(replaceText("testpassword"));
+        closeSoftKeyboard();
+
+
+        onView(withId(R.id.signUpAge_et)).perform(replaceText("22"));
+        closeSoftKeyboard();
+
+        onView(withId(R.id.signUpName_et)).perform(replaceText("Ahmad Nader Adel"));
+        closeSoftKeyboard();
+        try {
+            sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        onView(withId(R.id.createUser_bt))
+                .perform(click());
+
+
+
+    }
+
 
 
 }

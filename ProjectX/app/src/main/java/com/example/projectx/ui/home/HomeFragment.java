@@ -146,6 +146,12 @@ public class HomeFragment extends Fragment {
 
         }
 
+        /**
+         * doInBackground is overridden to retreive all playlists from the server and store their ids
+         * in an array so each listener will use an id to get a playlist.
+         * @param strings
+         * @return
+         */
         @Override
         protected String[] doInBackground(String... strings) {
             RequestFuture<JSONObject> future = RequestFuture.newFuture();

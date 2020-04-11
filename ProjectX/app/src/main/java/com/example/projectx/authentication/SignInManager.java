@@ -27,6 +27,19 @@ public class SignInManager {
         this.context = c;
     }
 
+    /**
+     * This function tries to login, either to the mock server if mockState is true, or to the
+     * real server if the mockstate is false. It creates a request with the token, adds the request
+     * to the request queue. If the request is to the mock server, the function loops over the
+     * response (which is an array of responses) to find the user. If the user is found it returns
+     * the object and if not, it returns an object with the failure info.
+     * If the request was made to the real server, it returns the object, otherwise it displays
+     * a toast with the error message.
+     * @param email
+     * @param password
+     * @param mockState
+     * @return
+     */
     public JSONObject login(final String email, final String password, boolean mockState) {
         String SERVICE_URL = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:3000/api/v1/users/login";
         final String MOCK_SERVICE_URL = "http://192.168.1.15:8000/Users";

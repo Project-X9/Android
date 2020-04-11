@@ -58,6 +58,18 @@ public class SignUpManager  {
         this.context = context;
     }
 
+    /**
+     * signUp creates a JSONObject request with the user info and sends it either on the mock
+     * server or on the real server, depending on the mockstate. If the user was not successfully
+     * signed up it returns a JSONObject with the error
+     * @param mockState indicates app is running in mockstate or realstate
+     * @param name name of the user
+     * @param email email of the user
+     * @param age
+     * @param gender
+     * @param password
+     * @return
+     */
     public JSONObject signUp(Boolean mockState, String name, String email, String age, String gender ,String password) {
         final String SIGNUP_URL = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:" +
                 "3000/api/v1/users/";

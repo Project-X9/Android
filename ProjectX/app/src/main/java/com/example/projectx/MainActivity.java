@@ -56,6 +56,8 @@ public class MainActivity extends FragmentActivity {
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //if the log out button is pressed, the shared preferences are cleared, and the user
+                // is returned to the authentication page.
                 loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
                 SharedPreferences.Editor editor = loginCredentials.edit();
                 editor.clear();
@@ -80,6 +82,12 @@ public class MainActivity extends FragmentActivity {
 
             }
 
+            /**
+             * uses the id and the token returned to the application to get user info, and then
+             * stores the userInfo in a sharedPreferences file.
+             * @param strings
+             * @return
+             */
             @Override
             protected JSONObject doInBackground(String... strings) {
                 RequestFuture<JSONObject> future = RequestFuture.newFuture();
@@ -127,6 +135,7 @@ public class MainActivity extends FragmentActivity {
         }
 
     }
+    //TODO:remove this function
     public void storeCredentials(String credentialsFile, String email) {
         loginCredentials = getSharedPreferences(credentialsFile, MODE_PRIVATE);
         SharedPreferences.Editor editor = loginCredentials.edit();

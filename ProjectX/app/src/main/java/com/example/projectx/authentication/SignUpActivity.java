@@ -36,6 +36,13 @@ public class SignUpActivity extends AppCompatActivity {
      String age;
      String gender;
      JSONObject result;
+
+    /**
+     * This function is overridden is sets a listener to the sign up button. If the user presses the
+     * button, it validates the text fields and calls an AsyncTask to execute the signup process.
+     * If any field is invalid it displays a toast informing the user.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,6 +138,13 @@ public class SignUpActivity extends AppCompatActivity {
             super.onPreExecute();
 
         }
+
+        /**
+         * doInBackground overridden to call signUp function of the SignUpManager, either with true
+         * if the mockstate is true, or false if the mockstate is false.
+         * @param strings
+         * @return
+         */
         @Override
         protected Void doInBackground(String... strings) {
             if (mockState.equals("true")) {
@@ -146,6 +160,11 @@ public class SignUpActivity extends AppCompatActivity {
             return null;
         }
 
+        /**
+         * After doInBackground has been executed  store the id of the user in the sharedPreferences
+         * file if the result was success, otherwise display a toast to the user.
+         * @param v
+         */
         @Override
         protected void onPostExecute(Void v){
             super.onPostExecute(v);
