@@ -37,8 +37,12 @@ public class AuthenticationPage extends AppCompatActivity {
 
         final Button signUpBt = (Button) findViewById(R.id.signUp_bt);
 
+
         final Switch mockSwitch = (Switch) findViewById(R.id.mock);
+        //switched off till next phase
         mockSwitch.setClickable(false);
+        //starts the sign up page. The listener also stops the Sign Up button from being clickable,
+        //until the activity is started again to prevent next activity from starting twice
         signUpBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +56,8 @@ public class AuthenticationPage extends AppCompatActivity {
 
         });
         final Button signInBt = (Button) findViewById(R.id.signIn_bt);
+        //This listener opens up the Sign In page and switches off the button like the previous
+        // listener
         signInBt.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -117,9 +123,14 @@ public class AuthenticationPage extends AppCompatActivity {
     public void storeCredentials(String credentialsFile, String email) {
         loginCredentials = getSharedPreferences(credentialsFile, MODE_PRIVATE);
         SharedPreferences.Editor editor = loginCredentials.edit();
-        editor.putString("email", email);
+        editor.putString("email", email); //TODO in next phase fix email to be id
         editor.commit();
     }
+
+    /**
+     * This function is called when this activity is resumed, and has been overridden to set the sign
+     * up and sign in buttons to be clickable again
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -128,6 +139,12 @@ public class AuthenticationPage extends AppCompatActivity {
         signUpBt.setClickable(true);
         signInBt.setClickable(true);
     }
+
+    /**
+     * This function opens the service shared preferences file to store whether the application is
+     * in mock mode or Real mode
+     * @param mockSwitch
+     */
     public void saveMockStatus(Switch mockSwitch){
         if (mockSwitch.isChecked()){
             service = getSharedPreferences(SERVICE_FILE, MODE_PRIVATE);

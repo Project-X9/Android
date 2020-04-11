@@ -35,6 +35,12 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences service;
     final String SERVICE_FILE = "serviceChoice";
     JSONObject result;
+
+    /**
+     * This onCreate function checks if the email and password are valid, and if so starts up a new
+     * Async Task that performs the sign up process.Else, it displays error messages to the user.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 }
     private class LoginAsyncTask extends AsyncTask<String, Integer, JSONObject> {
         Boolean mockState;
-        Boolean signedIn;
+        Boolean signedIn; //TODO:remove this boolean
 
         public LoginAsyncTask(Boolean mockState) {
             this.mockState = mockState;
@@ -86,6 +92,15 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
+        /**
+         * doInBackground has been overridden to call the initialise the signInAgent and call the
+         * login function. It will call the function with true if the application is currently in
+         * mock state, and with false if the function is running in real state. It'll then return
+         * the JSON Object response received from the backend or the mock server to be processed by
+         * onPostExecute.
+         * @param strings
+         * @return
+         */
         @Override
         protected JSONObject doInBackground(String... strings) {
             SignInManager signInAgent = new SignInManager(getBaseContext());
@@ -98,6 +113,12 @@ public class LoginActivity extends AppCompatActivity {
             return result;
         }
 
+        /**
+         * onPostExecute has been overridden to check the JSON response. If the response is
+         * success, it'll save the user data into the application and start the main activity.
+         *
+         * @param result JSONObject that was received from the backend or the mock server.
+         */
         @Override
         protected void onPostExecute(JSONObject result) {
             super.onPostExecute(result);

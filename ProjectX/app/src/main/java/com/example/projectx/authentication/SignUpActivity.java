@@ -98,6 +98,7 @@ public class SignUpActivity extends AppCompatActivity {
         String stringPattern = "[a-zA-Z\\s]+$"; //regex pattern to ensure name contains only letters
         if(nameEt.getError() != null || !stringify(nameEt).matches(stringPattern))
         {
+            //fix in next phase
             nameEt.setError("Name must only consist of alphabet characters.");
         }
         if (ageEt.getError() != null) {

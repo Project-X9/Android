@@ -14,11 +14,18 @@ public class LandingPage extends AppCompatActivity {
     SharedPreferences loginCredentials;
     final String CREDENTIALS_FILE = "loginCreds";
 
+    /**
+     * This function has been overridden to check if there's user info in the shared preferences file
+     * and if there is it starts the Main Activity ("HomePage"), and if not user is redirected to
+     * the authentication page
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
-        Log.e("landing oncreate", "Landing is active");
+
+        Log.e("landing oncreate", "Landing is active"); //TODO: remove this log
         loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
         String loggedIn = loginCredentials.getString("id", null);
         if (loggedIn == null) {
@@ -36,6 +43,6 @@ public class LandingPage extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("landing",  "onResume of Landing activated");
+        Log.e("landing",  "onResume of Landing activated"); //TODO: Remove this log
     }
 }
