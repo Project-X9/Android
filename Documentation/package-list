@@ -1,2 +1,8 @@
 com.example.projectx
+com.example.projectx.Artist
+com.example.projectx.ArtistFragment
 com.example.projectx.authentication
+com.example.projectx.playlist
+com.example.projectx.ui.dashboard
+com.example.projectx.ui.home
+com.example.projectx.ui.notifications
