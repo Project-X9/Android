@@ -71,6 +71,9 @@ public class MusicPlayer extends AppCompatActivity {
         setListeners();
     }
 
+    /**
+     * Handles the intent passed to the musicplayer and sets targetSongId and songIdsList
+     */
     private void initializeSongsInfo() {
 //        if (targetSongId != null) return;
         if (onlineTesting) {
@@ -89,6 +92,9 @@ public class MusicPlayer extends AppCompatActivity {
         Log.d("TAG", "initializeSongsInfo: called " + targetSongId);
     }
 
+    /**
+     * Calls api (get track info by id) on the id of targetSongId, and updates all currentSong info
+     */
     private void fetchSongData() {
         if ((currentSong.url == null) || changedSong || newSong)    //if no song is currently playing this means, and this means app did not close and start again
         {
@@ -109,6 +115,9 @@ public class MusicPlayer extends AppCompatActivity {
         }
     }
 
+    /**
+     * Changes image resources for all buttons to make them look disabled
+     */
     private void disableButtons() {
         disableControlButtons();
         likeSongButton.setImageResource(R.drawable.like_song_loading);
@@ -117,6 +126,9 @@ public class MusicPlayer extends AppCompatActivity {
         blacklistButton.setImageResource(R.drawable.blacklist_song_loading);
     }
 
+    /**
+     * Sets image resources for all buttons to their normal state
+     */
     private void enableButtons() {
         enableControlButtons();
         likeSongButton.setImageResource(R.drawable.like_song);
@@ -125,18 +137,23 @@ public class MusicPlayer extends AppCompatActivity {
         blacklistButton.setImageResource(R.drawable.blacklist_song);
     }
 
+    /**
+     * Changes image resources for only music control buttons to make them look disabled
+     */
     private void disableControlButtons() {
         playButton.setImageResource(R.drawable.play_button_pressed);
         nextButton.setImageResource(R.drawable.next_song_button_pressed);
         previousButton.setImageResource(R.drawable.previous_song_button_pressed);
     }
 
+    /**
+     * Sets image resources for only music control buttons to their normal state
+     */
     private void enableControlButtons() {
         playButton.setImageResource(R.drawable.play_button);
         nextButton.setImageResource(R.drawable.next_song_button);
         previousButton.setImageResource(R.drawable.previous_song_button);
     }
-
 
     /**
      * Sets listeners for mediaplayer and seekbar
@@ -369,8 +386,6 @@ public class MusicPlayer extends AppCompatActivity {
         //gotoSongPage(V);
     }
 
-
-
     /**
      * Shares link to current song
      *
@@ -573,7 +588,6 @@ public class MusicPlayer extends AppCompatActivity {
                     }
                 }
             });
-//        setListeners();
             switching = false;
         } else {
             switching = true;
@@ -768,6 +782,10 @@ public class MusicPlayer extends AppCompatActivity {
 
     }
 
+    /**
+     * Used to initialize a new mediaplayer instance, used when switching songs and when starting
+     * the music player activity
+     */
     private void initializeMediaPlayer() {
         if (mediaPlayer == null) {
             if (testing) {
@@ -812,8 +830,6 @@ public class MusicPlayer extends AppCompatActivity {
                     }
                 });
             }
-
-
         } else {
 
             if (mediaPlayer.isLooping()) {
