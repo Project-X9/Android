@@ -5,6 +5,7 @@ To Install the application:
 -enable installing applications from third party sources on the phone
 -copy the apk to the phone and install
 
+The JavaDoc documentation and unit tests are on the InstrumentedTests branch.
 
 To run Unit Tests:
 -clone the repo
