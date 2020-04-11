@@ -58,6 +58,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         return  evh;
     }
 
+    /**
+     * onBindViewHolder of SongAdapter it set the name of the singer , the song  and the picture of the song
+     * to their corresponding position in the recycler view.
+     * @param holder
+     * @param position of the song to get it's data an show it.
+     */
     @Override
     public void onBindViewHolder(@NonNull SongViewHolder holder, int position) {
         Song currentItem = mSongItems.get(position);

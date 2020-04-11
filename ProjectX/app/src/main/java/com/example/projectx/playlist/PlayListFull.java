@@ -63,12 +63,21 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
 
     }
 
+    /**
+     * ReturnBack it close the playlist activity.
+     * @param v
+     */
     public void returnBack(View v) {
         finish();
 //        Intent intent = new Intent(this, PlaylistEmpty.class);
 //        startActivity(intent);
     }
 
+    /**
+     * OnSongClick it get the position of the clicked song in the recycler view and send it's
+     * ID to music player activity beside that it also send an array of song ID.
+     * @param position
+     */
     @Override
     public void onSongClick(int position) {
 
@@ -82,11 +91,18 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         startActivity(i);
     }
 
+    /**
+     * FetchedPlayList is used an AsyncTask to fetch the data from the server of the backend
+     */
     private class FetchPlaylist extends AsyncTask<String, String, String> {
 
         String mNamePlaylist;
 
-
+        /**
+         * doInBackground  call a function Playlist that fetch the name of playlist from backend server.
+         * @param strings
+         * @return the name of the fetched playlist.
+         */
         @Override
         protected String doInBackground(String... strings) {
             String s = Playlist(mNamePlaylist);
@@ -99,6 +115,12 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
 
         }
 
+        /**
+         * OnPostExecute take a the name of the fetched playlist and set it.
+         *  and it add all the fetched song from the server  of this specific playlist
+         *  to song array list and notify the adapter of the recycler view with the changes.
+         * @param s
+         */
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
@@ -112,6 +134,14 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
 
     }
 
+    /**
+     * Playlist  it fetch that songs corresponding to this playlist
+     * and set mNamePlaylist with the name of it and finally
+     * fill the song array list with the songs after fill it's data
+     * from the server.
+     * @param mNamePlaylist the name that will be set to the playlist
+     * @return
+     */
     public String Playlist(String mNamePlaylist ) {
         songArrayList = new ArrayList<>();
         ArrayList<JSONObject> jsonObjectArray = new ArrayList<>();
