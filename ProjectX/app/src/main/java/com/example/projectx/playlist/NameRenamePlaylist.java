@@ -25,12 +25,22 @@ public class NameRenamePlaylist extends AppCompatActivity {
         softInputAssist = new SoftInputAssist(this);
     }
 
+    /**
+     * OnClickCancel it returned to the PlaylistEmpty.
+     * @param view
+     */
     public void onClickCancel(View view){
         Intent intent = new Intent(NameRenamePlaylist.this, PlaylistEmpty.class);
         startActivity(intent);
         finish();
     }
 
+    /**
+     * OnClickRename it check it the new name wasn't null it rename the playlist
+     * it send the new name using the intent
+     * and return back to the playlist.
+     * @param view
+     */
     public void onClickRename(View view){
         String inputName =mInputName.getText().toString();
         if (!inputName.equals("")){

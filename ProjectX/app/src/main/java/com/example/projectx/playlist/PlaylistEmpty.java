@@ -35,11 +35,20 @@ public class PlaylistEmpty extends AppCompatActivity {
 
     }
 
+    /**
+     * ChangeUserName it use the bundle to get the new name using a specific key
+     * and set the text view with this new name.
+     * @param extras
+     */
     private void changeUserName(Bundle extras) {
         String value = extras.getString("key");
         mInputDisplay.setText(value);
     }
 
+    /**
+     * AddSong it open a new fragment to choose which song you want to add to your playlist
+     * @param view
+     */
     public void addsongs (View view){
 //
 //        ListView listView = findViewById(R.id.lv);
@@ -59,7 +68,10 @@ public class PlaylistEmpty extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /*this for the menu that show when you click on the three dot image*/
+    /**
+     * ShowMenu is for the menu that show when you click on the three dot image on the top left corner
+     * @param view
+     */
     public void showMenu(View view){
         String inputName = mInputDisplay.getText().toString();
         Intent intent = new Intent(this, PopMenu.class);
