@@ -161,12 +161,16 @@ public class SignUpActivity extends AppCompatActivity {
             super.onPostExecute(v);
             try {
                 //.
-                Log.e("reached", "postexecute");
+                //Log.e("reached", "postexecute");
+                Log.e("result of email", result.toString());
                 if (result.getString("status").equals("success")) {
                     storeCredentials(CREDENTIALS_FILE, result.getJSONObject("data").
                             getJSONObject("user").getString("_id"));
                     startActivity(new Intent(getBaseContext(), MainActivity.class));
                     finish();
+                }
+                else if (result.getString("status").equals("email already in use")){
+                    makeToast("The email you entered is already associated with another account");
                 }
                 else
                 {

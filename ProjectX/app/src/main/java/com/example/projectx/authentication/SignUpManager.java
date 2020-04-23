@@ -26,12 +26,15 @@ import android.os.Looper;
 import android.os.UserHandle;
 import android.util.Log;
 import android.view.Display;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
@@ -47,6 +50,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -54,6 +58,7 @@ import java.util.concurrent.ExecutionException;
 public class SignUpManager  {
 
     Context context;
+    static int errorFromServer;
     public SignUpManager(Context context){
         this.context = context;
     }
@@ -82,16 +87,22 @@ public class SignUpManager  {
             JSONObject parameters = new JSONObject(userInfo);
             Log.e("json", parameters.toString());
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, usedUrl,
-                    parameters, future, future);
+                    parameters, future, future) {
+                @Override
+                protected VolleyError parseNetworkError(VolleyError volleyError) {
+                    if (volleyError != null && volleyError.networkResponse != null) {
+                        errorFromServer = volleyError.networkResponse.statusCode;
+                    }
+                    return volleyError;
+                }
+            };
             Log.e("url", usedUrl);
             RequestQueue signUpRq = Volley.newRequestQueue(this.context);
             signUpRq.add(request);
 
             try {
                 JSONObject response = future.get();
-                Log.e("post result", response.toString());
                 if (!mockState) {
-                    Log.e("tag", response.toString());
                     return response;
                 }
                 else {
@@ -110,7 +121,19 @@ public class SignUpManager  {
                 e.printStackTrace();
             }
             catch (ExecutionException e) {
+                Log.e("duplicate email", "reached here");
+                if(errorFromServer == 400){
+                    JSONObject response = new JSONObject();
+                    try {
+                        response.put("status", "email already in use");
+                    } catch (JSONException ex) {
+                        ex.printStackTrace();
+                    }
+                    return response;
+                }
                 e.printStackTrace();
+                Log.e("duplicate mailing",e.getMessage());
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
