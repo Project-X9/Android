@@ -98,22 +98,33 @@ public class SignUpActivity extends AppCompatActivity {
         String stringPattern = "[a-zA-Z\\s]+$"; //regex pattern to ensure name contains only letters
         if(nameEt.getError() != null || !stringify(nameEt).matches(stringPattern))
         {
+            correct = false;
             nameEt.setError("Name must only consist of alphabet characters.");
         }
-        if (ageEt.getError() != null) {
+        if (ageEt.getError() != null || stringify(ageEt).equals("")) {
             correct = false;
+            ageEt.setError("You must enter your age.");
         }
         stringPattern = "[\\S]+$"; //checks the password does not contain any whitespace
         if (passwordEt.getError() != null || !stringify(passwordEt).matches(stringPattern)) {
             correct = false;
             passwordEt.setError("Password can't be empty or contain any spaces.");
         }
+        if (stringify(ageEt).equals("")){
+            ageEt.setError("Age Field can't be empty");
+            return false;
+        }
         if (Integer.parseInt(stringify(ageEt)) < 9){
             correct = false;
             makeToast("You must be 9 years or older to make an account on ProjectX");
         }
         if (Integer.parseInt(stringify(ageEt)) < 1) {
+            correct = false;
             makeToast("Age field is invalid");
+        }
+        if (Integer.parseInt(stringify(ageEt)) > 150){
+            correct = false;
+            makeToast("You can't be older than 150 years.");
         }
         if (ageEt.getError() != null || stringify(ageEt).equals("")){ //checks age field is not empty
             correct = false;
@@ -162,6 +173,8 @@ public class SignUpActivity extends AppCompatActivity {
                     makeToast("Error receiving response from server.");
                 }
             } catch (JSONException e) {
+                makeToast(result.toString());
+                Log.e("tag", result.toString());
                 e.printStackTrace();
             }
 

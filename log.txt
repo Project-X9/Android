@@ -1,0 +1,376 @@
+commit ba674a6340bde6c96df0784e83e3dbf548656443
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Sat Apr 11 23:06:22 2020 +0200
+
+    generated javadoc documentation
+
+commit 39ff826524037b824f2cc9abbb1b44a4833e3c86
+Merge: ec9e7dd e6309b6
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Sat Apr 11 22:55:28 2020 +0200
+
+    Merge branch 'InstrumentedTesting' of https://github.com/Project-X9/Android into InstrumentedTesting
+
+commit ec9e7dd16f6fe360df3eb89fcc1213b1638eb443
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Sat Apr 11 22:51:24 2020 +0200
+
+    added Sign in and sign up unit testing
+
+commit e6309b6a154677b8f17efa7664023dac46064d2e
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Sat Apr 11 21:17:58 2020 +0200
+
+    adding doctumentation to playlist
+
+commit 33207ffa79f40d96d7488e569f176e00b940f645
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Sat Apr 11 21:13:24 2020 +0200
+
+    Instrumented Test Draft
+
+commit 488cdfd739a305083771dee2f1d71aa3f5980285
+Author: ziad abdelhamid <ziadzizo1999@gmail.com>
+Date:   Sat Apr 11 20:13:44 2020 +0200
+
+    Added javadoc to MusicPlayer class
+
+commit 8899cf5250ab40fe288abedaf2ce0fa345455dbf
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Sat Apr 11 18:57:54 2020 +0200
+
+    functional documentation
+
+commit d4de7516683cddcddb411f49e957f1177f643b52
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Wed Apr 8 07:27:31 2020 +0200
+
+    testing master lock
+
+commit f8c2f6e63f3e31425eb90143902d63c0ea4294c3
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Wed Apr 8 07:26:35 2020 +0200
+
+    testing master lock
+
+commit 9e1f62df7a8ff1392d979aaef90606dc217aafcb
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Wed Apr 8 07:18:49 2020 +0200
+
+    fixed signup error
+
+commit 8503c040753cf0dadc8bd576454527c936357317
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Wed Apr 8 07:04:13 2020 +0200
+
+    fixing some naming before final commit for phase 2
+
+commit 3caec3f8533b3bdd61327e1575f03dffdc083533
+Merge: 5d7918a 364d682
+Author: ziad abdelhamid <ziadzizo1999@gmail.com>
+Date:   Wed Apr 8 06:55:31 2020 +0200
+
+    Merge branch 'master' of https://github.com/Project-X9/Android
+    merge to fix play next and previous bugs
+
+commit 5d7918ac09abe73b47c00935872204281b57bbb2
+Author: ziad abdelhamid <ziadzizo1999@gmail.com>
+Date:   Wed Apr 8 06:54:35 2020 +0200
+
+    fixed bug where next and previous button didn't work
+
+commit 364d682c860d7f14e9b2a80cc2d15bba9bd9bfdb
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Wed Apr 8 06:38:19 2020 +0200
+
+    fixing some errors from integeration in master
+
+commit af67648c5a3a792e76be6ce832926558a1db79aa
+Author: ziad abdelhamid <ziadzizo1999@gmail.com>
+Date:   Wed Apr 8 06:00:57 2020 +0200
+
+    fixed bugs after integration
+
+commit 3b2bdf9ede5761c52106a7a3d6a6c11ffb57dcb5
+Merge: 49fb17f e534c87
+Author: ziad abdelhamid <ziadzizo1999@gmail.com>
+Date:   Wed Apr 8 04:10:03 2020 +0200
+
+    Merged integrated Music Player with master branch
+
+commit 49fb17fb917c4437a6cb3ef77c1b39fae46679c2
+Merge: ca62082 1bfe76b
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Wed Apr 8 03:45:03 2020 +0200
+
+    fixing some errors from merge in this branch2
+
+commit 1bfe76b2f7c832eb1cbb1f9dbc2da112e190dc73
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Wed Apr 8 03:40:01 2020 +0200
+
+    fixing some errors from merge in this branch
+
+commit ca62082b9fb5cb9ecd4e24cfd2ee6045635144ff
+Merge: 8bc291b 1d8fcba
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Wed Apr 8 03:31:39 2020 +0200
+
+    fixed merge conflicts
+
+commit 8bc291b4c28dc66371236a00a2db3d4e17f9150a
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Wed Apr 8 03:28:53 2020 +0200
+
+    added tokens
+
+commit 1d8fcbae877ecaf6f574be4bbd2c7b0ce9e42c39
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Wed Apr 8 03:27:50 2020 +0200
+
+    fixing some errors from merge
+
+commit 98c65ffc2d47a964f13071d030c587086ddb07c8
+Merge: a7f2745 d3c2034
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Wed Apr 8 01:48:01 2020 +0200
+
+    merging
+
+commit d3c2034ca12e2b2922d24679def3cedc8d583807
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Wed Apr 8 01:47:03 2020 +0200
+
+    merging
+
+commit a7f27456e0bc952f689037cd87cfc4805317ee46
+Merge: 5f76547 f2ac911
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Wed Apr 8 01:33:15 2020 +0200
+
+    merging with the master after implemented playlist and integerated with API
+
+commit e534c872f335f39105d79ff572b437e1e4483049
+Author: ziad abdelhamid <ziadzizo1999@gmail.com>
+Date:   Tue Apr 7 20:45:28 2020 +0200
+
+    Integrated music player with backend's api
+
+commit 5f76547d02a99505444041640ad585e97f62c857
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Tue Apr 7 18:55:38 2020 +0200
+
+    adding the functionality of moving to music player when the user click on a specific song
+
+commit f2ac9117d796679a6f71fe35c26effd3f115ed75
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Tue Apr 7 16:22:00 2020 +0200
+
+    Fixed shared preference bugs
+
+commit 8a3797e74860f28ca4fc8261da1d88722bbfc8d7
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Tue Apr 7 15:44:46 2020 +0200
+
+    adding click listener for the recyclerview to save the clicked id song that will help switching to the music player page
+
+commit 4b0cf6e3316ed17e81b68eb4db557fbee05af00d
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Tue Apr 7 15:04:09 2020 +0200
+
+    fixed some id problems
+
+commit ff13078ed271a307eb84699254a1ce172930e557
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Tue Apr 7 14:11:42 2020 +0200
+
+    Artist Page almost complete
+
+commit 4b85ea734c1644f602696eacfca42faa256806d4
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Tue Apr 7 04:11:45 2020 +0200
+
+    fully integerated playlist with API
+
+commit 5bb351b4e520811eefde135ba6579eaac08991dd
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Tue Apr 7 00:14:52 2020 +0200
+
+    finshing Artist interface,adding the3-dot menu and add some movment between activities
+
+commit 19b32cec76f1387f53a09edd49bb03def54e8abe
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Mon Apr 6 23:58:20 2020 +0200
+
+    created an Artist fragment
+
+commit 55ed9f9e4fe41c8daf313f684681b26f31630843
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Mon Apr 6 22:57:27 2020 +0200
+
+    cleaned up sign in code
+
+commit c2b39fb37f4456de4c547831ed79a7e113856393
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Mon Apr 6 19:08:57 2020 +0200
+
+    added About button to the homepage
+
+commit 050e08e1b37fd25e3e1202e3da6d4e9ebdd4072f
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Mon Apr 6 19:01:12 2020 +0200
+
+    created an About page
+
+commit 916886ae96bb564392ef57271f995b642c11a421
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Mon Apr 6 18:40:13 2020 +0200
+
+    Homepage now has playlists
+
+commit a049c71de20f1afb822cbd7472dbeef83b650611
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Mon Apr 6 18:22:48 2020 +0200
+
+    HomePage underway
+
+commit 929562724790027c9a3910d4df213a7c957a92d2
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Sat Apr 4 23:04:53 2020 +0200
+
+    created a fragmented HomePage
+
+commit a4d404328efeb6ad64b7e60e480252c4a8ba6d10
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Fri Apr 3 17:17:45 2020 +0200
+
+    Fixed mock services for Sign In and Sign Up
+
+commit da3bff73147ca8f888019db5f3c49598f2877e64
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Fri Mar 20 13:34:35 2020 +0200
+
+    integrated playlist
+
+commit 83fb160262bad5cb4edf18dbec46f1de88e10ff6
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Fri Mar 20 13:27:34 2020 +0200
+
+    integrated music player
+
+commit 452848d5dcde888b35bff88a49b2617a32e88d11
+Merge: 7d1cde1 5af74dd
+Author: ziad abdelhamid <ziadzizo1999@gmail.com>
+Date:   Fri Mar 20 02:31:50 2020 +0200
+
+    Fixed conflicts of merging music player with master
+
+commit 5af74dd4266825beb9af9b4bb3ca5a226d6dc261
+Merge: 6f7b848 cb9cfee
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Fri Mar 20 02:02:16 2020 +0200
+
+    fixing conflicts
+
+commit 7d1cde102677aa1d2d9a89673556c495a08adc32
+Merge: d689731 df290a7
+Author: ziad abdelhamid <ziadzizo1999@gmail.com>
+Date:   Fri Mar 20 01:30:44 2020 +0200
+
+    Fixed typo in a song title, removed log lines, removed unused seekbarpressed function, and removed opening musicPlayer in onCreate of mainActivity.
+
+commit d6897318b61114c9667ee0a83047c5da9cbb6df4
+Author: ziad abdelhamid <ziadzizo1999@gmail.com>
+Date:   Fri Mar 20 01:18:05 2020 +0200
+
+    Fixed typo in a song title, removed log lines, removed unused seekbarpressed function, and removed opening musicplayer on MainActivity start
+
+commit df290a7a6112bd8795eaaa7b9911db8919f2a0ee
+Author: ziad abdelhamid <ziadzizo1999@gmail.com>
+Date:   Fri Mar 20 01:18:05 2020 +0200
+
+    Fixed typo in a song title, removed log lines, and removed unused seekbarpressed function
+
+commit 6f7b84802e3df146e98e0dab5d0983d80ed41800
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Fri Mar 20 00:49:28 2020 +0200
+
+    modifed the AndroidManifest
+
+commit cb9cfee3b20a6e94ec436e9bf50adb0be9a72355
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Fri Mar 20 00:20:28 2020 +0200
+
+    removed some redundant code
+
+commit d68a60436462fc54feff767b74b0135fd9c62985
+Author: ziad abdelhamid <ziadzizo1999@gmail.com>
+Date:   Thu Mar 19 04:43:12 2020 +0200
+
+    Added previous song functionality and fixed bug when seeking through song
+
+commit c44f904747ebe6eedc05567712c5e9bc34efc948
+Author: ziad abdelhamid <ziadzizo1999@gmail.com>
+Date:   Wed Mar 18 23:24:55 2020 +0200
+
+    Implemented full functionality except for previous song button
+
+commit 5c69684e510a7833416f49005e4a0de98ef9a389
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Wed Mar 18 18:28:02 2020 +0200
+
+    fixed app not returning to paused activity bug
+
+commit 91595ca9e12933d11794aa9231117cbc0bb30157
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Tue Mar 17 18:55:42 2020 +0200
+
+    fixed some variable and function names, added documentation and changed some functions
+
+commit 38333319bc79618f1cdf05e1c129b9db309a67a5
+Author: ziad abdelhamid <ziadzizo1999@gmail.com>
+Date:   Tue Mar 17 05:33:15 2020 +0200
+
+    Fully implemented layout of the music player activity, but with no functionality, and no more options activity
+
+commit a9f2a2d1883a90e7e48d7dc4ce52dd54279e6cfe
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Mon Mar 16 23:46:43 2020 +0200
+
+    added a facebook login button
+
+commit cb77a3715b2403f5137de8f9222ecec29a734416
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Mon Mar 16 19:22:54 2020 +0200
+
+    added a logout button to test Shared Preferences
+
+commit 6f7b6fe9257c2a7b50999a17e75a870b12ab8f78
+Author: Samy Bahaa <samyking.sb@gmail.com>
+Date:   Mon Mar 16 19:07:17 2020 +0200
+
+    make the front end of the empty playlist and added a playlist that contain some dummy songs to show how it look
+
+commit 48508dcbe6f71815c2aa5cf4313fa5efb7089c85
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Mon Mar 16 18:37:30 2020 +0200
+
+    fixed naming conventions
+
+commit 7edc942acb51e48dbf93da3fb24606284fdf496e
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Mon Mar 16 17:30:37 2020 +0200
+
+    Created Sign Up and Sign in Pages
+
+commit 1ad1451605154caf054db15af275a561ab5fd095
+Author: AhmadNaderAdel <ahmadnaderx1998@gmail.com>
+Date:   Sat Mar 7 12:29:09 2020 +0200
+
+    Created a basic empty application
+
+commit ebf38312b23ae2a1f135fd1519cc6ea93244666f
+Author: Huda Sherif <huda_sherif_99@outlook.com>
+Date:   Fri Mar 6 17:33:52 2020 +0200
+
+    Initial commit

@@ -65,6 +65,7 @@ public class SignUpManager  {
         String usedUrl;
         if (mockState){
             usedUrl = MOCK_SIGNUP_URL;
+            Log.e("url", "shouldn't be here");
         }
         else {
             usedUrl = SIGNUP_URL;
@@ -90,7 +91,8 @@ public class SignUpManager  {
                 JSONObject response = future.get();
                 Log.e("post result", response.toString());
                 if (!mockState) {
-                        return response;
+                    Log.e("tag", response.toString());
+                    return response;
                 }
                 else {
                     if (response == null) {
