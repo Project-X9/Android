@@ -2,14 +2,20 @@ package com.example.projectx.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -35,6 +41,7 @@ public class SignUpActivity extends AppCompatActivity {
      EditText passwordEt ;
      String age;
      String gender;
+     ProgressDialog progDialog;
      JSONObject result;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +73,24 @@ public class SignUpActivity extends AppCompatActivity {
                     makeToast("Invalid field(s)");
                 }
                 else {
-                    //EmailAsyncTask emailAgent = new EmailAsyncTask();
-                    //emailAgent.execute(stringify(emailEt));
-                    SignUpAsyncTask signUpAgent = new SignUpAsyncTask();
-                    signUpAgent.execute(stringify(nameEt),
-                            stringify(emailEt),
-                            age,
-                            gender,
-                            stringify(passwordEt));
+
+                    if (checkNetwork()) {
+                        //EmailAsyncTask emailAgent = new EmailAsyncTask();
+                        //emailAgent.execute(stringify(emailEt));
+                        progDialog = new ProgressDialog(SignUpActivity.this);
+                        progDialog.show();
+                        progDialog.setContentView(R.layout.progressbar);
+                        SignUpAsyncTask signUpAgent = new SignUpAsyncTask();
+                        signUpAgent.execute(stringify(nameEt),
+                                stringify(emailEt),
+                                age,
+                                gender,
+                                stringify(passwordEt));
+                    }
+                    else{
+                        makeToast("There is no internet connection");
+                    }
+
 
                 }
         }
@@ -136,6 +153,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private class SignUpAsyncTask extends AsyncTask<String, String, Void> {
 
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -161,6 +179,9 @@ public class SignUpActivity extends AppCompatActivity {
             super.onPostExecute(v);
             try {
                 //.
+                if (progDialog.isShowing()){
+                    progDialog.dismiss();
+                }
                 //Log.e("reached", "postexecute");
                 Log.e("result of email", result.toString());
                 if (result.getString("status").equals("success")) {
@@ -210,7 +231,13 @@ public class SignUpActivity extends AppCompatActivity {
         editor.putString("id", email);
         editor.commit();
     }
-
+    public boolean checkNetwork(){
+        ConnectivityManager conMan = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        //assert conMan != null;
+        NetworkInfo activeInfo = conMan.getActiveNetworkInfo();
+        return activeInfo != null && activeInfo.isConnected();
+    }
     /**
      * extracts a string that contains the text of an EditView
      * @param view

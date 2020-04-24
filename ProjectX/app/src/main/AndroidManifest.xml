@@ -4,9 +4,9 @@
     package="com.example.projectx"
     android:targetSandboxVersion="1">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -14,9 +14,11 @@
         android:label="@string/app_name"
         android:launchMode="singleInstance"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:supportsRtl">
+        >
         <activity android:name=".Artist.ArtistInterface">
 
         </activity>

@@ -1,5 +1,6 @@
 package com.example.projectx.ui.home;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +27,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.example.projectx.AboutActivity;
+import com.example.projectx.MainActivity;
+import com.example.projectx.authentication.LoginActivity;
 import com.example.projectx.playlist.PlayListFull;
 import com.example.projectx.R;
 import com.example.projectx.authentication.AuthenticationPage;
@@ -42,7 +45,11 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     String[] playlistIDs = new String[4];
-
+    static ProgressDialog progDialog;
+    static ImageView recommended ;
+    static ImageView likes;
+    static ImageView mostPopular;
+    static ImageView newReleases;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -50,22 +57,21 @@ public class HomeFragment extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_home, container, false);
         final TextView textView = root.findViewById(R.id.text_home);
 
-        ImageView recommended = (ImageView) root.findViewById(R.id.recommended);
-        ImageView likes = (ImageView) root.findViewById(R.id.likedTracks);
-        ImageView mostPopular = (ImageView) root.findViewById(R.id.popular);
-        ImageView newReleases = (ImageView) root.findViewById(R.id.newReleases);
-        PlaylistAsyncTask getPlaylists = new PlaylistAsyncTask(getContext());
-        getPlaylists.execute();
-        recommended.setOnClickListener(new View.OnClickListener() {
+         recommended = (ImageView) root.findViewById(R.id.recommended);
+         likes = (ImageView) root.findViewById(R.id.likedTracks);
+         mostPopular = (ImageView) root.findViewById(R.id.popular);
+         newReleases = (ImageView) root.findViewById(R.id.newReleases);
+         progDialog = new ProgressDialog(getActivity());
+         progDialog.show();
+         PlaylistAsyncTask getPlaylists = new PlaylistAsyncTask(getContext());
+         getPlaylists.execute();
+         recommended.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                startActivity(new Intent(getContext(), PlayListFull.class));
+                recommended.setClickable(false);
                 Intent i = new Intent(getContext(), PlayListFull.class);
                 Bundle extras = new Bundle();
-                if (playlistIDs[0] == null) {
-                    Toast.makeText(getContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 extras.putString("PlaylistIDs", playlistIDs[0]);
                 i.putExtras(extras);
                 startActivity(i);
@@ -76,12 +82,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                startActivity(new Intent(getContext(), PlayListFull.class));
+                likes.setClickable(false);
                 Intent i = new Intent(getContext(), PlayListFull.class);
                 Bundle extras = new Bundle();
-                if (playlistIDs[0] == null) {
-                    Toast.makeText(getContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 extras.putString("PlaylistIDs", playlistIDs[0]);
                 i.putExtras(extras);
                 startActivity(i);
@@ -92,12 +95,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                startActivity(new Intent(getContext(), PlayListFull.class));
+                mostPopular.setClickable(false);
                 Intent i = new Intent(getContext(), PlayListFull.class);
                 Bundle extras = new Bundle();
-                if (playlistIDs[2] == null) {
-                    Toast.makeText(getContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 extras.putString("PlaylistIDs", playlistIDs[2]);
                 i.putExtras(extras);
                 startActivity(i);
@@ -108,12 +108,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                startActivity(new Intent(getContext(), PlayListFull.class));
+                newReleases.setClickable(false);
                 Intent i = new Intent(getContext(), PlayListFull.class);
                 Bundle extras = new Bundle();
-                if (playlistIDs[3] == null) {
-                    Toast.makeText(getContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 extras.putString("PlaylistIDs", playlistIDs[3]);
                 i.putExtras(extras);
                 startActivity(i);
@@ -178,9 +175,17 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(String[] result) {
             super.onPostExecute(result);
-
+            if (progDialog.isShowing()){progDialog.dismiss();}
         }
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        likes.setClickable(true);
+        recommended.setClickable(true);
+        mostPopular.setClickable(true);
+        newReleases.setClickable(true);
     }
 
 }
