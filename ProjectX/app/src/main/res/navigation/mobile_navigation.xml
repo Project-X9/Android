@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.projectx.ui.dashboard.DashboardFragment"
+        android:name="com.example.projectx.ui.Search.SearchFragment"
         android:label="@string/title_dashboard"
         android:textColor="#FFFFFF"
         tools:layout="@layout/fragment_dashboard" />

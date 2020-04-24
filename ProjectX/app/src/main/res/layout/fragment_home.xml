@@ -22,6 +22,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/logOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/com_facebook_loginview_log_out_action"
+        app:layout_constraintBottom_toBottomOf="@+id/nav_view"
+        app:layout_constraintHorizontal_bias="0.801"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.04" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"

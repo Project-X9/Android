@@ -53,7 +53,7 @@ public class MainActivity extends FragmentActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
         Button logOut = (Button) findViewById(R.id.logOut);
-        logOut.setOnClickListener(new View.OnClickListener() {
+      /*  logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
@@ -64,7 +64,7 @@ public class MainActivity extends FragmentActivity {
                 startActivity(new Intent(getBaseContext(), AuthenticationPage.class));
                 finish();
             }
-        });
+        }); */
 
         UserAsyncTask user = new UserAsyncTask(this);
         user.execute();

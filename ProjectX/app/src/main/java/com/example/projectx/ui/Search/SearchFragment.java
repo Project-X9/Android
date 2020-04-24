@@ -1,7 +1,6 @@
-package com.example.projectx.ui.dashboard;
+package com.example.projectx.ui.Search;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +17,14 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.projectx.ArtistFragment.ArtistFragment;
 import com.example.projectx.R;
 
-public class DashboardFragment extends Fragment {
+public class SearchFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private SearchViewModel searchViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(DashboardViewModel.class);
+        searchViewModel =
+                ViewModelProviders.of(this).get(SearchViewModel.class);
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
         Button openArtist = (Button) root.findViewById(R.id.openArtist);
         openArtist.setOnClickListener(new View.OnClickListener() {
@@ -37,12 +36,12 @@ public class DashboardFragment extends Fragment {
             }
         });
         final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        /*searchViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
-        });
+        }); */
         return root;
     }
 }
