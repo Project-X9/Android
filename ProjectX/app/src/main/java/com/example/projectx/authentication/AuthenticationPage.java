@@ -1,7 +1,5 @@
 package com.example.projectx.authentication;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectx.R;
 import com.facebook.CallbackManager;
@@ -28,13 +28,15 @@ public class AuthenticationPage extends AppCompatActivity {
     final String CREDENTIALS_FILE = "loginCreds";
     CallbackManager callbackManager;
     public static Activity authenticationPage;
+
+    boolean testing = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        authenticationPage= this;
+        authenticationPage = this;
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_authentication_page);
-
         final Button signUpBt = (Button) findViewById(R.id.signUp_bt);
 
         final Switch mockSwitch = (Switch) findViewById(R.id.mock);
@@ -52,7 +54,7 @@ public class AuthenticationPage extends AppCompatActivity {
 
         });
         final Button signInBt = (Button) findViewById(R.id.signIn_bt);
-        signInBt.setOnClickListener(new View.OnClickListener(){
+        signInBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //starts the Sign in page if the user presses on the sign in button
@@ -100,9 +102,8 @@ public class AuthenticationPage extends AppCompatActivity {
 
     /**
      * creates a toast message and displays it with duration Toast.LENGTH_SHORT
+     *
      * @param message, string you want to show the user in a toast;
-     *
-     *
      */
     public void makeToast(String message) {
         Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
@@ -111,8 +112,9 @@ public class AuthenticationPage extends AppCompatActivity {
     /**
      * Stores User credentials by opening a file and storing user email or Facebook ID, so user does
      * not login every time
-     * @param credentialsFile  the name of the file to store user credentials in
-     * @param email  the user's email or Facebook ID
+     *
+     * @param credentialsFile the name of the file to store user credentials in
+     * @param email           the user's email or Facebook ID
      */
     public void storeCredentials(String credentialsFile, String email) {
         loginCredentials = getSharedPreferences(credentialsFile, MODE_PRIVATE);
@@ -120,6 +122,7 @@ public class AuthenticationPage extends AppCompatActivity {
         editor.putString("email", email);
         editor.commit();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -128,17 +131,17 @@ public class AuthenticationPage extends AppCompatActivity {
         signUpBt.setClickable(true);
         signInBt.setClickable(true);
     }
-    public void saveMockStatus(Switch mockSwitch){
-        if (mockSwitch.isChecked()){
+
+    public void saveMockStatus(Switch mockSwitch) {
+        if (mockSwitch.isChecked()) {
             service = getSharedPreferences(SERVICE_FILE, MODE_PRIVATE);
             SharedPreferences.Editor editor = service.edit();
-            editor.putString("Mocked","true");
+            editor.putString("Mocked", "true");
             editor.commit();
-        }
-        else{
+        } else {
             service = getSharedPreferences(SERVICE_FILE, MODE_PRIVATE);
             SharedPreferences.Editor editor = service.edit();
-            editor.putString("Mocked","false");
+            editor.putString("Mocked", "false");
             editor.commit();
         }
     }
