@@ -9,6 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.util.ArrayList;
 
 public class ThreeDataItemAdapter extends RecyclerView.Adapter<ThreeDataItemAdapter.ThreeDataItemViewHolder> {
@@ -41,9 +44,16 @@ public class ThreeDataItemAdapter extends RecyclerView.Adapter<ThreeDataItemAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ThreeDataItemViewHolder holder, int position) {
-        ThreeDataItem currentItem=ThreeDataItemList.get(position);
-        holder.mImageView.setImageResource(currentItem.getImageResource());
+    public void onBindViewHolder(@NonNull final ThreeDataItemViewHolder holder, int position) {
+        final ThreeDataItem currentItem = ThreeDataItemList.get(position);
+        if (currentItem.getImageResource() != 0)
+            holder.mImageView.setImageResource(currentItem.getImageResource());
+        else if (currentItem.getImageSource() != null) {
+            Glide.with(holder.mImageView.getContext())
+                    .load(currentItem.getImageSource())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.mImageView);
+        }
         holder.mTextView1.setText(currentItem.getText1());
         holder.mTextView2.setText(currentItem.getText2());
     }

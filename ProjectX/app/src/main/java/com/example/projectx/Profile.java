@@ -1,27 +1,41 @@
 package com.example.projectx;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Guideline;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.ArrayList;
 
 public class Profile extends AppCompatActivity {
 
+    private final String MOCK_URL = "http://www.mocky.io/v2/5ec9d1943000007900a6ce88";
     private Button editProfile;
-    private TextView playlistCount, followersCount, followingCount, activityStatus;
-    private RecyclerView playlistsRecyclerView;
+    TextView topUsername, middleUsername, playlistCount, followersCount, followingCount, activityStatus;
+    RecyclerView playlistsRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private LinearLayout playlistLayout, followersLayout, followingLayout;
-    private boolean testing = true;
+    private LinearLayout headerLayout, playlistLayout, followersLayout, followingLayout;
+    private ConstraintLayout backgroundGradient;
+    private AppBarLayout appBarLayout;
+    private Guideline guideline;
+    private ImageButton backButton;
+    ArrayList<ThreeDataItem> onlinePlaylistsList;
+
+    private boolean testing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +44,13 @@ public class Profile extends AppCompatActivity {
 
         findObjects();
         setListeners();
-        updateStats();
     }
 
     private void findObjects() {
+        backButton = (ImageButton) findViewById(R.id.collapse_ib);
         editProfile = (Button) findViewById(R.id.edit_button_bt);
+        topUsername = (TextView) findViewById(R.id.top_username_tv);
+        middleUsername = (TextView) findViewById(R.id.middle_username_tv);
         playlistCount = (TextView) findViewById(R.id.playlists_count_tv);
         followersCount = (TextView) findViewById(R.id.followers_count_tv);
         followingCount = (TextView) findViewById(R.id.following_count_tv);
@@ -43,11 +59,26 @@ public class Profile extends AppCompatActivity {
         followersLayout = (LinearLayout) findViewById(R.id.followers_layout_ll);
         followingLayout = (LinearLayout) findViewById(R.id.following_layout_ll);
         playlistsRecyclerView = (RecyclerView) findViewById(R.id.playlists_list_rv);
-        playlistsRecyclerView.setHasFixedSize(true);
+        appBarLayout = (AppBarLayout) findViewById(R.id.profile_appbarlayout);
+        headerLayout = (LinearLayout) findViewById(R.id.header_content_ll);
+        backgroundGradient = (ConstraintLayout) findViewById(R.id.background_gradient_cl);
+        guideline = (Guideline) findViewById(R.id.guideline3);
+
+//        playlistsRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
+        FetchProfileData fetchProfileData = new FetchProfileData(this);
+        fetchProfileData.setURL(MOCK_URL);
+        fetchProfileData.execute();
     }
 
     private void setListeners() {
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openEditActivity();
+            }
+        });
 
         playlistLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,23 +101,31 @@ public class Profile extends AppCompatActivity {
             }
         });
 
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                float x = headerLayout.getHeight();
+                topUsername.setAlpha((-verticalOffset / x));
+                int[] y = new int[2];
+                playlistCount.getLocationInWindow(y);
+                ViewGroup.LayoutParams params = backgroundGradient.getLayoutParams();
+                params.height = y[1];
+                backgroundGradient.setLayoutParams(params);
+
+                backgroundGradient.setY(verticalOffset);
+                Log.d("TAG", "onOffsetChanged: " + (-verticalOffset / x));
+
+            }
+        });
     }
 
-    private void updateStats() {
-        updateFollowers();
-        updateFollowing();
-        updatePlaylists();
+    private void openEditActivity() {
+        Intent intent = new Intent(getBaseContext(), EditProfile.class);
+        intent.putExtra("Name", middleUsername.getText());
+        startActivity(intent);
     }
 
-    private void updateFollowers() {
-        //TODO: call api to get number of followers
-    }
-
-    private void updateFollowing() {
-        //TODO: call api to get number of following
-    }
-
-    private void updatePlaylists() {
+    void updatePlaylists() {
         if (testing) {
             ArrayList<ThreeDataItem> playlistsList = new ArrayList<>();
             playlistsList.add(new ThreeDataItem(R.drawable.album_art_starboy, "Starboy", "The Weeknd"));
@@ -108,7 +147,9 @@ public class Profile extends AppCompatActivity {
             playlistsRecyclerView.setLayoutManager(mLayoutManager);
             playlistsRecyclerView.setAdapter(mAdapter);
         } else {
-            //TODO: call api to actual server and get playlists of current logged in user
+            mAdapter = new ThreeDataItemAdapter(onlinePlaylistsList);
+            playlistsRecyclerView.setLayoutManager(mLayoutManager);
+            playlistsRecyclerView.setAdapter(mAdapter);
         }
     }
 }

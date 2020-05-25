@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:background="@color/white_40"
+        android:key="NotificationsCheckbox"
+        android:summary="Show Notifications"
+        android:title="Notifications" />
+    <EditTextPreference
+        android:dialogTitle="Name"
+        android:dialogMessage="Enter the new name"
+        android:inputType="text"
+        android:key="EditNameTextPref"
+        android:summary="Click to change name"
+        android:title="Change Name" />
+    <EditTextPreference
+        android:dialogTitle="Password"
+        android:dialogMessage="Enter the new password"
+        android:inputType="textPassword"
+        android:key="EditPasswordTextPref"
+        android:summary="Click to change password"
+        android:title="Change Password" />
+    <EditTextPreference
+        android:dialogTitle="Email"
+        android:dialogMessage="Enter the new email"
+        android:inputType="textEmailAddress"
+        android:key="EditEmailTextPref"
+        android:summary="Click to change email"
+        android:title="Change Email" />
+</PreferenceScreen>
