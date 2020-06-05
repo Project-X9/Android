@@ -46,6 +46,9 @@ public class Profile extends AppCompatActivity {
         setListeners();
     }
 
+    /**
+     *find UI elements by id and start fetch profile data
+     */
     private void findObjects() {
         backButton = (ImageButton) findViewById(R.id.collapse_ib);
         editProfile = (Button) findViewById(R.id.edit_button_bt);
@@ -71,6 +74,9 @@ public class Profile extends AppCompatActivity {
         fetchProfileData.execute();
     }
 
+    /**
+     * set listeners for UI elements
+     */
     private void setListeners() {
 
         editProfile.setOnClickListener(new View.OnClickListener() {
@@ -119,12 +125,18 @@ public class Profile extends AppCompatActivity {
         });
     }
 
+    /**
+     * open edit activity
+     */
     private void openEditActivity() {
         Intent intent = new Intent(getBaseContext(), EditProfile.class);
         intent.putExtra("Name", middleUsername.getText());
         startActivity(intent);
     }
 
+    /**
+     * updates the playlist recyclerview from onlinePlaylistsList
+     */
     void updatePlaylists() {
         if (testing) {
             ArrayList<ThreeDataItem> playlistsList = new ArrayList<>();

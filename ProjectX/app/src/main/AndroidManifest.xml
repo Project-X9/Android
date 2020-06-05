@@ -49,6 +49,7 @@
             android:name=".EditProfile"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".Profile"
             android:configChanges="orientation"
