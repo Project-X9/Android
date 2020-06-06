@@ -1,5 +1,6 @@
 package com.example.projectx.Artist;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectx.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class ArtistTracksAdapter extends RecyclerView.Adapter<ArtistTracksAdapter.ArtistTracksViewHolder> {
 
     private ArrayList<ArtistTracksList> mTracksItems;
+    private Context context;
 
-    public ArtistTracksAdapter(ArrayList<ArtistTracksList> TracksItems) {
-        mTracksItems=TracksItems;
+    public ArtistTracksAdapter(ArrayList<ArtistTracksList> TracksItems,Context context) {
+        this.mTracksItems=TracksItems;
+        this.context=context;
     }
 
     public static class ArtistTracksViewHolder extends RecyclerView.ViewHolder {
@@ -47,9 +51,12 @@ public class ArtistTracksAdapter extends RecyclerView.Adapter<ArtistTracksAdapte
     @Override
     public void onBindViewHolder(@NonNull ArtistTracksViewHolder holder, int position) {
         ArtistTracksList currentItem = mTracksItems.get(position);
-        holder.mArtistImageResoure.setImageResource(currentItem.getmArtistImageResoure());
+//        holder.mArtistImageResoure.setImageResource(currentItem.getmArtistImageResoure());
         holder.mArtistName.setText(currentItem.getmArtistName());
         holder.mArtistSongName.setText(currentItem.getmArtistSongName());
+        Picasso.with(context)
+                .load(currentItem.getmArtistImageURL())
+                .into(holder.mArtistImageResoure);
     }
 
 

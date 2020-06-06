@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ public class PopMenu extends AppCompatActivity {
     ArrayList<Integer> mImageId ;
     PopMenuAdapter mPopMenuAdapter;
     ListView mListView;
+    public String playlistName;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +50,9 @@ public class PopMenu extends AppCompatActivity {
 
                 String mItemString = menuItems.get(position);
                 if (mItemString == "Rename playlist" ) {
-                    Intent intent = new Intent(PopMenu.this, NameRenamePlaylist.class);
-                    startActivity(intent);
-                    finish();
-
+                    NameRenamePlaylist customDialog = new NameRenamePlaylist();
+                    customDialog.show(getSupportFragmentManager(),"Dialog");
+                    PlayListFull.stringPlaylistName=playlistName;
 
                 }else{
                     Toast.makeText(PopMenu.this, "clicked on"+ menuItems.get(position), Toast.LENGTH_SHORT).show();
@@ -69,7 +70,7 @@ public class PopMenu extends AppCompatActivity {
 
     public ArrayList<String> getMenuItemList(){
         menuItems = new ArrayList<>();
-        menuItems.add("Add song");
+       // menuItems.add("Add song");
         menuItems.add("Rename playlist");
         menuItems.add("Delete playlist");
         menuItems.add("Share");
@@ -78,7 +79,7 @@ public class PopMenu extends AppCompatActivity {
 
     public ArrayList<Integer> getImageMenuList(){
         mImageId = new ArrayList<>();
-        mImageId.add(R.drawable.ic_add_circle_outline);
+       // mImageId.add(R.drawable.ic_add_circle_outline);
         mImageId.add(R.drawable.ic_edit);
         mImageId.add(R.drawable.ic_delete);
         mImageId.add(R.drawable.ic_share);

@@ -24,7 +24,9 @@
         <activity
             android:name=".playlist.PlayListFull"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".playlist.PopMenu"
             android:theme="@style/AppTheme.PopMenuTheme" />
@@ -40,6 +42,9 @@
 
         <activity android:name=".AboutActivity"></activity>
 
+        <activity android:name=".UserActivity.UserActivity">
+
+        </activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

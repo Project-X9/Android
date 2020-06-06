@@ -1,4 +1,4 @@
-package com.example.projectx.playlist;
+package com.example.projectx;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,8 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.projectx.R;
-import com.example.projectx.Song;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

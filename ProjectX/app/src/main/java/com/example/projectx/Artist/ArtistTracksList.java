@@ -2,8 +2,17 @@ package com.example.projectx.Artist;
 
 public class ArtistTracksList {
     private int mArtistImageResoure;
+    private String mArtistImageURL;
     private String mArtistName;
     private String mArtistSongName;
+
+
+
+    public ArtistTracksList(String mArtistImageURL, String mArtistName, String mArtistSongName) {
+        this.mArtistImageURL = mArtistImageURL;
+        this.mArtistName = mArtistName;
+        this.mArtistSongName = mArtistSongName;
+    }
 
     public ArtistTracksList(int mArtistImageResoure, String mArtistName, String mArtistSongName) {
         this.mArtistImageResoure = mArtistImageResoure;
@@ -25,5 +34,9 @@ public class ArtistTracksList {
 
     public void setmArtistSongName(String mArtistSongName) {
         this.mArtistSongName = mArtistSongName;
+    }
+
+    public String getmArtistImageURL() {
+        return mArtistImageURL;
     }
 }
