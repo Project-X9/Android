@@ -143,7 +143,6 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
 
         @Override

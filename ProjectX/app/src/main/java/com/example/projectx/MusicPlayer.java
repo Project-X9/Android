@@ -1,7 +1,9 @@
 package com.example.projectx;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -22,6 +24,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.ColorUtils;
 
 import java.io.IOException;
@@ -42,6 +46,13 @@ public class MusicPlayer extends AppCompatActivity {
     private ImageView albumArt;
     private boolean songLiked, songBlacklisted, songDownloaded;
 
+    private final String CHANNEL_ID = "channel1";
+    private final String actionPrevious = "actionprevious";
+    private final String actionNext = "actionnext";
+    private final String actionPlay = "actionplay";
+    private Notification notification;
+    private NotificationManager notificationManager;
+
     private int[] songs = {R.raw.starboy, R.raw.beautiful, R.raw.bent_el_geran, R.raw.side_to_side};
     public static String[] songIdsList;                      //this songlist is either passed to music player, or it is fetched from playlistid
     public static Song currentSong = new Song();
@@ -55,13 +66,12 @@ public class MusicPlayer extends AppCompatActivity {
     private boolean onlineTesting = false;
     private boolean autoNextSong = false;
     static boolean newSong = false;
-//    SharedPreferences
 
-    //I have the track id that is passed from the intent, I will get the details from a json request and update ui based on this
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_player);
+
         initializeSongsInfo();
         initializeActivityComponents();
         initializeMediaPlayer();
@@ -69,6 +79,34 @@ public class MusicPlayer extends AppCompatActivity {
         updateActivityComponents();
 
         setListeners();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        showNotification();
+    }
+
+    private void showNotification() {
+        if (!mediaPlayer.isPlaying()) return;
+        Intent intent = new Intent(this, MusicPlayer.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.id.albumImage_iv);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setSmallIcon(R.drawable.ic_music_note_black_24dp)
+                .setLargeIcon(icon)
+                .setContentTitle(currentSong.name)
+                .setContentText(Arrays.toString(currentSong.artistsNames).replaceAll("[\\[\\]]", ""))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setOngoing(true)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(1, builder.build());
     }
 
     private void initializeSongsInfo() {
@@ -79,6 +117,7 @@ public class MusicPlayer extends AppCompatActivity {
         } else {
             Intent intent = getIntent();
             Bundle b = intent.getExtras();
+            if (b == null) return;
             String temp = b.getString("songid");
             if (temp != currentSong.id) {
                 targetSongId = temp;
@@ -368,7 +407,6 @@ public class MusicPlayer extends AppCompatActivity {
         //make intent and open new activity of song page
         //gotoSongPage(V);
     }
-
 
 
     /**
