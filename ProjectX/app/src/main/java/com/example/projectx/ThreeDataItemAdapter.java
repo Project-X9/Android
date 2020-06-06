@@ -51,7 +51,7 @@ public class ThreeDataItemAdapter extends RecyclerView.Adapter<ThreeDataItemAdap
         else if (currentItem.getImageSource() != null) {
             Glide.with(holder.mImageView.getContext())
                     .load(currentItem.getImageSource())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.mImageView);
         }
         holder.mTextView1.setText(currentItem.getText1());

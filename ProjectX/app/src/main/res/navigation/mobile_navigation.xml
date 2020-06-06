@@ -21,10 +21,10 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.projectx.ui.notifications.NotificationsFragment"
+        android:name="com.example.projectx.ui.yourlibrary.YourLibraryFragment"
         android:label="@string/title_notifications"
         android:textColor="#FFFFFF"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_yourlibrary" />
     <fragment
         android:id = "@+id/artistfragment"
         android:name = "com.example.projectx.ArtistFragment.ArtistFragment"

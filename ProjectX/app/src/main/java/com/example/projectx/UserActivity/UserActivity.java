@@ -22,14 +22,14 @@ import java.util.ArrayList;
 
 public class UserActivity extends AppCompatActivity {
     private final String MOCK_URL = "http://www.mocky.io/v2/5edb7b303200009f7a5d2768";
-    private static Context context;
+    private  Context context;
     private Button follow;
-    static TextView topUsername, middleUsername, playlistCount, followersCount, followingCount, activityStatus;
-    private static RecyclerView playlistsRecyclerView;
-    private static RecyclerView.Adapter mAdapter;
-    private static RecyclerView.LayoutManager mLayoutManager;
-    static String imageURL;
-    static ImageView mUserImage;
+     TextView topUsername, middleUsername, playlistCount, followersCount, followingCount, activityStatus;
+    private  RecyclerView playlistsRecyclerView;
+    private  RecyclerView.Adapter mAdapter;
+    private  RecyclerView.LayoutManager mLayoutManager;
+     String imageURL;
+     ImageView mUserImage;
     private LinearLayout playlistLayout, followersLayout, followingLayout,headerLayout;
     private AppBarLayout appBarLayout;
     private ConstraintLayout backgroundGradient;
@@ -114,13 +114,13 @@ public class UserActivity extends AppCompatActivity {
         //TODO: call api to get number of following
     }
 
-    public static void setUserPicture(String imageURL){
+    public  void setUserPicture(String imageURL){
         Picasso.with(context)
                 .load(imageURL)
                 .into(mUserImage);
     }
 
-    public static void updatePlaylists() {
+    public  void updatePlaylists() {
         setUserPicture(imageURL);
          mAdapter = new UserPlaylistAdapter(onlineData,context);
         playlistsRecyclerView.setLayoutManager(mLayoutManager);

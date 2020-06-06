@@ -1,6 +1,8 @@
-package com.example.projectx.UserActivity;
+package com.example.projectx.ui.yourlibrary;
 
 import android.os.AsyncTask;
+
+import com.example.projectx.UserActivity.UserData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,16 +15,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
-public class FetchUserData extends AsyncTask {
-    private UserActivity user;
+public class FetchPlaylistFragmentData extends AsyncTask {
+    private PlaylistFragment playlistFragment;
     java.net.URL URL;
     private String data = "";
     private JSONObject dataObj;
 
-    FetchUserData(UserActivity user) {
-        this.user = user;
+    FetchPlaylistFragmentData(PlaylistFragment playlistFragment) {
+        this.playlistFragment = playlistFragment;
     }
 
     public void setURL(String url) {
@@ -67,35 +68,20 @@ public class FetchUserData extends AsyncTask {
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         if (dataObj == null) return;
-        try {
-            String name = dataObj.getString("Name");
-            String picture = dataObj.getString("Picture");
-            int count = dataObj.getJSONArray("Playlists").length();
-            user.topUsername.setText(name);
-            user.middleUsername.setText(name);
-            user.imageURL=picture;
-            user.followersCount.setText(Integer.toString(dataObj.getInt("Followers")));
-            user.followingCount.setText(Integer.toString(dataObj.getInt("Following")));
-            user.playlistCount.setText(Integer.toString(count));
-            fillRecyclerView();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        fillRecyclerView();
     }
 
     private void fillRecyclerView() {
         try {
-            JSONArray playlistsJson = dataObj.getJSONArray("Playlists");
-            user.onlineData = new ArrayList<UserData>();
+            JSONArray playlistsJson = dataObj.getJSONObject("data").getJSONArray("playlists");
             for (int i = 0; i < playlistsJson.length(); i++) {
                 JSONObject playlist = playlistsJson.getJSONObject(i);
-                user.onlineData.add(new UserData(playlist.getString("Picture"), playlist.getString("Name"),"","0"));
+                playlistFragment.onlineData.add(new UserData(playlist.getString("image"), playlist.getString("name"),playlist.getString("author"),playlist.getString("_id")));
             }
-            user.updatePlaylists();
+            playlistFragment.updatePlaylists();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
 
 }
