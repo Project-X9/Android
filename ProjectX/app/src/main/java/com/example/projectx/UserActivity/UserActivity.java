@@ -1,9 +1,11 @@
 package com.example.projectx.UserActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,17 +16,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectx.R;
 import com.google.android.material.appbar.AppBarLayout;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class UserActivity extends AppCompatActivity {
+    private final String MOCK_URL = "http://www.mocky.io/v2/5edb7b303200009f7a5d2768";
+    private static Context context;
     private Button follow;
-    private TextView playlistCount, followersCount, followingCount, activityStatus,topUsername;
-    private RecyclerView playlistsRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    static TextView topUsername, middleUsername, playlistCount, followersCount, followingCount, activityStatus;
+    private static RecyclerView playlistsRecyclerView;
+    private static RecyclerView.Adapter mAdapter;
+    private static RecyclerView.LayoutManager mLayoutManager;
+    static String imageURL;
+    static ImageView mUserImage;
     private LinearLayout playlistLayout, followersLayout, followingLayout,headerLayout;
     private AppBarLayout appBarLayout;
     private ConstraintLayout backgroundGradient;
-    private boolean testing = true;
+    static ArrayList<UserData> onlineData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +45,7 @@ public class UserActivity extends AppCompatActivity {
         followersCount = findViewById(R.id.followers_count_tv);
         followingCount =  findViewById(R.id.following_count_tv);
         activityStatus = findViewById(R.id.activity_status_tv);
+        middleUsername = findViewById(R.id.middle_username_tv);
         topUsername = findViewById(R.id.top_username_tv);
         playlistLayout =  findViewById(R.id.playlists_layout_ll);
         followersLayout =  findViewById(R.id.followers_layout_ll);
@@ -44,12 +54,15 @@ public class UserActivity extends AppCompatActivity {
         headerLayout =  findViewById(R.id.header_content_ll);
         playlistsRecyclerView =  findViewById(R.id.playlists_list_rv);
         backgroundGradient = findViewById(R.id.background_gradient_cl);
-       // playlistsRecyclerView.setHasFixedSize(true);
+        mUserImage = findViewById(R.id.profile_image_iv);
+        context=getApplicationContext();
         mLayoutManager = new LinearLayoutManager(this);
         setOnClickListeners();
         updateFollowers();
         updateFollowing();
-        updatePlaylists();
+        FetchUserData fetchUserData = new FetchUserData(this);
+        fetchUserData.setURL(MOCK_URL);
+        fetchUserData.execute();
     }
 
     private void setOnClickListeners() {
@@ -101,8 +114,16 @@ public class UserActivity extends AppCompatActivity {
         //TODO: call api to get number of following
     }
 
-    private void updatePlaylists() {
-        //TODO: call api to  get playlists of searched user
+    public static void setUserPicture(String imageURL){
+        Picasso.with(context)
+                .load(imageURL)
+                .into(mUserImage);
+    }
 
+    public static void updatePlaylists() {
+        setUserPicture(imageURL);
+         mAdapter = new UserPlaylistAdapter(onlineData,context);
+        playlistsRecyclerView.setLayoutManager(mLayoutManager);
+        playlistsRecyclerView.setAdapter(mAdapter);
     }
 }

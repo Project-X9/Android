@@ -17,10 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity android:name=".Artist.ArtistInterface">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".playlist.PlayListFull"
@@ -44,7 +41,6 @@
         <activity android:name=".AboutActivity"></activity>
 
         <activity android:name=".UserActivity.UserActivity">
-
 
         </activity>
 
@@ -77,7 +73,10 @@
             android:screenOrientation="portrait" />
 
         <activity android:name=".authentication.LandingPage">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".playlist.NameRenamePlaylist" />
         <meta-data
