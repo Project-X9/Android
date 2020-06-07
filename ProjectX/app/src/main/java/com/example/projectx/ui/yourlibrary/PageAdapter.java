@@ -5,6 +5,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.projectx.ui.yourlibrary.AlbumsFragment.AlbumsFragment;
+import com.example.projectx.ui.yourlibrary.ArtistFragment.ArtisttFragment;
+import com.example.projectx.ui.yourlibrary.PlaylistFragment.PlaylistFragment;
+
 public class PageAdapter extends FragmentPagerAdapter {
 
     private int numberOfTabs;

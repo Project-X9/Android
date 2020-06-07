@@ -1,8 +1,6 @@
-package com.example.projectx.ui.yourlibrary;
+package com.example.projectx.ui.yourlibrary.ArtistFragment;
 
 import android.os.AsyncTask;
-
-import com.example.projectx.UserActivity.UserData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,15 +13,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
-public class FetchPlaylistFragmentData extends AsyncTask {
-    private PlaylistFragment playlistFragment;
+public class FetchArtistFragmentData extends AsyncTask {
+    private ArtisttFragment artisttFragment;
     java.net.URL URL;
     private String data = "";
     private JSONObject dataObj;
 
-    FetchPlaylistFragmentData(PlaylistFragment playlistFragment) {
-        this.playlistFragment = playlistFragment;
+    FetchArtistFragmentData(ArtisttFragment artisttFragment) {
+        this.artisttFragment = artisttFragment;
     }
 
     public void setURL(String url) {
@@ -73,15 +72,15 @@ public class FetchPlaylistFragmentData extends AsyncTask {
 
     private void fillRecyclerView() {
         try {
-            JSONArray playlistsJson = dataObj.getJSONObject("data").getJSONArray("playlists");
-            for (int i = 0; i < playlistsJson.length(); i++) {
-                JSONObject playlist = playlistsJson.getJSONObject(i);
-                playlistFragment.onlineData.add(new UserData(playlist.getString("image"), playlist.getString("name"),playlist.getString("author"),playlist.getString("_id")));
+            JSONArray artistsJsonArray = dataObj.getJSONArray("Artists");
+            artisttFragment.onlineData = new ArrayList<>();
+            for (int i = 0; i < artistsJsonArray.length(); i++) {
+                JSONObject artist = artistsJsonArray.getJSONObject(i);
+                artisttFragment.onlineData.add(new ArtistData(artist.getString("Name"), artist.getString("Photo"),artist.getString("NoOfFollowers"),artist.getString("Albums"),artist.getString("Bio")));
             }
-            playlistFragment.updatePlaylists();
+            artisttFragment.updateArtist();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
 }

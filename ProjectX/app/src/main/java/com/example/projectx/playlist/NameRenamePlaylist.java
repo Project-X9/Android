@@ -26,20 +26,23 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import static android.content.ContentValues.TAG;
 
-public class NameRenamePlaylist extends AppCompatDialogFragment {
+public class NameRenamePlaylist extends AppCompatActivity {
     private TextInputEditText mInputName;
     private TextView mActionOk,mActionCancel;
+    private Context context;
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.activity_name_rename_playlist,container,false);
-        mInputName=view.findViewById(R.id.playlistName_tiet);
-        mActionOk= view.findViewById(R.id.createRename_tv);
-        mActionCancel= view.findViewById(R.id.cancel_tv);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_name_rename_playlist);
+        mInputName= findViewById(R.id.playlistName_tiet);
+        mActionOk= findViewById(R.id.createRename_tv);
+        mActionCancel= findViewById(R.id.cancel_tv);
+        context=getApplicationContext();
 
         mActionCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDialog().dismiss();
+                finish();
             }
         });
 
@@ -48,12 +51,15 @@ public class NameRenamePlaylist extends AppCompatDialogFragment {
             public void onClick(View v) {
                 String input =mInputName.getText().toString();
                 if (!input.equals("")){
-                    ((PopMenu)getActivity()).playlistName=input;
+                    Intent i = new Intent(context, PlaylistEmpty.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("key", input);
+                    i.putExtras(extras);
+                    startActivity(i);
                 }
-                getDialog().dismiss();
+                finish();
             }
         });
 
-        return view;
     }
 }

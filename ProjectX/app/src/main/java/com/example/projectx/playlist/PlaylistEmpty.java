@@ -5,24 +5,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.projectx.R;
-import com.example.projectx.playlist.PlayListFull;
-
-import me.grantland.widget.AutofitTextView;
 
 public class PlaylistEmpty extends AppCompatActivity {
 
-    private  AutofitTextView mInputDisplay;
+      TextView mInputDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist_empty);
-         mInputDisplay = findViewById(R.id.user_aftv);
+         mInputDisplay = findViewById(R.id.user_tv);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-           changeUserName(extras);
+           changePlaylistName(extras);
         }
 
         //this is for the custom toolbar
@@ -35,7 +33,7 @@ public class PlaylistEmpty extends AppCompatActivity {
 
     }
 
-    private void changeUserName(Bundle extras) {
+    private void changePlaylistName(Bundle extras) {
         String value = extras.getString("key");
         mInputDisplay.setText(value);
     }
@@ -55,8 +53,8 @@ public class PlaylistEmpty extends AppCompatActivity {
 //            }
 //        listView.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, Collections.singletonList(str1)));
 //
-        Intent intent = new Intent(this, PlayListFull.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, PlayListFull.class);
+//        startActivity(intent);
     }
 
     /*this for the menu that show when you click on the three dot image*/
@@ -68,7 +66,11 @@ public class PlaylistEmpty extends AppCompatActivity {
         onPause();
 
     }
-
+    public void returnBack(View v) {
+        finish();
+//        Intent intent = new Intent(this, PlaylistEmpty.class);
+//        startActivity(intent);
+    }
 
 
 }

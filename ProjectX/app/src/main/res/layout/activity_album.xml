@@ -8,7 +8,7 @@
     android:background="#FF101010"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".playlist.PlayListFull">
+    tools:context=".ui.yourlibrary.AlbumsFragment.AlbumActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/background_gradient_cl"
@@ -75,12 +75,12 @@
             app:srcCompat="@drawable/like_song" />
 
         <TextView
-            android:id="@+id/top_playlistName_tv"
+            android:id="@+id/top_albumName_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0"
             android:fontFamily="@font/encore_font_circular_black"
-            android:text="Playlist Name"
+            android:text="Album Name"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -100,11 +100,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_bar_cl"
         app:layout_constraintVertical_bias="0.0"
-        tools:context=".playlist.PlayListFull">
+        tools:context=".ui.yourlibrary.AlbumsFragment.AlbumActivity">
 
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/playListFull_activity_appbarlayout"
+            android:id="@+id/album_activity_appbarlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#00FFFFFF"
@@ -133,7 +133,7 @@
 
 
                     <ImageView
-                        android:id="@+id/playlist_image"
+                        android:id="@+id/album_image"
                         android:layout_width="160dp"
                         android:layout_height="160dp"
                         android:layout_gravity="center"
@@ -142,7 +142,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/playlistName_tv"
+                        android:id="@+id/albumName_tv"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
@@ -157,17 +157,17 @@
                         android:textSize="24sp"
                         app:autoSizeTextType="uniform" />
 
-                    <Button
-                        android:id="@+id/follow_button_bt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="4dp"
-                        android:background="@drawable/follow_button"
-                        android:filterTouchesWhenObscured="false"
-                        android:text="Follow"
-                        android:textColor="#FFFFFF"
-                        android:textSize="10sp" />
+<!--                    <Button-->
+<!--                        android:id="@+id/follow_button_bt"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="20dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_marginTop="4dp"-->
+<!--                        android:background="@drawable/follow_button"-->
+<!--                        android:filterTouchesWhenObscured="false"-->
+<!--                        android:text="Follow"-->
+<!--                        android:textColor="#FFFFFF"-->
+<!--                        android:textSize="10sp" />-->
 
                 </LinearLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>

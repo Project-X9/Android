@@ -26,6 +26,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
             android:background="#00FFFFFF"
+            android:onClick="returnBack"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/abc_vector_test" />
@@ -62,8 +63,8 @@
                 android:layout_marginTop="48.0dip"
                 android:background="@drawable/default_playlist_pictuer" />
 
-            <me.grantland.widget.AutofitTextView
-                android:id="@+id/user_aftv"
+            <TextView
+                android:id="@+id/user_tv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24.0dip"

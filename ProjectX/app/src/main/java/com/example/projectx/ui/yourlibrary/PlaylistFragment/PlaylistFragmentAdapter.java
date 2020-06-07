@@ -1,4 +1,4 @@
-package com.example.projectx.ui.yourlibrary;
+package com.example.projectx.ui.yourlibrary.PlaylistFragment;
 
 import android.content.Context;
 import android.view.LayoutInflater;

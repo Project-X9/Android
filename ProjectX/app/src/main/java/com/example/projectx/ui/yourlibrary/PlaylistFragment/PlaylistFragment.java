@@ -1,4 +1,4 @@
-package com.example.projectx.ui.yourlibrary;
+package com.example.projectx.ui.yourlibrary.PlaylistFragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,10 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+
 import com.example.projectx.R;
 import com.example.projectx.UserActivity.UserData;
+import com.example.projectx.playlist.NameRenamePlaylist;
 import com.example.projectx.playlist.PlayListFull;
-import com.example.projectx.playlist.PlaylistEmpty;
+
 
 import java.util.ArrayList;
 
@@ -49,10 +51,6 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
         FetchPlaylistFragmentData fetchPlaylistFragmentData = new FetchPlaylistFragmentData(this);
         fetchPlaylistFragmentData.setURL(SERVER_URL);
         fetchPlaylistFragmentData.execute();
-       // updatePlaylists();
-
-
-
         return view;
     }
 
@@ -74,10 +72,7 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
             ClickedPlaylistId = onlineData.get(position).getId();
         }
         if(position==0){
-            Intent i = new Intent(getContext(), PlaylistEmpty.class);
-            Bundle extras = new Bundle();
-            extras.putString("PlaylistIDs", ClickedPlaylistId);
-            i.putExtras(extras);
+            Intent i = new Intent(getContext(), NameRenamePlaylist.class);
             startActivity(i);
         }else {
             Intent i = new Intent(getContext(), PlayListFull.class);

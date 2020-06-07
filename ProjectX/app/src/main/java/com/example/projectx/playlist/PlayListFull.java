@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -21,6 +22,7 @@ import com.example.projectx.MusicPlayer;
 import com.example.projectx.R;
 import com.example.projectx.Song;
 import com.example.projectx.SongAdapter;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,10 +42,11 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private TextView playlistName;
+    private TextView playlistName,topPlaylistName;
     static ArrayList<Song> songArrayList=new ArrayList<>();
     static String[] SongIDStringArray;
     static String ClickedSongId;
+    static ImageView mPlaylistImage;
 
 
     @Override
@@ -64,6 +67,8 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         mRecyclerView = findViewById(R.id.songlists_list_rv);
         likePlaylistButton = findViewById(R.id.likeButton2_ib);
         shareButton = findViewById(R.id.sharePlaylist_ibt);
+        topPlaylistName=findViewById(R.id.top_playlistName_tv);
+        mPlaylistImage = findViewById(R.id.playlist_image);
 
 
     }
@@ -106,15 +111,14 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         }
     }
 
-    private void changePlaylistName(String stringPlaylistName) {
-        playlistName.setText(stringPlaylistName);
-    }
+//    private void changePlaylistName(String stringPlaylistName) {
+//        playlistName.setText(stringPlaylistName);
+//        topPlaylistName.setText(stringPlaylistName);
+//    }
 
 
     public void returnBack(View v) {
         finish();
-//        Intent intent = new Intent(this, PlaylistEmpty.class);
-//        startActivity(intent);
     }
 
     @Override
@@ -130,15 +134,15 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         startActivity(i);
     }
 
-    private class FetchPlaylist extends AsyncTask<String, String, String> {
+    private class FetchPlaylist extends AsyncTask<String, String, String []> {
 
-        String mNamePlaylist;
+        String mNamePlaylist,mPlaylistImageURL;
 
 
         @Override
-        protected String doInBackground(String... strings) {
-            String s = Playlist(mNamePlaylist);
-            return s;
+        protected String [] doInBackground(String... strings) {
+            String [] string = Playlist(mNamePlaylist,mPlaylistImageURL);
+            return string;
         }
 
         @Override
@@ -148,9 +152,14 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(String [] s) {
             super.onPostExecute(s);
-            playlistName.setText(s);
+            playlistName.setText(s[0]);
+            topPlaylistName.setText(s[0]);
+            mPlaylistImageURL=s[1];
+            Picasso.with(getApplicationContext())
+                    .load(mPlaylistImageURL)
+                    .into(mPlaylistImage);
             SongIDStringArray=new String[songArrayList.size()];
             for (int i = 0; i < songArrayList.size(); i++) {
                 SongIDStringArray[i] = songArrayList.get(i).id;
@@ -170,7 +179,7 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    public String Playlist(String mNamePlaylist ) {
+    public String [] Playlist(String mNamePlaylist,String mPlaylistImageURL ) {
         likePlaylistButton.setImageResource(R.drawable.like_song_loading); //disable the like button until data is fetched.
         shareButton.setImageResource(R.drawable.share_song_pressed); //disable the share button until data is fetched.
         songArrayList = new ArrayList<>();
@@ -187,6 +196,7 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
             JSONObject data = response.getJSONObject("data");
             JSONObject dPlaylist = data.getJSONObject("playlist");
             mNamePlaylist = dPlaylist.getString("name");
+            mPlaylistImageURL = dPlaylist.getString("image");
             JSONArray Tracks = dPlaylist.getJSONArray("tracks");
             for (int i = 0; i < Tracks.length(); i++) {
                 JSONObject json = Tracks.getJSONObject(i);
@@ -254,7 +264,9 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
             e.printStackTrace();
         }
 
-        return mNamePlaylist;
+        String [] result={mNamePlaylist,mPlaylistImageURL};
+        return result ;
+
     }
 
 }

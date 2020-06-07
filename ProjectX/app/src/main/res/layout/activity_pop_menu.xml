@@ -24,7 +24,7 @@
             android:background="@drawable/default_playlist_pictuer" />
 
         <me.grantland.widget.AutofitTextView
-            android:id="@+id/user_aftv"
+            android:id="@+id/user_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24.0dip"

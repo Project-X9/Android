@@ -1,18 +1,14 @@
 package com.example.projectx.playlist;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.IntentCompat;
 
 import com.example.projectx.R;
 
@@ -30,7 +26,7 @@ public class PopMenu extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pop_menu);
-        AutofitTextView mInputDisplay = findViewById(R.id.user_aftv);
+        AutofitTextView mInputDisplay = findViewById(R.id.user_tv);
         mListView = (ListView) findViewById(R.id.menu_lv);
         menuItems = new ArrayList<>();
         menuItems=getMenuItemList();
@@ -50,9 +46,9 @@ public class PopMenu extends AppCompatActivity {
 
                 String mItemString = menuItems.get(position);
                 if (mItemString == "Rename playlist" ) {
-                    NameRenamePlaylist customDialog = new NameRenamePlaylist();
-                    customDialog.show(getSupportFragmentManager(),"Dialog");
-                    PlayListFull.stringPlaylistName=playlistName;
+//                    NameRenamePlaylist customDialog = new NameRenamePlaylist();
+//                    customDialog.show(getSupportFragmentManager(),"Dialog");
+//                    PlayListFull.stringPlaylistName=playlistName;
 
                 }else{
                     Toast.makeText(PopMenu.this, "clicked on"+ menuItems.get(position), Toast.LENGTH_SHORT).show();
