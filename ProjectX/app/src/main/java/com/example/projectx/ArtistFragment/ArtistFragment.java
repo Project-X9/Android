@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +59,7 @@ public class ArtistFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         mViewModel =
                 ViewModelProviders.of(this).get(ArtistViewModel.class);
-         root = inflater.inflate(R.layout.artist_fragment, container, false);
+         root = inflater.inflate(R.layout.artist_page_layout, container, false);
         ArtistAsyncTask artistAgent = new ArtistAsyncTask();
         artistAgent.execute();
 
@@ -114,9 +115,9 @@ public class ArtistFragment extends Fragment {
                 try {
                     JSONObject data = result.getJSONObject("data").getJSONObject("artist");
                     final URL url = new URL(data.getString("image"));
-                    TextView artistName = (TextView) root.findViewById(R.id.artistName);
+                    TextView artistName = (TextView) root.findViewById(R.id.artist_page_name_tv);
                     artistName.setText(data.getString("name"));
-                    TextView artistBio = (TextView) root.findViewById(R.id.artistBio);
+                    TextView artistBio = (TextView) root.findViewById(R.id.artist_page_bio);
                     artistBio.setText(data.getString("Bio"));
                     new Thread() {
 
@@ -128,9 +129,9 @@ public class ArtistFragment extends Fragment {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        LinearLayout layout = (LinearLayout) root.findViewById(R.id.hostImage);
+                                        ImageView layout = (ImageView) root.findViewById(R.id.artist_page_image);
                                         Drawable dr = new BitmapDrawable(finalImage);
-                                        layout.setBackground(dr);
+                                        layout.setImageDrawable(dr);
                                     }
                                 });
                             } catch (IOException e) {
