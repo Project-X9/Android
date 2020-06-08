@@ -18,6 +18,8 @@ import com.example.projectx.ArtistFragment.ArtistFragment;
 import com.example.projectx.authentication.AuthenticationPage;
 import com.example.projectx.authentication.SignInManager;
 import com.example.projectx.playlist.PlayListFull;
+import com.example.projectx.ui.yourlibrary.AlbumsFragment.AlbumsFragment;
+import com.example.projectx.ui.yourlibrary.ArtistFragment.ArtisttFragment;
 import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -39,6 +41,8 @@ public class MainActivity extends FragmentActivity {
     SharedPreferences loginCredentials;
     final String CREDENTIALS_FILE = "loginCreds";
     JSONObject myUser;
+    AlbumsFragment albumsFragment=new AlbumsFragment();
+    ArtisttFragment artisttFragment = new ArtisttFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +101,8 @@ public class MainActivity extends FragmentActivity {
                     editor.putString("UserObject", user.toString());
                     editor.commit();
                     myUser = user;
+                    albumsFragment.setUserAlbum(myUser);
+                    artisttFragment.setUserArtist(myUser);
                     return user;
 
                 }catch(ExecutionException e){

@@ -12,6 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.projectx.R;
+import com.example.projectx.ui.yourlibrary.AlbumsFragment.AlbumsData;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -57,5 +62,18 @@ public class ArtisttFragment extends Fragment implements ArtistFragmentAdapter.o
     @Override
     public void onArtistClick(int position) {
 
+    }
+
+    public void setUserArtist(JSONObject myUser) {
+        try {
+            JSONArray artistsJsonArray = myUser.getJSONObject("data").getJSONObject("user").getJSONArray("artists");
+            onlineData = new ArrayList<>();
+            for (int i = 0; i < artistsJsonArray.length(); i++) {
+                JSONObject artist = artistsJsonArray.getJSONObject(i);
+                onlineData.add(new ArtistData(artist.getString("name"), artist.getString("image"),Integer.toString(artist.getJSONArray("followers").length()),Integer.toString(artist.getJSONArray("albums").length()),artist.getString("Bio")));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
