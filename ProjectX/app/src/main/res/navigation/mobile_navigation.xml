@@ -26,9 +26,9 @@
         android:textColor="#FFFFFF"
         tools:layout="@layout/fragment_yourlibrary" />
     <fragment
-        android:id = "@+id/artistfragment"
-        android:name = "com.example.projectx.ArtistFragment.ArtistFragment"
-        android:label = "Artist"
+        android:id = "@+id/premium_fragment"
+        android:name = "com.example.projectx.PremiumLayout"
+        android:label = "Premium"
         android:textColor="#FFFFFF"
-        tools:layout = "@layout/artist_fragment"/>
+        tools:layout = "@layout/fragment_premium_layout"/>
 </navigation>

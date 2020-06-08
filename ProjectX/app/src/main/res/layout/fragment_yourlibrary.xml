@@ -15,31 +15,32 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/playlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/playlist"
             android:text="Playlist" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/artist"
             android:text="Artist" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/albums"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/albums"
             android:text="Albums" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
-        android:layout_width="410dp"
-        android:layout_height="609dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
