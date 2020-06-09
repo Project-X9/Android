@@ -18,7 +18,12 @@ import com.example.projectx.R;
 import com.example.projectx.UserActivity.UserData;
 import com.example.projectx.playlist.NameRenamePlaylist;
 import com.example.projectx.playlist.PlayListFull;
+import com.example.projectx.ui.yourlibrary.ArtistFragment.ArtistData;
 
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -31,8 +36,10 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
     private static RecyclerView.Adapter mAdapter;
     private static RecyclerView.LayoutManager mLayoutManager;
     static ArrayList<UserData> onlineData;
+    static ArrayList<String> UserId;
     private static Context context;
     static String ClickedPlaylistId;
+
 
 
     public PlaylistFragment() {
@@ -73,6 +80,9 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
         }
         if(position==0){
             Intent i = new Intent(getContext(), NameRenamePlaylist.class);
+            Bundle extras = new Bundle();
+            extras.putString("UserId", UserId.get(0));
+            i.putExtras(extras);
             startActivity(i);
         }else {
             Intent i = new Intent(getContext(), PlayListFull.class);
@@ -82,5 +92,15 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
             startActivity(i);
         }
 
+    }
+
+
+    public void setUserId(JSONObject userId) {
+        try {
+            UserId=new ArrayList<>();
+            UserId.add(userId.getJSONObject("data").getJSONObject("user").getString("_id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

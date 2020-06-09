@@ -20,6 +20,7 @@ import com.example.projectx.authentication.SignInManager;
 import com.example.projectx.playlist.PlayListFull;
 import com.example.projectx.ui.yourlibrary.AlbumsFragment.AlbumsFragment;
 import com.example.projectx.ui.yourlibrary.ArtistFragment.ArtisttFragment;
+import com.example.projectx.ui.yourlibrary.PlaylistFragment.PlaylistFragment;
 import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -43,6 +44,7 @@ public class MainActivity extends FragmentActivity {
     JSONObject myUser;
     AlbumsFragment albumsFragment=new AlbumsFragment();
     ArtisttFragment artisttFragment = new ArtisttFragment();
+    PlaylistFragment playlistFragment = new PlaylistFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +105,7 @@ public class MainActivity extends FragmentActivity {
                     myUser = user;
                     albumsFragment.setUserAlbum(myUser);
                     artisttFragment.setUserArtist(myUser);
+                    playlistFragment.setUserId(myUser);
                     return user;
 
                 }catch(ExecutionException e){

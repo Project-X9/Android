@@ -38,6 +38,7 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
     private boolean playlistLiked;
     private ImageButton likePlaylistButton,shareButton;
     String PLAYLIST_FETCH_SERVER = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:3000/api/v1/playlist/";
+    //http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com
     String playlistId = "5e8741dadfdb0a35d429a128";
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
