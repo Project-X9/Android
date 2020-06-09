@@ -157,18 +157,6 @@
                         android:textSize="24sp"
                         app:autoSizeTextType="uniform" />
 
-                    <Button
-                        android:id="@+id/follow_button_bt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="4dp"
-                        android:background="@drawable/follow_button"
-                        android:filterTouchesWhenObscured="false"
-                        android:text="Follow"
-                        android:textColor="#FFFFFF"
-                        android:textSize="10sp" />
-
                 </LinearLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 

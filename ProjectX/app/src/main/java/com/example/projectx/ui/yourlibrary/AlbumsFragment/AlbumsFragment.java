@@ -15,6 +15,10 @@ import android.widget.Toast;
 
 import com.example.projectx.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -62,13 +66,26 @@ public class AlbumsFragment extends Fragment implements AlbumsFragmentAdapter.on
             Toast.makeText(getContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
             return;
         }else{
-            ClickedAlbumId = onlineData.get(position).getName();
+            ClickedAlbumId = onlineData.get(position).getId();
         }
         Intent i = new Intent(getContext(), AlbumActivity.class);
         Bundle extras = new Bundle();
-        extras.putString("AlbumName", ClickedAlbumId);
+        extras.putString("AlbumID", ClickedAlbumId);
         i.putExtras(extras);
         startActivity(i);
 
+    }
+
+    public void setUserAlbum(JSONObject myUser) {
+        try {
+            JSONArray albumsJsonArray = myUser.getJSONObject("data").getJSONObject("user").getJSONArray("albums");
+            onlineData = new ArrayList<>();
+            for (int i = 0; i < albumsJsonArray.length(); i++) {
+                JSONObject album = albumsJsonArray.getJSONObject(i);
+                onlineData.add(new AlbumsData(album.getString("name"), album.getString("image"),album.getString("_id")));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

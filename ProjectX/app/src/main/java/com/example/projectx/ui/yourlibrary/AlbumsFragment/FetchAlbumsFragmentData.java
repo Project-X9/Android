@@ -73,10 +73,10 @@ public class FetchAlbumsFragmentData extends AsyncTask {
     private void fillRecyclerView() {
         try {
             JSONArray albumsJsonArray = dataObj.getJSONArray("Albums");
-            albumsFragment.onlineData = new ArrayList<>();
+//            albumsFragment.onlineData = new ArrayList<>();
             for (int i = 0; i < albumsJsonArray.length(); i++) {
                 JSONObject album = albumsJsonArray.getJSONObject(i);
-                albumsFragment.onlineData.add(new AlbumsData(album.getString("name"), album.getString("photo")));
+//                albumsFragment.onlineData.add(new AlbumsData(album.getString("name"), album.getString("photo")));
             }
             albumsFragment.updateAlbums();
         } catch (JSONException e) {

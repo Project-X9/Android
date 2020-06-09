@@ -1,6 +1,8 @@
 package com.example.projectx.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,20 +15,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.projectx.R;
+import com.example.projectx.ui.yourlibrary.AlbumsFragment.AlbumActivity;
+import com.example.projectx.ui.yourlibrary.AlbumsFragment.AlbumsData;
 
 import java.util.ArrayList;
 
 
 public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecyclerViewAdapter.AlbumViewHolder> {
 
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<String> mNames;
+    private ArrayList<String> mImageUrls;
+    //private ArrayList<AlbumsData> albums = new ArrayList<>();
     private Context mContext;
 
-    public AlbumRecyclerViewAdapter(Context context, ArrayList<String> names, ArrayList<String> urls){
+    public AlbumRecyclerViewAdapter(Context context, ArrayList<String> names, ArrayList<String> urls ){
         mNames = names;
         mImageUrls = urls;
         mContext = context;
+
     }
 
     @NonNull
@@ -45,6 +51,11 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "Album clicked.", Toast.LENGTH_SHORT).show();
+//                Intent i = new Intent(mContext, AlbumActivity.class);
+//                Bundle extras = new Bundle();
+//                extras.putString("AlbumID", ClickedAlbumId);
+//                i.putExtras(extras);
+//                mContext.startActivity(i);
             }
         });
     }
