@@ -47,7 +47,7 @@ public class Profile extends AppCompatActivity {
     }
 
     /**
-     *find UI elements by id and start fetch profile data
+     * find UI elements by id and start fetch profile data
      */
     private void findObjects() {
         backButton = (ImageButton) findViewById(R.id.collapse_ib);
@@ -121,6 +121,13 @@ public class Profile extends AppCompatActivity {
                 backgroundGradient.setY(verticalOffset);
                 Log.d("TAG", "onOffsetChanged: " + (-verticalOffset / x));
 
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

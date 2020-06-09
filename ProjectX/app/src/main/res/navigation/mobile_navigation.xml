@@ -25,10 +25,12 @@
         android:label="@string/title_notifications"
         android:textColor="#FFFFFF"
         tools:layout="@layout/fragment_yourlibrary" />
+
     <fragment
-        android:id = "@+id/premium_fragment"
+        android:id = "@+id/premium"
         android:name = "com.example.projectx.PremiumLayout"
         android:label = "Premium"
         android:textColor="#FFFFFF"
         tools:layout = "@layout/fragment_premium_layout"/>
+
 </navigation>
