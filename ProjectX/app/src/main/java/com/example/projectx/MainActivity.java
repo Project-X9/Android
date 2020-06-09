@@ -98,6 +98,7 @@ public class MainActivity extends FragmentActivity {
                     JSONObject user =  future.get();
                     Log.e("user",user.toString());
                     SharedPreferences.Editor editor = loginCredentials.edit();
+                    editor.putString("userData",user.toString());
                     editor.putString("UserObject", user.toString());
                     editor.commit();
                     myUser = user;
