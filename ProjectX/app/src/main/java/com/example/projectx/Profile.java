@@ -1,6 +1,7 @@
 package com.example.projectx;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.AppBarLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -35,6 +39,12 @@ public class Profile extends AppCompatActivity {
     private ImageButton backButton;
     ArrayList<ThreeDataItem> onlinePlaylistsList;
 
+    private String name;
+    private int followers, following, playlistsCount;
+
+    SharedPreferences loginCredentials;
+    final String CREDENTIALS_FILE = "loginCreds";
+
     private boolean testing = false;
 
     @Override
@@ -44,6 +54,20 @@ public class Profile extends AppCompatActivity {
 
         findObjects();
         setListeners();
+        setUserData();
+    }
+
+    private void setUserData() {
+        loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
+        try {
+            JSONObject User = new JSONObject(loginCredentials.getString("UserObject", null));
+            name = User.getString("Name");
+            followers = User.getInt("Followers");
+            following = User.getInt("Following");
+            playlistsCount = User.getJSONArray("Playlists").length();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -120,7 +144,6 @@ public class Profile extends AppCompatActivity {
 
                 backgroundGradient.setY(verticalOffset);
                 Log.d("TAG", "onOffsetChanged: " + (-verticalOffset / x));
-
             }
         });
 

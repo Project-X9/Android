@@ -49,10 +49,11 @@ public class PremiumLayout extends Fragment {
 
     void setViewPager(View view) {
         demoViewPager = view.findViewById(R.id.demo_vp);
-        adapter = new FreeVsPremiumAdapter(getFragmentManager(), 5);
+        adapter = new FreeVsPremiumAdapter(getChildFragmentManager(), 5);
         demoViewPager.setAdapter(adapter);
         demoViewPager.setPageMargin(40);
         TabLayout tabLayout = view.findViewById(R.id.tab_layout_tl);
         tabLayout.setupWithViewPager(demoViewPager);
     }
+
 }
