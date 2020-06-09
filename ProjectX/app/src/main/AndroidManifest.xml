@@ -16,24 +16,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".ui.yourlibrary.AlbumsFragment.AlbumActivity"></activity>
-        <activity android:name=".Artist.ArtistInterface"></activity>
+        <activity android:name=".ArtistActivity"></activity>
+        <activity android:name=".ui.yourlibrary.AlbumsFragment.AlbumActivity" />
+        <activity android:name=".Artist.ArtistInterface" />
         <activity
             android:name=".playlist.PlayListFull"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".playlist.PopMenu"
             android:theme="@style/AppTheme.PopMenuTheme" />
         <activity
             android:name=".playlist.PlaylistEmpty"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity android:name=".AboutActivity" />
-        <activity android:name=".UserActivity.UserActivity"></activity>
+        <activity android:name=".UserActivity.UserActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

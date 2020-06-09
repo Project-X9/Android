@@ -50,8 +50,8 @@ public class ArtistFragment extends Fragment {
     private ArtistViewModel mViewModel;
     private String artistUrl;
 
-    public ArtistFragment(String passedUrl){
-        artistUrl = passedUrl;
+    public ArtistFragment(String passedId){
+        artistUrl = "http://192.168.1.7:3000/api/v1/artist/artists/" + passedId;
     }
      View root;
     @Override
