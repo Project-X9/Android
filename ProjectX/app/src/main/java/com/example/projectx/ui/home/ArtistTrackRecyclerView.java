@@ -1,6 +1,8 @@
 package com.example.projectx.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.projectx.Artist.ArtistTracksAdapter;
 import com.example.projectx.Artist.ArtistTracksList;
+import com.example.projectx.MusicPlayer;
 import com.example.projectx.R;
 import com.squareup.picasso.Picasso;
 
@@ -23,13 +26,15 @@ import java.util.ArrayList;
 public class ArtistTrackRecyclerView  extends RecyclerView.Adapter<ArtistTrackRecyclerView.TrackViewHolder> {
     private ArrayList<String> imageUrls;
     private ArrayList<String> names;
+    private ArrayList<String> trackid;
     private Context mContext;
 
-    public ArtistTrackRecyclerView (Context context,ArrayList<String> images, ArrayList<String> artistNames){
+    public ArtistTrackRecyclerView (Context context,ArrayList<String> images, ArrayList<String> artistNames, ArrayList<String> ids){
         mContext = context;
         imageUrls = images;
         Log.e("Image Urls", images.toString());
         names = artistNames;
+        trackid = ids;
     }
 
     @NonNull
@@ -45,7 +50,7 @@ public class ArtistTrackRecyclerView  extends RecyclerView.Adapter<ArtistTrackRe
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TrackViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TrackViewHolder holder, final int position) {
         Glide.with(mContext)
                 .asBitmap()
                 .load(imageUrls.get(position))
@@ -55,7 +60,17 @@ public class ArtistTrackRecyclerView  extends RecyclerView.Adapter<ArtistTrackRe
         holder.trackImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Album clicked.", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(mContext, MusicPlayer.class);
+                Bundle extras = new Bundle();
+                String[] trackIdsStringArray = new String[trackid.size()];
+                int counter = 0;
+                for (String s : trackid){
+                    trackIdsStringArray[counter] = s;
+                }
+                extras.putStringArray("songslistarray", trackIdsStringArray);
+                extras.putString("songid", trackid.get(position));
+                i.putExtras(extras);
+                mContext.startActivity(i);
             }
         });
     }
