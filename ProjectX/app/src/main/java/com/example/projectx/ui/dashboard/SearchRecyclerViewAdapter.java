@@ -1,6 +1,8 @@
 package com.example.projectx.ui.dashboard;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.projectx.MusicPlayer;
 import com.example.projectx.R;
 import com.example.projectx.ui.home.AlbumRecyclerViewAdapter;
 
@@ -22,13 +25,15 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
 
     ArrayList<String> mImageUrls = new ArrayList<String>();
     ArrayList<String> mNames = new ArrayList<>();
-    ArrayList<String> mTypes = new ArrayList<>();
+    //ArrayList<String> mTypes = new ArrayList<>();
+    ArrayList<String> trackIds;
     Context mContext;
-    public SearchRecyclerViewAdapter(Context context, ArrayList<String> imageUrls, ArrayList<String> names, ArrayList<String> types) {
+    public SearchRecyclerViewAdapter(Context context, ArrayList<String> imageUrls, ArrayList<String> names, ArrayList<String> trackIds) {
         mImageUrls = imageUrls;
         mNames = names;
-        mTypes = types;
+        //mTypes = types;
         mContext = context;
+        this.trackIds  = trackIds;
     }
 
     @NonNull
@@ -39,15 +44,26 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SearchViewHolder holder, final int position) {
         if (mImageUrls.size() != 0) {
             Glide.with(mContext).asBitmap().load(mImageUrls.get(position)).into(holder.itemPicture);
             holder.name.setText(mNames.get(position));
-            holder.type.setText(mTypes.get(position));
+            //holder.type.setText(mTypes.get(position));
+
             holder.itemPicture.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "Album clicked.", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(mContext, MusicPlayer.class);
+                    Bundle extras = new Bundle();
+                    String [] trackIdsStringArray = new String[trackIds.size()];
+                    int counter = 0;
+                    for (String s : trackIds){
+                        trackIdsStringArray[counter] = s;
+                    }
+                    extras.putStringArray("songslistarray", trackIdsStringArray);
+                    extras.putString("songid", trackIds.get(position));
+                    i.putExtras(extras);
+                    mContext.startActivity(i);
                 }
             });
         }
@@ -70,7 +86,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
             super(itemView);
             itemPicture = itemView.findViewById(R.id.search_image);
             name = itemView.findViewById(R.id.search_item_name);
-            type = itemView.findViewById(R.id.search_item_type);
+            //type = itemView.findViewById(R.id.search_item_type);
 
         }
     }

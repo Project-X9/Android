@@ -45,6 +45,7 @@ public class DashboardFragment extends Fragment {
     private ArrayList<String> names = new ArrayList<>();
     private ArrayList<String> urls = new ArrayList<>();
     private ArrayList<String> types = new ArrayList<>();
+    private ArrayList<String> Ids = new ArrayList<>();
     SearchRecyclerViewAdapter adapter;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class DashboardFragment extends Fragment {
                     RecyclerView searchRecyclerView = getView().findViewById(R.id.search_recyclerView);
                     searchRecyclerView.setLayoutManager(llm);
 
-                    adapter = new SearchRecyclerViewAdapter(getContext(), urls, names, types);
+                    adapter = new SearchRecyclerViewAdapter(getContext(), urls, names, Ids);
                     searchRecyclerView.setAdapter(adapter);
 
                     adapter.notifyDataSetChanged();
@@ -92,6 +93,7 @@ public class DashboardFragment extends Fragment {
     private class SearchAsyncTask extends AsyncTask<String, Integer, Void> {
         private Context context;
         private String query;
+        String[] trackIds;
         public SearchAsyncTask(Context c, String query) {
             this.context = c;this.query = query;
         }
@@ -104,21 +106,25 @@ public class DashboardFragment extends Fragment {
         @Override
         protected Void doInBackground(String... strings) {
             RequestFuture<JSONObject> future = RequestFuture.newFuture();
-            String url = "https://run.mocky.io/v3/63117a42-c771-4c10-a9c3-5fa974a77f14";
+            String url = "http://192.168.1.7:3000/api/v1/search/track?q=" + query;
             JsonObjectRequest artistsRequest = new JsonObjectRequest(Request.Method.GET, url,
                     null, future, future);
             RequestQueue getUserQueue = Volley.newRequestQueue(this.context);
             getUserQueue.add(artistsRequest);
             try {
-                JSONObject artists = future.get();
-                JSONArray artistsArray = artists.getJSONArray("items");
-                for (int i = 0; i < artistsArray.length(); i++) {
-                    if(artistsArray.getJSONObject(i).getString("Name").toLowerCase().contains(query)|| artistsArray.getJSONObject(i).getString("Name").toUpperCase().contains(query.toUpperCase())){
-                        names.add(artistsArray.getJSONObject(i).getString("Name"));
-                        types.add(artistsArray.getJSONObject(i).getString("Type"));
-                        urls.add(artistsArray.getJSONObject(i).getString("Picture"));
+                Log.e("url", url);
+                JSONObject tracks = future.get();
+                JSONArray tracksArray = tracks.getJSONArray("tracks");
+                 trackIds = new String[tracks.length()];
+                for (int i = 0; i < tracksArray.length(); i++) {
+                    if(tracksArray.getJSONObject(i).getString("name").toLowerCase().contains(query.toLowerCase())|| tracksArray.getJSONObject(i).getString("name").toUpperCase().contains(query.toUpperCase())){
+                        names.add(tracksArray.getJSONObject(i).getString("name"));
+                       // types.add(tracksArray.getJSONObject(i).getString("Type"));
+                        urls.add(tracksArray.getJSONObject(i).getString("imageUrl"));
+                        Ids.add(tracksArray.getJSONObject(i).getString("_id"));
                     }
                 }
+
 
             } catch (ExecutionException e) {
                 e.printStackTrace();
@@ -138,7 +144,7 @@ public class DashboardFragment extends Fragment {
             RecyclerView searchRecyclerView = getView().findViewById(R.id.search_recyclerView);
             searchRecyclerView.setLayoutManager(llm);
 
-            adapter = new SearchRecyclerViewAdapter(getContext(), urls, names, types);
+            adapter = new SearchRecyclerViewAdapter(getContext(), urls, names, Ids);
             searchRecyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             Log.e("tag", "ArrayList is now" + names);

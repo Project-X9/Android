@@ -37,6 +37,7 @@ public class ArtistActivity extends AppCompatActivity {
     public String artistUrl;
     ArrayList<String> trackNames = new ArrayList<String>();
     ArrayList<String> trackPictures = new ArrayList<String>();
+    ArrayList<String> trackIds = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +105,7 @@ public class ArtistActivity extends AppCompatActivity {
                 for (int i = 0; i < tracks.length(); i++){
                     trackNames.add(tracks.getJSONObject(i).getString("name"));
                     trackPictures.add(tracks.getJSONObject(i).getString("imageUrl"));
+                    trackIds.add(tracks.getJSONObject(i).getString("_id"));
                 }
                 LinearLayoutManager llm = new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false);
 
@@ -111,7 +113,7 @@ public class ArtistActivity extends AppCompatActivity {
 
                 Log.e("Debugging One song", trackNames.toString());
                 Log.e("Pictures", trackPictures.toString());
-                ArtistTrackRecyclerView adapter = new ArtistTrackRecyclerView(getBaseContext(), trackPictures, trackNames);
+                ArtistTrackRecyclerView adapter = new ArtistTrackRecyclerView(getBaseContext(), trackPictures, trackNames, trackIds);
                 recyclerView.setLayoutManager(llm);
                 recyclerView.setAdapter(adapter);
                 new Thread() {
