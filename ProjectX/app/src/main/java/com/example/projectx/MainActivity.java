@@ -17,8 +17,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
+
+
+import com.example.projectx.authentication.AuthenticationPage;
+import com.example.projectx.authentication.SignInManager;
+import com.example.projectx.playlist.PlayListFull;
+
 import com.example.projectx.ui.yourlibrary.AlbumsFragment.AlbumsFragment;
 import com.example.projectx.ui.yourlibrary.ArtistFragment.ArtisttFragment;
+
+import com.example.projectx.ui.yourlibrary.PlaylistFragment.PlaylistFragment;
+import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONObject;
@@ -32,7 +41,7 @@ public class MainActivity extends FragmentActivity {
     JSONObject myUser;
     AlbumsFragment albumsFragment = new AlbumsFragment();
     ArtisttFragment artisttFragment = new ArtisttFragment();
-
+    PlaylistFragment playlistFragment = new PlaylistFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +82,7 @@ public class MainActivity extends FragmentActivity {
             String url = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:3000/api/v1/users/";
             url = url + userId;
             JsonObjectRequest getUser = new JsonObjectRequest(Request.Method.GET, url,
-                    null, future, future) {
+                    null, future, future){
                 @Override
                 public HashMap<String, String> getHeaders() {
                     String token = loginCredentials.getString("token", null);
@@ -82,26 +91,26 @@ public class MainActivity extends FragmentActivity {
                     params.put("Content-Type", "application/json; charset=UTF-8");
                     params.put("Authorization", token);
                     return params;
-
                 }
             };
             RequestQueue getUserQueue = Volley.newRequestQueue(this.context);
             getUserQueue.add(getUser);
-            try {
-                JSONObject user = future.get();
-                Log.e("user", user.toString());
+            try{
+                JSONObject user =  future.get();
+                Log.e("user",user.toString());
                 SharedPreferences.Editor editor = loginCredentials.edit();
-                editor.putString("userData", user.toString());
                 editor.putString("UserObject", user.toString());
                 editor.commit();
                 myUser = user;
                 albumsFragment.setUserAlbum(myUser);
                 artisttFragment.setUserArtist(myUser);
+                playlistFragment.setUserId(myUser);
                 return user;
 
-            } catch (ExecutionException e) {
+            }catch(ExecutionException e){
                 e.printStackTrace();
-            } catch (InterruptedException e) {
+            }
+            catch(InterruptedException e ){
                 e.printStackTrace();
             }
             return null;

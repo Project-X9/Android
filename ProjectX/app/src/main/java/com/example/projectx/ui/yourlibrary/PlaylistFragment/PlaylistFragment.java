@@ -18,7 +18,12 @@ import com.example.projectx.R;
 import com.example.projectx.UserActivity.UserData;
 import com.example.projectx.playlist.NameRenamePlaylist;
 import com.example.projectx.playlist.PlayListFull;
+import com.example.projectx.ui.yourlibrary.ArtistFragment.ArtistData;
 
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -31,8 +36,10 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
     private static RecyclerView.Adapter mAdapter;
     private static RecyclerView.LayoutManager mLayoutManager;
     static ArrayList<UserData> onlineData;
+    static ArrayList<String> UserId;
     private static Context context;
     static String ClickedPlaylistId;
+
 
 
     public PlaylistFragment() {
@@ -63,6 +70,12 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
+    public void refetchData(){
+        setCreatePlaylist();
+        FetchPlaylistFragmentData fetchPlaylistFragmentData = new FetchPlaylistFragmentData(this);
+        fetchPlaylistFragmentData.setURL(SERVER_URL);
+        fetchPlaylistFragmentData.execute();
+    }
     @Override
     public void onPlaylistClick(int position) {
         if (onlineData.get(position).getId()== null){
@@ -73,14 +86,34 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
         }
         if(position==0){
             Intent i = new Intent(getContext(), NameRenamePlaylist.class);
+            Bundle extras = new Bundle();
+            extras.putString("UserId", UserId.get(0));
+            extras.putString("Create", "1");
+            i.putExtras(extras);
             startActivity(i);
         }else {
-            Intent i = new Intent(getContext(), PlayListFull.class);
+            Intent i = new Intent(context, PlayListFull.class);
             Bundle extras = new Bundle();
             extras.putString("PlaylistIDs", ClickedPlaylistId);
             i.putExtras(extras);
             startActivity(i);
         }
 
+    }
+
+
+    public void setUserId(JSONObject userId) {
+        try {
+            UserId=new ArrayList<>();
+            UserId.add(userId.getJSONObject("data").getJSONObject("user").getString("_id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mAdapter.notifyDataSetChanged();
     }
 }

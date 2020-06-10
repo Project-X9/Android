@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.projectx.ArtistActivity;
-import com.example.projectx.ArtistFragment.ArtistFragment;
+
 import com.example.projectx.R;
 import com.example.projectx.playlist.PlayListFull;
 
