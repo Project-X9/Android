@@ -59,16 +59,20 @@ public class HomeFragment extends Fragment {
     private ArrayList<String> genreNames = new ArrayList<>();
     private ArrayList<String> genreUrls = new ArrayList<>();
 
+
+    PlaylistAsyncTask pat;
+    AlbumAsyncTask aat;
+    GenreAsyncTask gat;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_home, container, false);
-        PlaylistAsyncTask pat = new PlaylistAsyncTask(getContext());
+         pat = new PlaylistAsyncTask(getContext());
         pat.execute();
-        AlbumAsyncTask aat = new AlbumAsyncTask(getContext());
+         aat = new AlbumAsyncTask(getContext());
         aat.execute();
-        GenreAsyncTask gat = new GenreAsyncTask(getContext());
+         gat = new GenreAsyncTask(getContext());
         gat.execute();
         return root;
     }
@@ -239,6 +243,17 @@ public class HomeFragment extends Fragment {
         }
 
     }
+
+    @Override
+    public void onStop() {
+
+        super.onStop();
+        gat.cancel(true);
+        aat.cancel(true);
+        pat.cancel(true);
+
+    }
+
 
 
 
