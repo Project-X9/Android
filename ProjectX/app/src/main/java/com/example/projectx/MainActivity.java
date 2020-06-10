@@ -80,7 +80,7 @@ public class MainActivity extends FragmentActivity {
             Log.e("userId", userId);
             String url = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:3000/api/v1/users/";
             url = url + userId;
-            JsonObjectRequest getUser = new JsonObjectRequest(Request.Method.PATCH, url,
+            JsonObjectRequest getUser = new JsonObjectRequest(Request.Method.GET, url,
                     null, future, future){
                 @Override
                 public HashMap<String, String> getHeaders() {
