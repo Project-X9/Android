@@ -64,6 +64,13 @@ public class NameRenamePlaylist extends AppCompatActivity {
     }
 
     public void OnClickActionCancel(View view){
+        Intent i = new Intent(context, PlaylistEdit.class);
+        Bundle extras = new Bundle();
+        extras.putString("PlaylistName", input);
+        extras.putString("URL", mPlaylistURL);
+        extras.putString("PlaylistId", PlaylistId);
+        i.putExtras(extras);
+        startActivity(i);
         finish();
     }
 
