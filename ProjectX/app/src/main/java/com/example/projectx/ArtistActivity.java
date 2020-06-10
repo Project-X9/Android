@@ -1,6 +1,8 @@
 package com.example.projectx;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,17 +20,23 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
+import com.example.projectx.ui.home.ArtistRecyclerViewAdapter;
+import com.example.projectx.ui.home.ArtistTrackRecyclerView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class ArtistActivity extends AppCompatActivity {
     public String artistUrl;
+    ArrayList<String> trackNames = new ArrayList<String>();
+    ArrayList<String> trackPictures = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +44,7 @@ public class ArtistActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String id = intent.getStringExtra("ArtistId");
         artistUrl = "http://192.168.1.7:3000/api/v1/artist/artists/" + id;
-        Log.e("Artist id is ", "id");
+        Log.e("Artist id is ", id);
         ArtistAsyncTask aat = new ArtistAsyncTask();
         aat.execute();
     }
@@ -91,6 +99,21 @@ public class ArtistActivity extends AppCompatActivity {
                 artistName.setText(data.getString("name"));
                 TextView artistBio = (TextView) findViewById(R.id.artist_page_bio);
                 artistBio.setText(data.getString("Bio"));
+                JSONArray tracks = data.getJSONArray("tracks");
+
+                for (int i = 0; i < tracks.length(); i++){
+                    trackNames.add(tracks.getJSONObject(i).getString("name"));
+                    trackPictures.add(tracks.getJSONObject(i).getString("imageUrl"));
+                }
+                LinearLayoutManager llm = new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false);
+
+                RecyclerView recyclerView = findViewById(R.id.artist_page_recyclerview);
+
+                Log.e("Debugging One song", trackNames.toString());
+                Log.e("Pictures", trackPictures.toString());
+                ArtistTrackRecyclerView adapter = new ArtistTrackRecyclerView(getBaseContext(), trackPictures, trackNames);
+                recyclerView.setLayoutManager(llm);
+                recyclerView.setAdapter(adapter);
                 new Thread() {
 
                     public void run() {
@@ -104,8 +127,11 @@ public class ArtistActivity extends AppCompatActivity {
                                     ImageView layout = (ImageView) findViewById(R.id.artist_page_image);
                                     Drawable dr = new BitmapDrawable(finalImage);
                                     layout.setImageDrawable(dr);
+
+
                                 }
                             });
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
