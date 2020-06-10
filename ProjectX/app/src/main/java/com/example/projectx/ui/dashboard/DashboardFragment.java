@@ -27,7 +27,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
-import com.example.projectx.ArtistFragment.ArtistFragment;
+
 import com.example.projectx.R;
 import com.example.projectx.ui.home.ArtistRecyclerViewAdapter;
 
