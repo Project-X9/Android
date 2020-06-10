@@ -91,7 +91,7 @@ public class FetchProfileData extends AsyncTask {
     private void fillRecyclerView() {
         try {
             JSONArray playlistsJson = dataObj.getJSONArray("Playlists");
-            profile.onlinePlaylistsList = new ArrayList<ThreeDataItem>();
+            profile.onlinePlaylistsList = new ArrayList<>();
             for (int i = 0; i < playlistsJson.length(); i++) {
                 JSONObject playlist = playlistsJson.getJSONObject(i);
                 profile.onlinePlaylistsList.add(new ThreeDataItem(playlist.getString("Picture"), playlist.getString("Name"), ""));

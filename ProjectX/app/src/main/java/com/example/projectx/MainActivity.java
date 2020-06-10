@@ -81,7 +81,6 @@ public class MainActivity extends FragmentActivity {
                     @Override
                     public HashMap<String, String> getHeaders() {
                         String token = loginCredentials.getString("token", null);
-                        String arg = "Bearer " + token;
                         HashMap<String, String> params = new HashMap<>();
                         params.put("Content-Type", "application/json; charset=UTF-8");
                         params.put("Authorization", token);

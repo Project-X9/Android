@@ -38,7 +38,8 @@
             android:paddingEnd="32dp"
             android:text="Join Premium Now, 3 months for EGP 49.99"
             android:textColor="#FFFFFF"
-            android:textSize="40sp" />
+            android:textSize="36sp"
+            android:textStyle="bold" />
 
 
         <androidx.viewpager.widget.ViewPager
@@ -62,6 +63,7 @@
             app:tabPaddingStart="6dp" />
 
         <Button
+            android:id="@+id/get_premium_button1_bt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -93,7 +95,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/encore_font_circular_black"
                 android:gravity="start"
-                android:text="Spotify Free"
+                android:text="Spotify\nFree"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -164,6 +166,7 @@
                 android:textSize="14sp" />
 
             <Button
+                android:id="@+id/get_premium_button2_bt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -232,6 +235,7 @@
                 android:textSize="14sp" />
 
             <Button
+                android:id="@+id/get_premium_button3_bt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
