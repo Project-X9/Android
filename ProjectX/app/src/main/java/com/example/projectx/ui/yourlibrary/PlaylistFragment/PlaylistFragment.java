@@ -70,6 +70,12 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
+    public void refetchData(){
+        setCreatePlaylist();
+        FetchPlaylistFragmentData fetchPlaylistFragmentData = new FetchPlaylistFragmentData(this);
+        fetchPlaylistFragmentData.setURL(SERVER_URL);
+        fetchPlaylistFragmentData.execute();
+    }
     @Override
     public void onPlaylistClick(int position) {
         if (onlineData.get(position).getId()== null){
@@ -82,10 +88,11 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
             Intent i = new Intent(getContext(), NameRenamePlaylist.class);
             Bundle extras = new Bundle();
             extras.putString("UserId", UserId.get(0));
+            extras.putString("Create", "1");
             i.putExtras(extras);
             startActivity(i);
         }else {
-            Intent i = new Intent(getContext(), PlayListFull.class);
+            Intent i = new Intent(context, PlayListFull.class);
             Bundle extras = new Bundle();
             extras.putString("PlaylistIDs", ClickedPlaylistId);
             i.putExtras(extras);
@@ -102,5 +109,11 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mAdapter.notifyDataSetChanged();
     }
 }

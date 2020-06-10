@@ -26,7 +26,7 @@
             android:name=".playlist.PopMenu"
             android:theme="@style/AppTheme.PopMenuTheme" />
         <activity
-            android:name=".playlist.PlaylistEmpty"
+            android:name=".playlist.PlaylistEdit"
             android:configChanges="orientation"
             android:screenOrientation="portrait"></activity>
         <activity
