@@ -38,7 +38,7 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
     public static String stringPlaylistName;
     private boolean playlistLiked;
     private ImageButton likePlaylistButton,shareButton;
-    String PLAYLIST_FETCH_SERVER = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:3000/api/v1/playlist/";
+    String PLAYLIST_FETCH_SERVER = "http://192.168.43.253:3000/api/v1/playlist/";
     //http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com
     String playlistId = "5e8741dadfdb0a35d429a128";
     private RecyclerView mRecyclerView;
@@ -75,16 +75,6 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
 
     }
 
-    /*this for the menu that show when you click on the three dot image*/
-//    public void showMenu(View view){
-//        String inputName = playlistName.getText().toString();
-//        Intent intent = new Intent(this, PopMenu.class);
-//        intent.putExtra("key",inputName);
-//        startActivity(intent);
-//        onPause();
-//
-//
-//    }
 
 
 
@@ -99,6 +89,7 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage + "\n" + PlayList_URL);
         startActivity(Intent.createChooser(shareIntent, "Share Using..."));
     }
+
     public void likeButtonPressed(View V) {
 
         if (playlistLiked)
@@ -113,10 +104,6 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         }
     }
 
-//    private void changePlaylistName(String stringPlaylistName) {
-//        playlistName.setText(stringPlaylistName);
-//        topPlaylistName.setText(stringPlaylistName);
-//    }
 
 
     public void returnBack(View v) {
@@ -144,6 +131,7 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         extras.putString("PlaylistId",playlistId);
         i.putExtras(extras);
         startActivity(i);
+        finish();
     }
 
     private void  setupRecyclerView(ArrayList<Song> songArrayList) {
@@ -194,8 +182,8 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
     }
 
     public String [] Playlist(String mNamePlaylist,String mPlaylistImageURL ) {
-        likePlaylistButton.setImageResource(R.drawable.like_song_loading); //disable the like button until data is fetched.
-        shareButton.setImageResource(R.drawable.share_song_pressed); //disable the share button until data is fetched.
+//        likePlaylistButton.setImageResource(R.drawable.like_song_loading); //disable the like button until data is fetched.
+//        shareButton.setImageResource(R.drawable.share_song_pressed); //disable the share button until data is fetched.
         songArrayList = new ArrayList<>();
         ArrayList<JSONObject> jsonObjectArray = new ArrayList<>();
 

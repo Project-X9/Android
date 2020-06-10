@@ -31,8 +31,8 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
 
         public UserPlaylistViewHolder(@NonNull View itemView) {
             super(itemView);
-            mUserImageView = itemView.findViewById(R.id.song_iv);
-            mPlaylistName = itemView.findViewById(R.id.song_name_tv);
+            mUserImageView = itemView.findViewById(R.id.addSong_iv);
+            mPlaylistName = itemView.findViewById(R.id.addSong_name_tv);
 
         }
 

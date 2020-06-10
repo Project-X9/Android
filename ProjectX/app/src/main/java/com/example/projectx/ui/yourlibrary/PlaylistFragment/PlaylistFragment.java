@@ -35,7 +35,7 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
     private static RecyclerView mRecyclerView;
     private static RecyclerView.Adapter mAdapter;
     private static RecyclerView.LayoutManager mLayoutManager;
-    static ArrayList<UserData> onlineData;
+    static ArrayList<UserData>  onlineData ;
     static ArrayList<String> UserId;
     private static Context context;
     static String ClickedPlaylistId;
@@ -50,10 +50,10 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_playlist, container, false);
-
         mRecyclerView = view.findViewById(R.id.playlists_rv);
         mLayoutManager =  new LinearLayoutManager(getActivity());
         context= getActivity();
+
         setCreatePlaylist();
         FetchPlaylistFragmentData fetchPlaylistFragmentData = new FetchPlaylistFragmentData(this);
         fetchPlaylistFragmentData.setURL(SERVER_URL);
@@ -70,12 +70,6 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
-    public void refetchData(){
-        setCreatePlaylist();
-        FetchPlaylistFragmentData fetchPlaylistFragmentData = new FetchPlaylistFragmentData(this);
-        fetchPlaylistFragmentData.setURL(SERVER_URL);
-        fetchPlaylistFragmentData.execute();
-    }
     @Override
     public void onPlaylistClick(int position) {
         if (onlineData.get(position).getId()== null){
@@ -91,16 +85,35 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
             extras.putString("Create", "1");
             i.putExtras(extras);
             startActivity(i);
+//            finishActivity();
+            onResume();
         }else {
             Intent i = new Intent(context, PlayListFull.class);
             Bundle extras = new Bundle();
             extras.putString("PlaylistIDs", ClickedPlaylistId);
             i.putExtras(extras);
             startActivity(i);
+            onResume();
+//            finishActivity();
         }
 
     }
 
+    private void finishActivity() {
+        if(getActivity() != null) {
+            getActivity().finish();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        onlineData.clear();
+        setCreatePlaylist();
+        FetchPlaylistFragmentData fetchPlaylistFragmentData = new FetchPlaylistFragmentData(this);
+        fetchPlaylistFragmentData.setURL(SERVER_URL);
+        fetchPlaylistFragmentData.execute();
+    }
 
     public void setUserId(JSONObject userId) {
         try {

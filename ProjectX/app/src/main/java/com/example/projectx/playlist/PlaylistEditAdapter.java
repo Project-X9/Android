@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectx.R;
 import com.example.projectx.Song;
-import com.example.projectx.SongAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -34,9 +33,9 @@ public class PlaylistEditAdapter extends RecyclerView.Adapter<PlaylistEditAdapte
 
         public PlaylistEditViewHolder(@NonNull View itemView ) {
             super(itemView);
-            mImageView = itemView.findViewById(R.id.song_iv);
-            mTextView1 = itemView.findViewById(R.id.song_name_tv);
-            mTextView2 = itemView.findViewById(R.id.singer_name_tv);
+            mImageView = itemView.findViewById(R.id.addSong_iv);
+            mTextView1 = itemView.findViewById(R.id.addSong_name_tv);
+            mTextView2 = itemView.findViewById(R.id.addSong_description_tv);
 
         }
 

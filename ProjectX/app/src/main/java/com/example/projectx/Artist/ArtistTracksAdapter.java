@@ -33,9 +33,9 @@ public class ArtistTracksAdapter extends RecyclerView.Adapter<ArtistTracksAdapte
 
         public ArtistTracksViewHolder(@NonNull View itemView) {
             super(itemView);
-            mArtistImageResoure = itemView.findViewById(R.id.song_iv);
-            mArtistName = itemView.findViewById(R.id.singer_name_tv);
-            mArtistSongName = itemView.findViewById(R.id.song_name_tv);
+            mArtistImageResoure = itemView.findViewById(R.id.addSong_iv);
+            mArtistName = itemView.findViewById(R.id.addSong_description_tv);
+            mArtistSongName = itemView.findViewById(R.id.addSong_name_tv);
         }
     }
 

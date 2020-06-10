@@ -9,17 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.projectx.Artist.ArtistTracksAdapter;
-import com.example.projectx.Artist.ArtistTracksList;
 import com.example.projectx.MusicPlayer;
 import com.example.projectx.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -80,8 +76,8 @@ public class ArtistTrackRecyclerView  extends RecyclerView.Adapter<ArtistTrackRe
         public TextView trackName;
         public TrackViewHolder(@NonNull View itemView) {
             super(itemView);
-            trackImage = itemView.findViewById(R.id.song_iv);
-            trackName = itemView.findViewById(R.id.song_name_tv);
+            trackImage = itemView.findViewById(R.id.addSong_iv);
+            trackName = itemView.findViewById(R.id.addSong_name_tv);
 
         }
     }
