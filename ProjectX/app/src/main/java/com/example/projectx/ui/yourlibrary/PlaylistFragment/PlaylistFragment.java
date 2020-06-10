@@ -35,11 +35,11 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
     private static RecyclerView mRecyclerView;
     private static RecyclerView.Adapter mAdapter;
     private static RecyclerView.LayoutManager mLayoutManager;
-    static ArrayList<UserData>  onlineData ;
+    static ArrayList<UserData>  onlineData= new ArrayList<>(); ;
     static ArrayList<String> UserId;
     private static Context context;
     static String ClickedPlaylistId;
-
+    FetchPlaylistFragmentData fetchPlaylistFragmentData;
 
 
     public PlaylistFragment() {
@@ -53,9 +53,13 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
         mRecyclerView = view.findViewById(R.id.playlists_rv);
         mLayoutManager =  new LinearLayoutManager(getActivity());
         context= getActivity();
+        onlineData.clear();
+        if(fetchPlaylistFragmentData!=null){
+            fetchPlaylistFragmentData.cancel(true);
+        }
 
         setCreatePlaylist();
-        FetchPlaylistFragmentData fetchPlaylistFragmentData = new FetchPlaylistFragmentData(this);
+        fetchPlaylistFragmentData = new FetchPlaylistFragmentData(this);
         fetchPlaylistFragmentData.setURL(SERVER_URL);
         fetchPlaylistFragmentData.execute();
         return view;
@@ -108,6 +112,9 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
     @Override
     public void onResume() {
         super.onResume();
+        if(fetchPlaylistFragmentData!=null){
+            fetchPlaylistFragmentData.cancel(true);
+        }
         onlineData.clear();
         setCreatePlaylist();
         FetchPlaylistFragmentData fetchPlaylistFragmentData = new FetchPlaylistFragmentData(this);
@@ -124,9 +131,4 @@ public class PlaylistFragment extends Fragment implements PlaylistFragmentAdapte
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mAdapter.notifyDataSetChanged();
-    }
 }
