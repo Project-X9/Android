@@ -18,10 +18,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
 
 public class EditProfile extends AppCompatActivity {
 
@@ -134,24 +134,27 @@ public class EditProfile extends AppCompatActivity {
                     , new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    showToast("Updated Successfully");
+                    try {
+                        if (response.getString("status").equals("success"))
+                            showToast("Updated Successfully");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    showToast("Failed to Update");
+                    showToast("Failed to Update " + error.toString());
                 }
             }) {
                 @Override
-                public HashMap<String, String> getHeaders() {
-                    String token = loginCredentials.getString("token", null);
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("Content-Type", "application/json; charset=UTF-8");
-                    params.put("Authorization", token);
-                    params.put(key, value);
-                    return params;
+                public byte[] getBody() {
+                    String body = "{\"" + key + "\":\"" + value + "\"}";
+                    return body.getBytes();
                 }
             };
+            RequestQueue getUserQueue = Volley.newRequestQueue(getActivity());
+            getUserQueue.add(updateRequest);
         }
 
 
