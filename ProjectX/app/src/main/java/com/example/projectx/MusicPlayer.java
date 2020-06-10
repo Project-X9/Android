@@ -28,6 +28,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.ColorUtils;
 
+import com.example.projectx.ui.yourlibrary.AlbumsFragment.AlbumActivity;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -489,9 +491,10 @@ public class MusicPlayer extends AppCompatActivity {
         {
             Toast.makeText(getApplicationContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
             return;
+        } else {
+//            closeActivity(V);
+            gotoAlbum(V);
         }
-//        closeActivity(V);
-//        gotoAlbum(V);
     }
 
     /**
@@ -504,9 +507,10 @@ public class MusicPlayer extends AppCompatActivity {
         {
             Toast.makeText(getApplicationContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
             return;
+        } else {
+//            closeActivity(V);
+            gotoArtist(V);
         }
-//        closeActivity(V);
-//        gotoArtist(V);
     }
 
     /**
@@ -516,6 +520,9 @@ public class MusicPlayer extends AppCompatActivity {
      */
     public void gotoAlbum(View V) {
         //TODO: goto album which current playing song belongs to
+        Intent intent = new Intent(getApplicationContext(), AlbumActivity.class);
+        intent.putExtra("AlbumId", currentSong.albumName);
+        startActivity(intent);
     }
 
     /**
@@ -543,6 +550,9 @@ public class MusicPlayer extends AppCompatActivity {
      * @param V
      */
     public void gotoArtist(View V) {
+        Intent intent = new Intent(getApplicationContext(), ArtistActivity.class);
+        intent.putExtra("ArtistId", currentSong.artistsIds[0]);
+        startActivity(intent);
         //TODO: call api to go to artist page
     }
 
