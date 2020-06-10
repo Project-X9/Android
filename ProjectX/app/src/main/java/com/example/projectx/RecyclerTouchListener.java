@@ -1,4 +1,4 @@
-package com.example.projectx.Artist;
+package com.example.projectx;
 
 
 import android.content.Context;

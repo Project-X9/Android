@@ -28,7 +28,7 @@ public class YourLibraryFragment extends Fragment {
         artist = root.findViewById(R.id.artist);
         album = root.findViewById(R.id.albums);
         viewPager = root.findViewById(R.id.viewPager);
-        pagerAdapter = new PageAdapter(getFragmentManager(), tabLayout.getTabCount());
+        pagerAdapter = new PageAdapter(getChildFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

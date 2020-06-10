@@ -8,7 +8,7 @@
     android:background="#FF101010"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".playlist.PlayListFull">
+    tools:context=".playlist.PlaylistEdit">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/background_gradient_cl"
@@ -49,30 +49,17 @@
             app:srcCompat="@drawable/abc_vector_test" />
 
         <ImageButton
-            android:id="@+id/sharePlaylist_ibt"
+            android:id="@+id/editPlaylist_ibt"
             android:layout_width="44dp"
             android:layout_height="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="9dp"
             android:layout_marginRight="9dp"
             android:background="#00FFFFFF"
-            android:onClick="shareButtonPressed"
+            android:onClick="renamePlaylist"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/share_song" />
-
-        <ImageButton
-            android:id="@+id/likeButton2_ib"
-            android:layout_width="44dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="60dp"
-            android:layout_marginRight="9dp"
-            android:background="#00FFFFFF"
-            android:onClick="likeButtonPressed"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/like_song" />
+            app:srcCompat="@drawable/edit_playlist" />
 
         <TextView
             android:id="@+id/top_playlistName_tv"
@@ -100,11 +87,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_bar_cl"
         app:layout_constraintVertical_bias="0.0"
-        tools:context=".playlist.PlayListFull">
+        tools:context=".playlist.PlaylistEdit">
 
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/playListFull_activity_appbarlayout"
+            android:id="@+id/playListEdit_activity_appbarlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#00FFFFFF"
@@ -132,15 +119,6 @@
                     app:layout_collapseParallaxMultiplier="0.8">
 
 
-                    <ImageView
-                        android:id="@+id/playlist_image"
-                        android:layout_width="160dp"
-                        android:layout_height="160dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="0dp"
-                        />
-
                     <TextView
                         android:id="@+id/playlistName_tv"
                         android:layout_width="fill_parent"
@@ -158,17 +136,18 @@
                         app:autoSizeTextType="uniform" />
 
                     <Button
-                        android:id="@+id/editPlaylist_button_bt"
+                        android:id="@+id/button"
+                        style="Widget.Glue.Button.Primary.Green"
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/follow_button"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24.0dip"
+                        android:background="@drawable/glue_button_primary_green"
                         android:filterTouchesWhenObscured="false"
-                        android:onClick="openEditPlaylist"
-                        android:text="Edit Playlist"
-                        android:textColor="#FFFFFF"
-                        android:textSize="10sp" />
+                        android:fontFamily="@font/encore_font_circular_bold"
+                        android:gravity="center"
+                        android:onClick="addsongs"
+                        android:text="ADD SONGS"
+                        android:textColor="#ffffffff" />
 
                 </LinearLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
