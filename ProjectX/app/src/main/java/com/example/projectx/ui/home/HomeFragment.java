@@ -1,5 +1,6 @@
 package com.example.projectx.ui.home;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -59,6 +60,8 @@ public class HomeFragment extends Fragment {
     private ArrayList<String> genreNames = new ArrayList<>();
     private ArrayList<String> genreUrls = new ArrayList<>();
 
+    static ProgressDialog progDialog;
+
 
     PlaylistAsyncTask pat;
     AlbumAsyncTask aat;
@@ -68,11 +71,15 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_home, container, false);
-         pat = new PlaylistAsyncTask(getContext());
+
+        progDialog = new ProgressDialog(getActivity());
+        progDialog.show();
+
+        pat = new PlaylistAsyncTask(getContext());
         pat.execute();
-         aat = new AlbumAsyncTask(getContext());
+        aat = new AlbumAsyncTask(getContext());
         aat.execute();
-         gat = new GenreAsyncTask(getContext());
+        gat = new GenreAsyncTask(getContext());
         gat.execute();
         return root;
     }
@@ -240,6 +247,7 @@ public class HomeFragment extends Fragment {
 
             GenreRecyclerViewAdapter adapter = new GenreRecyclerViewAdapter(getContext(), genreNames, genreUrls);
             genreRecyclerView.setAdapter(adapter);
+            if (progDialog.isShowing()){progDialog.dismiss();}
         }
 
     }

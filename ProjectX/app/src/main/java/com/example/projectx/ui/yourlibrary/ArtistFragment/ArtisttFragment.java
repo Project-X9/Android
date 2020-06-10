@@ -1,5 +1,6 @@
 package com.example.projectx.ui.yourlibrary.ArtistFragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -32,7 +33,7 @@ public class ArtisttFragment extends Fragment implements ArtistFragmentAdapter.o
     static ArrayList<ArtistData> onlineData;
     private static Context context;
     static String ClickedArtistId;
-
+    static ProgressDialog progDialog;
     public ArtisttFragment() {
         // Required empty public constructor
     }
@@ -47,8 +48,11 @@ public class ArtisttFragment extends Fragment implements ArtistFragmentAdapter.o
         mRecyclerView = view.findViewById(R.id.artist_rv);
         mLayoutManager =  new LinearLayoutManager(getActivity());
         context= getActivity();
+
         FetchArtistFragmentData fetchArtistFragmentData = new FetchArtistFragmentData(this);
         fetchArtistFragmentData.setURL(MOCK_URL);
+        progDialog = new ProgressDialog(getActivity());
+        progDialog.show();
         fetchArtistFragmentData.execute();
         return view;
     }
@@ -57,6 +61,7 @@ public class ArtisttFragment extends Fragment implements ArtistFragmentAdapter.o
         mAdapter = new ArtistFragmentAdapter(onlineData,context,this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        if (progDialog.isShowing()){progDialog.dismiss();}
     }
 
     @Override

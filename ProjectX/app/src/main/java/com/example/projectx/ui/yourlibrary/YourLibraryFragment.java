@@ -1,5 +1,6 @@
 package com.example.projectx.ui.yourlibrary;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ public class YourLibraryFragment extends Fragment {
     private TabItem playlist,artist,album;
     public PageAdapter pagerAdapter;
 
-
+    static ProgressDialog progDialog;
     public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_yourlibrary, container, false);
         tabLayout = root.findViewById(R.id.tabLayout);
