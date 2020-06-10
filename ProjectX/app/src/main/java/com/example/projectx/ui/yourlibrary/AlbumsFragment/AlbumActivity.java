@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -280,6 +281,8 @@ public class AlbumActivity extends AppCompatActivity implements SongAdapter.onSo
 
         try {
             JSONObject response = future.get();
+            Log.e("debugging", albumNameKey);
+            Log.e("debugging", response.toString());
             JSONObject data = response.getJSONObject("data");
             JSONObject dPlaylist = data.getJSONObject("album");
             mNameAlbum = dPlaylist.getString("name");

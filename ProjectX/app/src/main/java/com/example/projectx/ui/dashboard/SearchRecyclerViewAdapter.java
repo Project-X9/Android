@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.projectx.MusicPlayer;
 import com.example.projectx.R;
 import com.example.projectx.ui.home.AlbumRecyclerViewAdapter;
+import com.example.projectx.ui.yourlibrary.AlbumsFragment.AlbumActivity;
 
 import java.util.ArrayList;
 
@@ -28,12 +29,14 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     //ArrayList<String> mTypes = new ArrayList<>();
     ArrayList<String> trackIds;
     Context mContext;
-    public SearchRecyclerViewAdapter(Context context, ArrayList<String> imageUrls, ArrayList<String> names, ArrayList<String> trackIds) {
+    int albumChoice;
+    public SearchRecyclerViewAdapter(Context context, ArrayList<String> imageUrls, ArrayList<String> names, ArrayList<String> trackIds, int AlbumOrSong) {
         mImageUrls = imageUrls;
         mNames = names;
         //mTypes = types;
         mContext = context;
         this.trackIds  = trackIds;
+        this.albumChoice = AlbumOrSong;
     }
 
     @NonNull
@@ -49,7 +52,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
             Glide.with(mContext).asBitmap().load(mImageUrls.get(position)).into(holder.itemPicture);
             holder.name.setText(mNames.get(position));
             //holder.type.setText(mTypes.get(position));
-
+            if (albumChoice == 0){
             holder.itemPicture.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -66,6 +69,23 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
                     mContext.startActivity(i);
                 }
             });
+        } else {
+                holder.itemPicture.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(mContext, AlbumActivity.class);
+                        Bundle extras = new Bundle();
+                        String [] trackIdsStringArray = new String[trackIds.size()];
+                        int counter = 0;
+                        for (String s : trackIds){
+                            trackIdsStringArray[counter] = s;
+                        }
+                        extras.putString("AlbumID", trackIds.get(position));
+                        i.putExtras(extras);
+                        mContext.startActivity(i);
+                    }
+                });
+            }
         }
     }
     @Override
