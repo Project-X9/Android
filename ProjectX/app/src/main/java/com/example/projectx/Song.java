@@ -17,6 +17,7 @@ public class Song {
     public String url;
     public String duration;
     public String imageUrl;
-    String albumName;
+    public String albumName;
+    public String albumId;
 }
 

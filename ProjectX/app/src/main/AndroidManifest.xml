@@ -17,6 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity android:name=".ArtistActivity"></activity>
+        <activity
+            android:name=".ProfilesActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeDarkActionBar" />
         <activity android:name=".ui.yourlibrary.AlbumsFragment.AlbumActivity" />
         <activity android:name=".Artist.ArtistInterface" />
         <activity

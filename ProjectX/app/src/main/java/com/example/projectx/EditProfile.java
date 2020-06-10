@@ -1,22 +1,35 @@
 package com.example.projectx;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.preference.PreferenceFragment;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 public class EditProfile extends AppCompatActivity {
 
     private ImageButton backButton;
     private TextView topName;
+    private String Name, Email;
+    private RequestQueue requestQueue;
+    final String CREDENTIALS_FILE = "loginCreds";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,24 +37,24 @@ public class EditProfile extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         findObjects();
-        setListeners();
         initializeElements();
+        setListeners();
     }
 
     private void initializeElements() {
+        SettingsFragment.loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            Name = extras.getString("Name");
+            Email = extras.getString("Email");
+        }
+        topName.setText(Name);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         preferences.edit().putBoolean("NotificationsCheckbox", true).commit();
-        preferences.edit().putString("EditNameTextPref","").commit();
-        preferences.edit().putString("EditPasswordTextPref","").commit();
-        preferences.edit().putString("EditEmailTextPref","").commit();
+        preferences.edit().putString("EditNameTextPref", Name).commit();
+        preferences.edit().putString("EditPasswordTextPref", "").commit();
+        preferences.edit().putString("EditEmailTextPref", Email).commit();
         getFragmentManager().beginTransaction().add(R.id.fragment_container, new SettingsFragment()).commit();
-
-
-        Bundle extras = getIntent().getExtras();
-        String Name = "Username";
-        if (extras != null)
-            Name = extras.getString("Name");
-        topName.setText(Name);
     }
 
     private void setListeners() {
@@ -54,11 +67,14 @@ public class EditProfile extends AppCompatActivity {
     }
 
     private void findObjects() {
-        backButton = (ImageButton) findViewById(R.id.collapse_ib);
-        topName = (TextView) findViewById(R.id.top_username_tv);
+        backButton = findViewById(R.id.collapse_ib);
+        topName = findViewById(R.id.top_username_tv);
     }
 
+
     public static class SettingsFragment extends PreferenceFragment {
+
+        static SharedPreferences loginCredentials;
 
         private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
@@ -72,28 +88,32 @@ public class EditProfile extends AppCompatActivity {
                     if (key.equals("EditNameTextPref")) {
                         String name = sharedPreferences.getString("EditNameTextPref", "def");
                         if (name.equals("")) {
-                            Toast.makeText(getActivity(), "Name can't be empty!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), , Toast.LENGTH_SHORT).show();
+                            showToast("Name can't be empty!");
                         } else {
-                            updateProfile(name, 0);
+                            updateProfile(name, "name");
                         }
                     } else if (key.equals("EditPasswordTextPref")) {
                         String password = sharedPreferences.getString("EditNameTextPref", "def");
                         if (password.equals("")) {
-                            Toast.makeText(getActivity(), "Password can't be empty!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Password can't be empty!", Toast.LENGTH_SHORT).show();
+                            showToast("Password can't be empty!");
                         } else {
-                            updateProfile(password, 1);
+                            updateProfile(password, "password");
                         }
                         Log.d("TAG", "onSharedPreferenceChanged: " + sharedPreferences.getString("EditPasswordTextPref", "def"));
                     } else if (key.equals("EditEmailTextPref")) {
                         String email = sharedPreferences.getString("EditEmailTextPref", "def");
-                        Log.d("TAG", "onSharedPreferenceChanged: "+email);
+                        Log.d("TAG", "onSharedPreferenceChanged: " + email);
                         boolean emailIsValid = android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches(); //checks if email is valid
-                        if (email.equals("")){
-                            Toast.makeText(getActivity(), "Email can't be empty!", Toast.LENGTH_SHORT).show();
-                        }else if(!emailIsValid){
-                            Toast.makeText(getActivity(), "Please Enter a valid Email format", Toast.LENGTH_SHORT).show();
-                        }else {
-                            updateProfile(email, 2);
+                        if (email.equals("")) {
+//                            Toast.makeText(getActivity(), "Email can't be empty!", Toast.LENGTH_SHORT).show();
+                            showToast("Email can't be empty!");
+                        } else if (!emailIsValid) {
+//                            Toast.makeText(getActivity(), "Please Enter a valid Email format", Toast.LENGTH_SHORT).show();
+                            showToast("Please Enter a valid Email format");
+                        } else {
+                            updateProfile(email, "email");
                         }
 
                     }
@@ -102,10 +122,38 @@ public class EditProfile extends AppCompatActivity {
 
         }
 
-        private void updateProfile(String field, int sel) {
-            EditProfileAsync editProfileAsync = new EditProfileAsync();
-            editProfileAsync.execute();
+        void showToast(String message) {
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
         }
+
+        private void updateProfile(final String value, final String key) {
+            String userId = loginCredentials.getString("id", null);
+            String url = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:3000/api/v1/users/";
+            url = url + userId;
+            JsonObjectRequest updateRequest = new JsonObjectRequest(Request.Method.PATCH, url, null
+                    , new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    showToast("Updated Successfully");
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    showToast("Failed to Update");
+                }
+            }) {
+                @Override
+                public HashMap<String, String> getHeaders() {
+                    String token = loginCredentials.getString("token", null);
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("Content-Type", "application/json; charset=UTF-8");
+                    params.put("Authorization", token);
+                    params.put(key, value);
+                    return params;
+                }
+            };
+        }
+
 
         @Override
         public void onResume() {

@@ -82,6 +82,7 @@ public class MainActivity extends FragmentActivity {
                     params.put("Content-Type", "application/json; charset=UTF-8");
                     params.put("Authorization", token);
                     return params;
+
                 }
             };
             RequestQueue getUserQueue = Volley.newRequestQueue(this.context);

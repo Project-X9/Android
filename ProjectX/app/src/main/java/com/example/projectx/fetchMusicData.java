@@ -94,6 +94,9 @@ public class fetchMusicData extends AsyncTask<Void, Void, Void> {
             MusicPlayer.currentSong.albumName = dataObj.getJSONObject("data").getJSONObject("track")
                     .getJSONObject("album").getString("name");
 
+            MusicPlayer.currentSong.albumId = dataObj.getJSONObject("data").getJSONObject("track")
+                    .getJSONObject("album").getString("_id");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
