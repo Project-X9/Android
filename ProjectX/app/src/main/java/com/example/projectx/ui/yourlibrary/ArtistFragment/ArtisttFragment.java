@@ -70,7 +70,7 @@ public class ArtisttFragment extends Fragment implements ArtistFragmentAdapter.o
             onlineData = new ArrayList<>();
             for (int i = 0; i < artistsJsonArray.length(); i++) {
                 JSONObject artist = artistsJsonArray.getJSONObject(i);
-                onlineData.add(new ArtistData(artist.getString("name"), artist.getString("image"),Integer.toString(artist.getJSONArray("followers").length()),Integer.toString(artist.getJSONArray("albums").length()),artist.getString("Bio")));
+                onlineData.add(new ArtistData(artist.getString("name"), artist.getString("image"),Integer.toString(artist.getJSONArray("followers").length()),Integer.toString(artist.getJSONArray("albums").length()),artist.getString("Bio"), artist.getString("_id")));
             }
         } catch (JSONException e) {
             e.printStackTrace();

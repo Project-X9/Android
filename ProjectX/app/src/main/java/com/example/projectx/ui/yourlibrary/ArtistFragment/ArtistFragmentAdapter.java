@@ -1,15 +1,19 @@
 package com.example.projectx.ui.yourlibrary.ArtistFragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.projectx.ArtistActivity;
 import com.example.projectx.R;
 import com.squareup.picasso.Picasso;
 
@@ -58,13 +62,24 @@ public class ArtistFragmentAdapter extends RecyclerView.Adapter<ArtistFragmentAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ArtistFragmentViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ArtistFragmentViewHolder holder, final int position) {
         ArtistData currentItem = mArtistData.get(position);
         holder.mTextView1.setText(currentItem.getName());
 //        holder.mTextView2.setText(currentItem.getmMadeBy());
             Picasso.with(context)
                     .load(currentItem.getPhoto())
                     .into(holder.mImageView);
+        holder.mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context,"This has been clicked", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(context, ArtistActivity.class);
+                Bundle extras = new Bundle();
+                extras.putString("ArtistId", mArtistData.get(position).getId() );
+                i.putExtras(extras);
+                context.startActivity(i);
+            }
+        });
 
     }
 

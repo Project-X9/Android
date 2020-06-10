@@ -3,8 +3,18 @@ package com.example.projectx.ui.yourlibrary.ArtistFragment;
 public class ArtistData {
     private String Name,Photo,NoOfFollowers,Albums,Bio;
 
-    public ArtistData(String name, String photo, String noOfFollowers, String albums, String bio) {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    private String id;
+    public ArtistData(String name, String photo, String noOfFollowers, String albums, String bio, String artistId) {
         Name = name;
+        id = artistId;
         Photo = photo;
         NoOfFollowers = noOfFollowers;
         Albums = albums;
