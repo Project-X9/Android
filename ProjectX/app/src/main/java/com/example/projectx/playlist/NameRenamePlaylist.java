@@ -28,10 +28,10 @@ import java.util.concurrent.ExecutionException;
 
 public class NameRenamePlaylist extends AppCompatActivity {
     private TextInputEditText mInputName;
-    private TextView mActionOk,mActionCancel;
+    private TextView mActionOk,mActionCancel,mTitle;
     private Context context;
     private RequestQueue requestQueue;
-    String UserId,Create,PlaylistId;
+    String UserId,Create,PlaylistId,mPlaylistURL;
     String input;
     String PLAYLIST_FETCH_SERVER = "http://192.168.43.253:3000/api/v1/playlist/";
     JSONObject result;
@@ -42,6 +42,7 @@ public class NameRenamePlaylist extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_name_rename_playlist);
+        mTitle=findViewById(R.id.textView);
         mInputName= findViewById(R.id.playlistName_tiet);
         mActionOk= findViewById(R.id.createRename_tv);
         mActionCancel= findViewById(R.id.cancel_tv);
@@ -51,37 +52,45 @@ public class NameRenamePlaylist extends AppCompatActivity {
         String mUSERID = b.getString("UserId");
         String mPLAYLISTid = b.getString("PlaylistId");
         String key = b.getString("Create");
+        String playlistURL = b.getString("URL");
+        mPlaylistURL=playlistURL;
         UserId = mUSERID;
         Create=key;
         PlaylistId=mPLAYLISTid;
+        if(Create.equals("0")){
+            mTitle.setText("Rename Playlist");
+            mActionOk.setText("Rename");
+        }
+    }
 
-        mActionCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    public void OnClickActionCancel(View view){
+        finish();
+    }
+
+    public void OnClickActionOk(View view){
+        if(Create.equals("1")){
+            input =mInputName.getText().toString();
+            if (!input.equals("")){
+                createPlaylistAsyncTask createPlaylistAsyncTask= new createPlaylistAsyncTask();
+                createPlaylistAsyncTask.execute(input);
                 finish();
             }
-        });
-
-        mActionOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(Create.equals("1")){
-                    input =mInputName.getText().toString();
-                    if (!input.equals("")){
-                        createPlaylistAsyncTask createPlaylistAsyncTask= new createPlaylistAsyncTask();
-                        createPlaylistAsyncTask.execute(input);
-                    }
-                }else if(Create.equals("0")){
-                    input =mInputName.getText().toString();
-                    if (!input.equals("")){
-                        renamePlaylistAsyncTask renamePlaylistAsyncTask= new renamePlaylistAsyncTask();
-                        renamePlaylistAsyncTask.execute(input);
-                    }
-                }
+        }else if(Create.equals("0")){
+            input =mInputName.getText().toString();
+            if (!input.equals("")){
+                renamePlaylistAsyncTask renamePlaylistAsyncTask= new renamePlaylistAsyncTask();
+                renamePlaylistAsyncTask.execute(input);
+                Intent i = new Intent(context, PlaylistEdit.class);
+                Bundle extras = new Bundle();
+                extras.putString("PlaylistName", input);
+                extras.putString("URL", mPlaylistURL);
+                extras.putString("PlaylistId", PlaylistId);
+                i.putExtras(extras);
+                startActivity(i);
+                finish();
 
             }
-        });
-
+        }
     }
 
     private class createPlaylistAsyncTask extends AsyncTask<String, String, Void> {
@@ -116,8 +125,8 @@ public class NameRenamePlaylist extends AppCompatActivity {
 //                    i.putExtras(extras);
 //                    //onSubmit(input);
 //                    startActivity(i);
-                    playlistFragment.refetchData();
-                    finish();
+//                    playlistFragment.refetchData();
+//                    finish();
                 }
                 else
                 {
@@ -163,7 +172,7 @@ public class NameRenamePlaylist extends AppCompatActivity {
 //                    //onSubmit(input);
 //                    startActivity(i);
 
-                    finish();
+//                    finish();
                 }
                 else
                 {

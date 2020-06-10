@@ -36,9 +36,9 @@ public class PlaylistFragmentAdapter extends RecyclerView.Adapter<PlaylistFragme
 
         public PlaylistFragmentViewHolder(@NonNull View itemView , onPlaylistListner onPlaylistListner) {
             super(itemView);
-            mImageView = itemView.findViewById(R.id.song_iv);
-            mTextView1 = itemView.findViewById(R.id.song_name_tv);
-            mTextView2 = itemView.findViewById(R.id.singer_name_tv);
+            mImageView = itemView.findViewById(R.id.addSong_iv);
+            mTextView1 = itemView.findViewById(R.id.addSong_name_tv);
+            mTextView2 = itemView.findViewById(R.id.addSong_description_tv);
             this.onPlaylistListner=onPlaylistListner;
 
             itemView.setOnClickListener(this);
@@ -68,9 +68,10 @@ public class PlaylistFragmentAdapter extends RecyclerView.Adapter<PlaylistFragme
                     .load(currentItem.getmUserPlaylistImageURL())
                     .into(holder.mImageView);
         }else{
-            Picasso.with(context)
-                    .load(currentItem.getCreateImage())
-                    .into(holder.mImageView);
+//            Picasso.with(context)
+//                    .load(currentItem.getCreateImage())
+//                    .into(holder.mImageView);
+            holder.mImageView.setImageResource(currentItem.getCreateImage());
         }
 
 

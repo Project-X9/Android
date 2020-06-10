@@ -36,8 +36,8 @@ public class AlbumsFragmentAdapter extends RecyclerView.Adapter<AlbumsFragmentAd
 
         public AlbumsFragmentViewHolder(@NonNull View itemView , onAlbumListner onAlbumListner) {
             super(itemView);
-            mImageView = itemView.findViewById(R.id.song_iv);
-            mTextView1 = itemView.findViewById(R.id.song_name_tv);
+            mImageView = itemView.findViewById(R.id.addSong_iv);
+            mTextView1 = itemView.findViewById(R.id.addSong_name_tv);
 //            mTextView2 = itemView.findViewById(R.id.singer_name_tv);
             this.onAlbumListner1 =onAlbumListner;
 

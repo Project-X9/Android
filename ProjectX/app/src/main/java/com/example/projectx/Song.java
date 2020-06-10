@@ -19,5 +19,6 @@ public class Song {
     public String imageUrl;
     public String albumName;
     public String albumId;
+    public int CreateImage;
 }
 

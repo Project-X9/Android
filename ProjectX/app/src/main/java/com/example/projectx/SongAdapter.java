@@ -34,9 +34,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
         public SongViewHolder(@NonNull View itemView , onSongListner onSongListner) {
             super(itemView);
-            mImageView = itemView.findViewById(R.id.song_iv);
-            mTextView1 = itemView.findViewById(R.id.song_name_tv);
-            mTextView2 = itemView.findViewById(R.id.singer_name_tv);
+            mImageView = itemView.findViewById(R.id.addSong_iv);
+            mTextView1 = itemView.findViewById(R.id.addSong_name_tv);
+            mTextView2 = itemView.findViewById(R.id.addSong_description_tv);
             this.onSongListner=onSongListner;
 
             itemView.setOnClickListener(this);
