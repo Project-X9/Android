@@ -3,16 +3,24 @@ package com.example.projectx;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONException;
@@ -39,6 +47,7 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
 
     SharedPreferences loginCredentials;
     final String CREDENTIALS_FILE = "loginCreds";
+    private boolean loading = false;
 
     public PremiumLayout() {
         // Required empty public constructor
@@ -121,6 +130,10 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
     }
 
     public void premiumButtonPressed() {
+        if (loading) {
+            Toast.makeText(getActivity(), "Loading, please wait", Toast.LENGTH_SHORT).show();
+            return;
+        }
         openDialog();
     }
 
@@ -137,9 +150,38 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
 
     @Override
     public void OnYesClicked() {
-        //TODO: call api when backend make it and put the following lines in OnResponseListener
-        isPremium = !isPremium;
-        initializeUI();
+        sendRequest();
+    }
+
+    private void sendRequest() {
+        loginCredentials = getActivity().getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
+        final String userId = loginCredentials.getString("id", null);
+        String url = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:3000/api/v1/users/";
+        url = url + userId;
+        JsonObjectRequest updateRequest = new JsonObjectRequest(Request.Method.PATCH, url, null
+                , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                isPremium = !isPremium;
+                initializeUI();
+                loading = false;
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("TAG", "onErrorResponse: " + error.toString());
+                loading = false;
+            }
+        }) {
+            @Override
+            public byte[] getBody() {
+                String body = "{\"" + "premium" + "\":" + !isPremium + "}";
+                return body.getBytes();
+            }
+        };
+        RequestQueue getUserQueue = Volley.newRequestQueue(getActivity());
+        getUserQueue.add(updateRequest);
+        loading = true;
     }
 
     private void premiumUI() {

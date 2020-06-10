@@ -69,7 +69,6 @@ public class MainActivity extends FragmentActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
 
         @Override
@@ -81,7 +80,7 @@ public class MainActivity extends FragmentActivity {
             Log.e("userId", userId);
             String url = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:3000/api/v1/users/";
             url = url + userId;
-            JsonObjectRequest getUser = new JsonObjectRequest(Request.Method.GET, url,
+            JsonObjectRequest getUser = new JsonObjectRequest(Request.Method.PATCH, url,
                     null, future, future){
                 @Override
                 public HashMap<String, String> getHeaders() {

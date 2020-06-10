@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -28,11 +29,23 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.ColorUtils;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.projectx.ui.yourlibrary.AlbumsFragment.AlbumActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -68,6 +81,9 @@ public class MusicPlayer extends AppCompatActivity {
     private boolean onlineTesting = false;
     private boolean autoNextSong = false;
     static boolean newSong = false;
+
+    SharedPreferences loginCredentials;
+    final String CREDENTIALS_FILE = "loginCreds";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +137,7 @@ public class MusicPlayer extends AppCompatActivity {
             Bundle b = intent.getExtras();
             if (b == null) return;
             String temp = b.getString("songid");
-            if (temp != currentSong.id) {
+            if (!temp.equals(currentSong.id)) {
                 targetSongId = temp;
                 songIdsList = b.getStringArray("songslistarray");
                 newSong = true;
@@ -386,10 +402,65 @@ public class MusicPlayer extends AppCompatActivity {
      * Updates if song is liked, blacklisted and downloaded
      */
     private void updateSongStats() {
-        songLiked = false;
+        getIsSongLiked();
         songBlacklisted = false;
         songDownloaded = false;
+    }
 
+    /**
+     * call api and check if currentSong is like
+     */
+    private void getIsSongLiked() {
+        loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
+        final String userId = loginCredentials.getString("id", null);
+        String url = "http://localhost:3000/api/v1/users/Track/Ex/";
+        url = url + targetSongId;
+        JsonObjectRequest updateRequest = new JsonObjectRequest(Request.Method.GET, url, null
+                , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    Log.d("TAG", "onResponse: success" + response.getBoolean("data"));
+                    if (response.getBoolean("data")) {
+                        likeSongButton.setImageResource(R.drawable.dislike_song);
+                    } else {
+                        likeSongButton.setImageResource(R.drawable.like_song);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("TAG", "onErrorResponse: " + error.toString());
+            }
+        }) {
+            @Override
+            public HashMap<String, String> getHeaders() {
+                String token = loginCredentials.getString("token", null);
+                String arg = "Bearer " + token;
+                HashMap<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", token);
+                return params;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("id", userId);
+                return params;
+            }
+
+            @Override
+            public byte[] getBody() {
+                String body = "{\"" + "id" + "\":\"" + userId + "\"}";
+                return body.getBytes();
+            }
+        };
+        RequestQueue getUserQueue = Volley.newRequestQueue(getApplicationContext());
+        getUserQueue.add(updateRequest);
     }
 
     /**
@@ -508,7 +579,7 @@ public class MusicPlayer extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
             return;
         } else {
-//            closeActivity(V);
+            closeActivity(V);
             gotoArtist(V);
         }
     }
