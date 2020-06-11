@@ -828,8 +828,8 @@ public class MusicPlayer extends AppCompatActivity {
         long pixelCount = 0;
         int c;
 
-        for (int x = 0; x < 300; x++) {
-            for (int y = 0; y < 300; y++) {
+        for (int x = 0; x < bitmap.getWidth(); x++) {
+            for (int y = 0; y < bitmap.getHeight(); y++) {
                 c = bitmap.getPixel(x, y);
 
                 pixelCount++;
