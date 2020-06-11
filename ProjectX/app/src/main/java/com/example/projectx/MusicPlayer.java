@@ -274,7 +274,6 @@ public class MusicPlayer extends AppCompatActivity {
      * Updates playlist name depending on current song
      */
     private void updatePlaylistName() {
-        //TODO:call api and get playlist current song
         if (testing) {
             if (currentSongIndex == 0) {
                 playlistName.setText("Starboy");
@@ -295,7 +294,6 @@ public class MusicPlayer extends AppCompatActivity {
      * updates album art depending on current song
      */
     private void updateAlbumArt() {
-        //TODO: get song cover from api call
         if (testing) {
             if (currentSongIndex == 0) {
                 albumArt.setImageResource(R.drawable.album_art_starboy);
@@ -383,7 +381,6 @@ public class MusicPlayer extends AppCompatActivity {
                 });
             }
         }, 0, 200);
-        //TODO: get duration of current song
     }
 
     /**
@@ -408,14 +405,14 @@ public class MusicPlayer extends AppCompatActivity {
     }
 
     /**
-     * call api and check if currentSong is like
+     * call api and check if currentSong is liked
      */
     private void getIsSongLiked() {
         if (currentSong.id == null) return;
         loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
         final String userId = loginCredentials.getString("id", null);
         final String ipAddress = PreferenceManager.getDefaultSharedPreferences(getBaseContext())
-                .getString("IpAddressTextPref", "192.168.1.2");
+                .getString("IpAddressTextPref", null);
         String url = "http://" + ipAddress + ":3000/api/v1/users/Track/Ex/";
         url = url + targetSongId;
         JsonObjectRequest updateRequest = new JsonObjectRequest(Request.Method.POST, url, null
@@ -516,9 +513,13 @@ public class MusicPlayer extends AppCompatActivity {
         }
     }
 
+    /**
+     * sends like and dislike requests and changes like button state appropriately
+     *
+     * @param unlike if you want to dislike enter "un/" here
+     */
     private void sendLikeRequest(final String unlike) {
         loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
-        final String userId = loginCredentials.getString("id", null);
         String url = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:3000/api/v1/follow/track/" + unlike;
         url = url + currentSong.id;
         JsonObjectRequest updateRequest = new JsonObjectRequest(Request.Method.PATCH, url, null
@@ -533,7 +534,7 @@ public class MusicPlayer extends AppCompatActivity {
                 } else {
                     likeSongButton.setImageResource(R.drawable.like_song);
                     songLiked = false;
-                    Toast.makeText(getApplicationContext(), "Song DisLiked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Song Disliked", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -541,9 +542,9 @@ public class MusicPlayer extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 likeLoading = false;
                 if (unlike.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Couldn't dislike song, please try again.", Toast.LENGTH_SHORT).show();
-                } else {
                     Toast.makeText(getApplicationContext(), "Couldn't like song, please try again.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Couldn't dislike song, please try again.", Toast.LENGTH_SHORT).show();
                 }
             }
         }) {
@@ -558,6 +559,7 @@ public class MusicPlayer extends AppCompatActivity {
 
             @Override
             public byte[] getBody() {
+                final String userId = loginCredentials.getString("id", null);
                 String body = "{\"" + "id" + "\":\"" + userId + "\"}";
                 return body.getBytes();
             }
@@ -583,11 +585,9 @@ public class MusicPlayer extends AppCompatActivity {
         {
             downloadButton.setImageResource(R.drawable.download_song);
             songDownloaded = false;
-            //TODO: remove song from liked playlist via api call
         } else {
             downloadButton.setImageResource(R.drawable.delete_song);
             songDownloaded = true;
-            //TODO: add song to liked playlist via api call
         }
     }
 
@@ -629,9 +629,8 @@ public class MusicPlayer extends AppCompatActivity {
      * @param V
      */
     public void gotoAlbum(View V) {
-        //TODO: goto album which current playing song belongs to
         Intent intent = new Intent(getApplicationContext(), AlbumActivity.class);
-        intent.putExtra("AlbumId", currentSong.albumName);
+        intent.putExtra("AlbumID", currentSong.albumId);
         startActivity(intent);
     }
 
@@ -651,7 +650,6 @@ public class MusicPlayer extends AppCompatActivity {
      */
     public void closeActivity(View V) {
         finish();
-        //TODO: implement this function
     }
 
     /**
@@ -663,7 +661,6 @@ public class MusicPlayer extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), ArtistActivity.class);
         intent.putExtra("ArtistId", currentSong.artistsIds[0]);
         startActivity(intent);
-        //TODO: call api to go to artist page
     }
 
     /**
@@ -788,11 +785,9 @@ public class MusicPlayer extends AppCompatActivity {
         {
             blacklistButton.setImageResource(R.drawable.blacklist_song_normal);
             songBlacklisted = false;
-            //TODO: remove song from blacklisted playlist
         } else {
             blacklistButton.setImageResource(R.drawable.blacklist_song_pressed);
             songBlacklisted = true;
-            //TODO: add song to blacklisted playlist
         }
     }
 

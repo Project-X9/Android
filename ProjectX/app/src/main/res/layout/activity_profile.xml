@@ -60,6 +60,21 @@
             app:layout_constraintStart_toStartOf="@+id/collapse_ib"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/logout_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="#00FFFFFF"
+            android:text="Log out"
+            android:fontFamily="@font/encore_font_circular_black"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
