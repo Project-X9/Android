@@ -24,7 +24,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.projectx.authentication.AuthenticationPage;
 import com.example.projectx.playlist.PlayListFull;
+import com.facebook.login.LoginManager;
 import com.google.android.material.appbar.AppBarLayout;
 
 import org.json.JSONArray;
@@ -35,9 +37,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Profile extends AppCompatActivity {
-
+    //Constants
     private final String MOCK_URL = "http://www.mocky.io/v2/5ec9d1943000007900a6ce88";
-    private Button editProfile;
+    final String CREDENTIALS_FILE = "loginCreds";
+
+    //Views
+    private Button editProfile, logoutButton;
     TextView topUsername, middleUsername, playlistCount, followersCount, followingCount, activityStatus;
     RecyclerView playlistsRecyclerView;
     private ThreeDataItemAdapter mAdapter;
@@ -47,19 +52,18 @@ public class Profile extends AppCompatActivity {
     private AppBarLayout appBarLayout;
     private Guideline guideline;
     private ImageButton backButton;
-    ArrayList<ThreeDataItem> onlinePlaylistsList;
 
+    //Variables
+    ArrayList<ThreeDataItem> onlinePlaylistsList;
     private String name, email;
     private int followers, following, playlistsCount;
     String[] playlistIds;
     String[] followersIds;
     String[] followingIds;
-
-    SharedPreferences loginCredentials;
-    final String CREDENTIALS_FILE = "loginCreds";
-
     private boolean testing = false;
     private boolean loading;
+    SharedPreferences loginCredentials;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,9 @@ public class Profile extends AppCompatActivity {
         sendRequest();
     }
 
+    /**
+     * Send get request to server to get user data
+     */
     private void sendRequest() {
         loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
         String userId = loginCredentials.getString("id", null);
@@ -120,6 +127,11 @@ public class Profile extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Update UI elements from the passed JSONObject
+     *
+     * @param user JSONObject to update the UI from
+     */
     private void updateUI(JSONObject user) {
         try {
             name = user.getString("name");
@@ -157,6 +169,7 @@ public class Profile extends AppCompatActivity {
     private void findObjects() {
         backButton = (ImageButton) findViewById(R.id.collapse_ib);
         editProfile = (Button) findViewById(R.id.edit_button_bt);
+        logoutButton = (Button) findViewById(R.id.logout_bt);
         topUsername = (TextView) findViewById(R.id.top_username_tv);
         middleUsername = (TextView) findViewById(R.id.middle_username_tv);
         playlistCount = (TextView) findViewById(R.id.playlists_count_tv);
@@ -188,17 +201,22 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        playlistLayout.setOnClickListener(new View.OnClickListener() {
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: intent to open playlists page of current user
+                loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
+                SharedPreferences.Editor editor = loginCredentials.edit();
+                editor.clear();
+                editor.commit();
+                LoginManager.getInstance().logOut();
+                startActivity(new Intent(getBaseContext(), AuthenticationPage.class));
+                finishAffinity();
             }
         });
 
         followersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: intent to open followers page of current user
                 if (loading | followers == 0) return;
                 Intent intent = new Intent(getApplicationContext(), ProfilesActivity.class);
                 Bundle extras = new Bundle();
@@ -212,7 +230,6 @@ public class Profile extends AppCompatActivity {
         followingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: intent to open following page of current user
                 if (loading | following == 0) return;
                 Intent intent = new Intent(getApplicationContext(), ProfilesActivity.class);
                 Bundle extras = new Bundle();
@@ -276,6 +293,11 @@ public class Profile extends AppCompatActivity {
         });
     }
 
+    /**
+     * fill recyclerView from the passed JSONObject
+     *
+     * @param jsonObject JSONObject to fill the recyclerView from
+     */
     private void fillRecyclerView(JSONObject jsonObject) {
         try {
             JSONArray playlistsJson = jsonObject.getJSONArray("playlists");

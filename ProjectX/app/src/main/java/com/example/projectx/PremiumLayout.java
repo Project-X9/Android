@@ -33,6 +33,7 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
     private final String PREMIUM_USER_OFFER = "Hope you're enjoying Premium, read more about the features below.";
     private final String FREE_USER_OFFER = "Join Premium Now, 3 months for EGP 49.99";
     private final String PREVIOUSLY_PREMIUM_USER_OFFER = "Come back to Premium, 3 months for EGP 49.99";
+    final String CREDENTIALS_FILE = "loginCreds";
 
     //Views
     private ViewPager demoViewPager;
@@ -44,15 +45,17 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
     //Variables
     private boolean isPremium;
     private boolean isPreviouslyPremium;
-
     SharedPreferences loginCredentials;
-    final String CREDENTIALS_FILE = "loginCreds";
     private boolean loading = false;
+
 
     public PremiumLayout() {
         // Required empty public constructor
     }
 
+    /**
+     * Sets listeners for UI elements
+     */
     private void setListeners() {
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,12 +83,15 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
         setViewPager(view);
         findElements(view);
         getPremiumStatus();
-        initializeUI();
+        updateUI();
         setListeners();
         return view;
     }
 
-    private void initializeUI() {
+    /**
+     * Updates UI based on isPremium and isPreviouslyPremium
+     */
+    private void updateUI() {
         if (isPremium) {
             premiumUI();
         } else {
@@ -97,6 +103,9 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
         }
     }
 
+    /**
+     * Gets isPremium and isPreviouslyPremium from sharedPreferences
+     */
     private void getPremiumStatus() {
         loginCredentials = getActivity().getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
         try {
@@ -111,6 +120,11 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
         }
     }
 
+    /**
+     * findViews
+     *
+     * @param view Fragment View
+     */
     private void findElements(View view) {
         settingsButton = view.findViewById(R.id.settings_ib);
         premiumButton1 = view.findViewById(R.id.get_premium_button1_bt);
@@ -120,6 +134,11 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
         premiumStatus = view.findViewById(R.id.premium_status_tv);
     }
 
+    /**
+     * Initializes demo ViewPager
+     *
+     * @param view
+     */
     void setViewPager(View view) {
         demoViewPager = view.findViewById(R.id.demo_vp);
         adapter = new FreeVsPremiumAdapter(getChildFragmentManager(), 5);
@@ -129,6 +148,9 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
         tabLayout.setupWithViewPager(demoViewPager);
     }
 
+    /**
+     * Handles when the premium button is pressed
+     */
     public void premiumButtonPressed() {
         if (loading) {
             Toast.makeText(getActivity(), "Loading, please wait", Toast.LENGTH_SHORT).show();
@@ -137,6 +159,9 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
         openDialog();
     }
 
+    /**
+     * Opens premium dialog
+     */
     private void openDialog() {
         String message;
         if (isPremium) {
@@ -148,11 +173,17 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
         dialog.show(getChildFragmentManager(), "premium dialog");
     }
 
+    /**
+     * Handles when the user presses YES on the dialog
+     */
     @Override
     public void OnYesClicked() {
         sendRequest();
     }
 
+    /**
+     * Sends request to the server to change premium status and updates UI on response
+     */
     private void sendRequest() {
         loginCredentials = getActivity().getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
         final String userId = loginCredentials.getString("id", null);
@@ -163,13 +194,15 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
             @Override
             public void onResponse(JSONObject response) {
                 isPremium = !isPremium;
-                initializeUI();
+                updateUI();
                 loading = false;
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("TAG", "onErrorResponse: " + error.toString());
+                ;
+                Toast.makeText(getActivity(), "Error, please make sure you're connected to the internet", Toast.LENGTH_SHORT).show();
                 loading = false;
             }
         }) {
@@ -184,6 +217,9 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
         loading = true;
     }
 
+    /**
+     * Changes to premium user UI
+     */
     private void premiumUI() {
         premiumOffer.setText(PREMIUM_USER_OFFER);
         premiumStatus.setText("Spotify\nPremium");
@@ -192,6 +228,9 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
         premiumButton3.setText("Cancel Premium");
     }
 
+    /**
+     * Changes to previously premium user UI
+     */
     private void previouslyPremiumUI() {
         premiumOffer.setText(PREVIOUSLY_PREMIUM_USER_OFFER);
         premiumStatus.setText("Spotify\nFree");
@@ -200,6 +239,9 @@ public class PremiumLayout extends Fragment implements PremiumDialog.PremiumDial
         premiumButton3.setText("Get Premium");
     }
 
+    /**
+     * Changes to free user UI
+     */
     private void freeUI() {
         premiumOffer.setText(FREE_USER_OFFER);
         premiumStatus.setText("Spotify\nFree");
