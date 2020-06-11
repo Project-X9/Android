@@ -26,4 +26,11 @@
         android:key="EditEmailTextPref"
         android:summary="Click to change email"
         android:title="Change Email" />
+    <EditTextPreference
+        android:dialogTitle="Change IP Address"
+        android:dialogMessage="Enter the IP Address of the PC running the server"
+        android:inputType="text"
+        android:key="IpAddressTextPref"
+        android:summary="Click to change ip address of server"
+        android:title="Change IP Address" />
 </PreferenceScreen>

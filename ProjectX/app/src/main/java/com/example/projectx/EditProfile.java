@@ -54,6 +54,7 @@ public class EditProfile extends AppCompatActivity {
         preferences.edit().putString("EditNameTextPref", Name).commit();
         preferences.edit().putString("EditPasswordTextPref", "").commit();
         preferences.edit().putString("EditEmailTextPref", Email).commit();
+//        preferences.edit().putString("IpAddressTextPref", Email).commit();
         getFragmentManager().beginTransaction().add(R.id.fragment_container, new SettingsFragment()).commit();
     }
 
@@ -94,7 +95,7 @@ public class EditProfile extends AppCompatActivity {
                             updateProfile(name, "name");
                         }
                     } else if (key.equals("EditPasswordTextPref")) {
-                        String password = sharedPreferences.getString("EditNameTextPref", "def");
+                        String password = sharedPreferences.getString("EditPasswordTextPref", "def");
                         if (password.equals("")) {
 //                            Toast.makeText(getActivity(), "Password can't be empty!", Toast.LENGTH_SHORT).show();
                             showToast("Password can't be empty!");

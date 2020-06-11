@@ -15,6 +15,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -29,7 +30,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.ColorUtils;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -45,7 +45,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -84,6 +83,7 @@ public class MusicPlayer extends AppCompatActivity {
 
     SharedPreferences loginCredentials;
     final String CREDENTIALS_FILE = "loginCreds";
+    private boolean likeLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -411,16 +411,19 @@ public class MusicPlayer extends AppCompatActivity {
      * call api and check if currentSong is like
      */
     private void getIsSongLiked() {
+        if (currentSong.id == null) return;
         loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
         final String userId = loginCredentials.getString("id", null);
-        String url = "http://localhost:3000/api/v1/users/Track/Ex/";
+        final String ipAddress = PreferenceManager.getDefaultSharedPreferences(getBaseContext())
+                .getString("IpAddressTextPref", "192.168.1.2");
+        String url = "http://" + ipAddress + ":3000/api/v1/users/Track/Ex/";
         url = url + targetSongId;
-        JsonObjectRequest updateRequest = new JsonObjectRequest(Request.Method.GET, url, null
+        JsonObjectRequest updateRequest = new JsonObjectRequest(Request.Method.POST, url, null
                 , new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    Toast.makeText(getApplicationContext(),"success",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
                     Log.d("TAG", "onResponse: success" + response.getBoolean("data"));
                     if (response.getBoolean("data")) {
                         likeSongButton.setImageResource(R.drawable.dislike_song);
@@ -434,7 +437,7 @@ public class MusicPlayer extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "failed", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", "onErrorResponse: " + error.toString());
             }
         }) {
@@ -446,13 +449,6 @@ public class MusicPlayer extends AppCompatActivity {
                 params.put("Authorization", token);
                 return params;
             }
-//
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                HashMap<String, String> params = new HashMap<>();
-//                params.put("id", userId);
-//                return params;
-//            }
 
             @Override
             public byte[] getBody() {
@@ -470,16 +466,11 @@ public class MusicPlayer extends AppCompatActivity {
      * @param V
      */
     public void songTitlePressed(View V) {
-        //TODO: collapse musicplayer and gotoSongPage(V);
         if (currentSong.url == null)   //check if no internet connection
         {
             Toast.makeText(getApplicationContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
             return;
         }
-//        closeActivity(V);
-        //call api to get song page
-        //make intent and open new activity of song page
-        //gotoSongPage(V);
     }
 
 
@@ -511,7 +502,7 @@ public class MusicPlayer extends AppCompatActivity {
      * @param V
      */
     public void likeButtonPressed(View V) {
-        if (loading) return;
+        if (loading | likeLoading) return;
         if (currentSong.url == null)   //check if no internet connection
         {
             Toast.makeText(getApplicationContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
@@ -519,14 +510,61 @@ public class MusicPlayer extends AppCompatActivity {
         }
         if (songLiked)   //song is liked and user wants to dislike
         {
-            likeSongButton.setImageResource(R.drawable.like_song);
-            songLiked = false;
-            //TODO: remove song from liked playlist via api call
+            sendLikeRequest("un/");
         } else {
-            likeSongButton.setImageResource(R.drawable.dislike_song);
-            songLiked = true;
-            //TODO: add song to liked playlist via api call
+            sendLikeRequest("");
         }
+    }
+
+    private void sendLikeRequest(final String unlike) {
+        loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
+        final String userId = loginCredentials.getString("id", null);
+        String url = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:3000/api/v1/follow/track/" + unlike;
+        url = url + currentSong.id;
+        JsonObjectRequest updateRequest = new JsonObjectRequest(Request.Method.PATCH, url, null
+                , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                likeLoading = false;
+                if (unlike.equals("")) {
+                    likeSongButton.setImageResource(R.drawable.dislike_song);
+                    songLiked = true;
+                    Toast.makeText(getApplicationContext(), "Song Liked", Toast.LENGTH_SHORT).show();
+                } else {
+                    likeSongButton.setImageResource(R.drawable.like_song);
+                    songLiked = false;
+                    Toast.makeText(getApplicationContext(), "Song DisLiked", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                likeLoading = false;
+                if (unlike.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Couldn't dislike song, please try again.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Couldn't like song, please try again.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+            @Override
+            public HashMap<String, String> getHeaders() {
+                String token = loginCredentials.getString("token", null);
+                HashMap<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", token);
+                return params;
+            }
+
+            @Override
+            public byte[] getBody() {
+                String body = "{\"" + "id" + "\":\"" + userId + "\"}";
+                return body.getBytes();
+            }
+        };
+        RequestQueue getUserQueue = Volley.newRequestQueue(getApplicationContext());
+        getUserQueue.add(updateRequest);
+        likeLoading = true;
     }
 
     /**
