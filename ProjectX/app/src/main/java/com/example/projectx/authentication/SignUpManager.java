@@ -59,8 +59,8 @@ public class SignUpManager  {
     }
 
     public JSONObject signUp(Boolean mockState, String name, String email, String age, String gender ,String password) {
-        final String SIGNUP_URL = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:" +
-                "3000/api/v1/users/";
+        final String SIGNUP_URL = "http://192.168.1.7:" +
+                "3000/api/v1/users/SignUp/";
         final String MOCK_SIGNUP_URL = "http://192.168.1.15:8000/Users";
         String usedUrl;
         if (mockState){
@@ -72,16 +72,43 @@ public class SignUpManager  {
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
 
 
-            Map<String, String> userInfo = new HashMap();
+            JSONObject userInfo = new JSONObject();
+        try {
             userInfo.put("name", name);
             userInfo.put("email", email);
-            userInfo.put("age", age);
-            userInfo.put("gender", gender);
+            userInfo.put("age", Integer.valueOf(age));
+//            userInfo.put("gender", gender);
             userInfo.put("password", password);
-            JSONObject parameters = new JSONObject(userInfo);
-            Log.e("json", parameters.toString());
+//            userInfo.put("premium", false);
+//            userInfo.put("previouslyPremium", false);
+//            JSONArray empty = new JSONArray();
+//            userInfo.put("CreatedPlaylists", empty);
+//            userInfo.put("followers", empty);
+//            userInfo.put("following", empty);
+//            userInfo.put("playlists", empty);
+//            userInfo.put("playlists", empty);
+//            userInfo.put("playlists", empty);
+//            userInfo.put("playlists", empty);
+//            userInfo.put("playlists", empty);
+//            userInfo.put("tracks", empty);
+//            userInfo.put("albums", empty);
+//            userInfo.put("artists", empty);
+//            userInfo.put("deletedPlaylists", empty);
+//            userInfo.put("likedPlaylists", empty);
+//            userInfo.put("tokens", empty);
+//            userInfo.put("ConfirmationToken", "");
+//            userInfo.put("__v", 1);
+//            userInfo.put("isVerified", false);
+//            userInfo.put("notifications", empty);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+            //JSONObject parameters = new JSONObject(userInfo);
+            Log.e("json", userInfo.toString());
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, usedUrl,
-                    parameters, future, future);
+                    userInfo, future, future);
             Log.e("url", usedUrl);
             RequestQueue signUpRq = Volley.newRequestQueue(this.context);
             signUpRq.add(request);

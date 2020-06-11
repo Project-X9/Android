@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.projectx.Confirmation;
 import com.example.projectx.MainActivity;
 import com.example.projectx.R;
 
@@ -151,10 +152,12 @@ public class SignUpActivity extends AppCompatActivity {
             try {
                 //.
                 Log.e("reached", "postexecute");
+                Log.e("result", result.toString());
                 if (result.getString("status").equals("success")) {
                     storeCredentials(CREDENTIALS_FILE, result.getJSONObject("data").
                             getJSONObject("user").getString("_id"));
-                    startActivity(new Intent(getBaseContext(), MainActivity.class));
+
+                    startActivity(new Intent(getBaseContext(), Confirmation.class));
                     finish();
                 }
                 else

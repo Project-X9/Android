@@ -4,8 +4,6 @@
     android:targetSandboxVersion="1">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,8 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".playlist.AddSong">
         </activity>
+
+        <activity android:name=".Confirmation"></activity>
+
         <activity android:name=".ArtistActivity" />
         <activity
             android:name=".ProfilesActivity"
