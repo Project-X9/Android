@@ -41,6 +41,9 @@ public class EditProfile extends AppCompatActivity {
         setListeners();
     }
 
+    /**
+     * Initialize variables from intent extras
+     */
     private void initializeElements() {
         SettingsFragment.loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
         Bundle extras = getIntent().getExtras();
@@ -57,6 +60,9 @@ public class EditProfile extends AppCompatActivity {
         getFragmentManager().beginTransaction().add(R.id.fragment_container, new SettingsFragment()).commit();
     }
 
+    /**
+     * set listeners for UI elements
+     */
     private void setListeners() {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +72,9 @@ public class EditProfile extends AppCompatActivity {
         });
     }
 
+    /**
+     * find UI Views
+     */
     private void findObjects() {
         backButton = findViewById(R.id.collapse_ib);
         topName = findViewById(R.id.top_username_tv);
@@ -118,10 +127,21 @@ public class EditProfile extends AppCompatActivity {
 
         }
 
+        /**
+         * show toast message for short duration
+         *
+         * @param message message to show
+         */
         void showToast(String message) {
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
         }
 
+        /**
+         * send patch request to server to update user
+         *
+         * @param value update value
+         * @param key   update key
+         */
         private void updateProfile(final String value, final String key) {
             String userId = loginCredentials.getString("id", null);
             String url = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:3000/api/v1/users/";
