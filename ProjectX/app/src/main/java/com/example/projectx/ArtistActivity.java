@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,13 +39,16 @@ public class ArtistActivity extends AppCompatActivity {
     ArrayList<String> trackNames = new ArrayList<String>();
     ArrayList<String> trackPictures = new ArrayList<String>();
     ArrayList<String> trackIds = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artist);
         Intent intent = getIntent();
         String id = intent.getStringExtra("ArtistId");
-        artistUrl = "http://192.168.1.7:3000/api/v1/artist/artists/" + id;
+        final String ipAddress = PreferenceManager.getDefaultSharedPreferences(getBaseContext())
+                .getString("IpAddressTextPref", null);
+        artistUrl = "http://" + ipAddress + ":3000/api/v1/artist/artists/" + id;
         Log.e("Artist id is ", id);
         ArtistAsyncTask aat = new ArtistAsyncTask();
         aat.execute();
@@ -61,6 +65,7 @@ public class ArtistActivity extends AppCompatActivity {
             super.onPreExecute();
 
         }
+
         @Override
         protected JSONObject doInBackground(String... strings) {
             RequestFuture<JSONObject> future = RequestFuture.newFuture();
@@ -70,13 +75,11 @@ public class ArtistActivity extends AppCompatActivity {
             signUpRq.add(request);
             try {
                 JSONObject response = future.get();
-                if (response.getString("status").equals("400")){
+                if (response.getString("status").equals("400")) {
 //                    makeToast("Bad request. Make sure you entered your full name.");
-                }
-                else if (response.getString("status").equals("500")) {
+                } else if (response.getString("status").equals("500")) {
 //                    makeToast("Seems the server down. Sorry!");
-                }
-                else {
+                } else {
                     return response;
                 }
             } catch (InterruptedException e) {
@@ -90,7 +93,7 @@ public class ArtistActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(JSONObject result){
+        protected void onPostExecute(JSONObject result) {
             super.onPostExecute(result);
             Bitmap image = null;
             try {
@@ -102,7 +105,7 @@ public class ArtistActivity extends AppCompatActivity {
                 artistBio.setText(data.getString("Bio"));
                 JSONArray tracks = data.getJSONArray("tracks");
 
-                for (int i = 0; i < tracks.length(); i++){
+                for (int i = 0; i < tracks.length(); i++) {
                     trackNames.add(tracks.getJSONObject(i).getString("name"));
                     trackPictures.add(tracks.getJSONObject(i).getString("imageUrl"));
                     trackIds.add(tracks.getJSONObject(i).getString("_id"));
@@ -139,7 +142,6 @@ public class ArtistActivity extends AppCompatActivity {
                         }
 
 
-
                     }
                 }.start();
 
@@ -149,6 +151,6 @@ public class ArtistActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-}
+    }
 
 }

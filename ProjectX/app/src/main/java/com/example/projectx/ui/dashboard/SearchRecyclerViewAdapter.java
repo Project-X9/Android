@@ -62,6 +62,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
                     int counter = 0;
                     for (String s : trackIds){
                         trackIdsStringArray[counter] = s;
+                        counter++;
                     }
                     extras.putStringArray("songslistarray", trackIdsStringArray);
                     extras.putString("songid", trackIds.get(position));

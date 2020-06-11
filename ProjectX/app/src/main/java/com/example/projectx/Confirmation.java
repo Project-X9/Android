@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ public class Confirmation extends AppCompatActivity {
     SharedPreferences shp;
     final String CREDENTIALS_FILE = "loginCreds";
     JSONObject result;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,17 +40,19 @@ public class Confirmation extends AppCompatActivity {
         setContentView(R.layout.activity_confirmation);
         Button enterToken = (Button) findViewById(R.id.EnterToken);
         final EditText token = (EditText) findViewById(R.id.Token_et);
-        enterToken.setOnClickListener( new View.OnClickListener(){
+        enterToken.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 TokenAsyncTask tat = new TokenAsyncTask(getBaseContext(), token.getText().toString());
-                 tat.execute();
+                TokenAsyncTask tat = new TokenAsyncTask(getBaseContext(), token.getText().toString());
+                tat.execute();
             }
         });
     }
+
     private class TokenAsyncTask extends AsyncTask<String, Integer, Void> {
         private Context context;
         private String token;
+
         public TokenAsyncTask(Context c, String token) {
             this.context = c;
             this.token = token;
@@ -62,16 +66,18 @@ public class Confirmation extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... strings) {
             RequestFuture<JSONObject> future = RequestFuture.newFuture();
-            String url = "http://192.168.1.7:3000/api/v1/users/confirmation/" + token;
+            final String ipAddress = PreferenceManager.getDefaultSharedPreferences(getBaseContext())
+                    .getString("IpAddressTextPref", null);
+            String url = "http://" + ipAddress + ":3000/api/v1/users/confirmation/" + token;
             JSONObject js = new JSONObject();
             shp = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
             try {
-                js.put("id" , shp.getString("id", ""));
+                js.put("id", shp.getString("id", ""));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             JsonObjectRequest artistsRequest = new JsonObjectRequest(Request.Method.PATCH, url,
-                    null, future, future){
+                    null, future, future) {
                 @Override
                 public HashMap<String, String> getHeaders() {
 
@@ -99,7 +105,7 @@ public class Confirmation extends AppCompatActivity {
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
             try {
-                if (result.getString("status").equals("success")){
+                if (result.getString("status").equals("success")) {
 
                     startActivity(new Intent(getBaseContext(), MainActivity.class));
                     finish();
@@ -110,8 +116,6 @@ public class Confirmation extends AppCompatActivity {
         }
 
     }
-
-
 
 
 }

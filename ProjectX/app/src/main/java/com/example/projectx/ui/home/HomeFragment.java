@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +50,7 @@ public class HomeFragment extends Fragment {
     String[] playlistIDs = new String[4];
 
     //For Artists
-    private ArrayList<ArtistInfo> artists = new ArrayList<ArtistInfo> ();
+    private ArrayList<ArtistInfo> artists = new ArrayList<ArtistInfo>();
 //    JSONArray artistsJSONArray
 
     //For Albums
@@ -66,6 +67,7 @@ public class HomeFragment extends Fragment {
     PlaylistAsyncTask pat;
     AlbumAsyncTask aat;
     GenreAsyncTask gat;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -100,7 +102,9 @@ public class HomeFragment extends Fragment {
         @Override
         protected Void doInBackground(String... strings) {
             RequestFuture<JSONObject> future = RequestFuture.newFuture();
-            String url = "http://192.168.1.7:3000/api/v1/artist/artists/";
+            final String ipAddress = PreferenceManager.getDefaultSharedPreferences(context)
+                    .getString("IpAddressTextPref", null);
+            String url = "http://" + ipAddress + ":3000/api/v1/artist/artists/";
             JsonObjectRequest artistsRequest = new JsonObjectRequest(Request.Method.GET, url,
                     null, future, future);
             RequestQueue getUserQueue = Volley.newRequestQueue(this.context);
@@ -164,8 +168,8 @@ public class HomeFragment extends Fragment {
                 ArrayList<AlbumsData> albumsArray = new ArrayList<>();
                 for (int i = 0; i < artistsArray.length(); i++) {
                     //albumsArray.add(new AlbumsData(artistsArray.getJSONObject(i).getString("name"),
-                            //artistsArray.getJSONObject(i).getString("photo"),
-                          //  artistsArray.getJSONObject(i).getString("id")));
+                    //artistsArray.getJSONObject(i).getString("photo"),
+                    //  artistsArray.getJSONObject(i).getString("id")));
                     albumNames.add(artistsArray.getJSONObject(i).getString("name"));
                     Log.e("Album names retrieved", "yes");
                     albumUrls.add(artistsArray.getJSONObject(i).getString("photo"));
@@ -211,7 +215,9 @@ public class HomeFragment extends Fragment {
         @Override
         protected Void doInBackground(String... strings) {
             RequestFuture<JSONObject> future = RequestFuture.newFuture();
-            String url = "http://192.168.1.7:3000/api/v1/browse/categories";
+            final String ipAddress = PreferenceManager.getDefaultSharedPreferences(context)
+                    .getString("IpAddressTextPref", null);
+            String url = "http://" + ipAddress + ":3000/api/v1/browse/categories";
             JsonObjectRequest artistsRequest = new JsonObjectRequest(Request.Method.GET, url,
                     null, future, future);
             RequestQueue getUserQueue = Volley.newRequestQueue(this.context);
@@ -247,7 +253,9 @@ public class HomeFragment extends Fragment {
 
             GenreRecyclerViewAdapter adapter = new GenreRecyclerViewAdapter(getContext(), genreNames, genreUrls);
             genreRecyclerView.setAdapter(adapter);
-            if (progDialog.isShowing()){progDialog.dismiss();}
+            if (progDialog.isShowing()) {
+                progDialog.dismiss();
+            }
         }
 
     }
@@ -261,8 +269,6 @@ public class HomeFragment extends Fragment {
         pat.cancel(true);
 
     }
-
-
 
 
 }

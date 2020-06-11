@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,17 +39,17 @@ import java.util.concurrent.ExecutionException;
 
 public class PlaylistEdit extends AppCompatActivity {
 
-    String PLAYLIST_SERVER = "http://192.168.43.253:3000/api/v1/playlist";
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private TextView playlistName,topPlaylistName;
-    static ArrayList<Song> songArrayList=new ArrayList<>();
+    private TextView playlistName, topPlaylistName;
+    static ArrayList<Song> songArrayList = new ArrayList<>();
     static String[] SongIDStringArray;
     private Context context;
     JSONObject result;
-    static String ClickedSongId,mPlaylistName,mPlaylistServerURL,mPlaylistId,mDeleteTrack="deleteTrack";
-    static ImageView mPlaylistImage,mRenamePlaylist;
+    static String ClickedSongId, mPlaylistName, mPlaylistServerURL, mPlaylistId, mDeleteTrack = "deleteTrack";
+    static ImageView mPlaylistImage, mRenamePlaylist;
 
 
     @Override
@@ -63,13 +64,13 @@ public class PlaylistEdit extends AppCompatActivity {
         String temp3 = b.getString("PlaylistId");
         mPlaylistName = temp1;
         mPlaylistServerURL = temp2;
-        mPlaylistId=temp3;
+        mPlaylistId = temp3;
 
         playlistName = findViewById(R.id.playlistName_tv);
         mRecyclerView = findViewById(R.id.songlists_list_rv);
         mRenamePlaylist = findViewById(R.id.editPlaylist_ibt);
-        topPlaylistName=findViewById(R.id.top_playlistName_tv);
-        context=getApplicationContext();
+        topPlaylistName = findViewById(R.id.top_playlistName_tv);
+        context = getApplicationContext();
 
         FetchPlaylist fetchPlaylist = new FetchPlaylist();
         fetchPlaylist.execute();
@@ -79,11 +80,11 @@ public class PlaylistEdit extends AppCompatActivity {
     }
 
 
-    public void addsongs (View view){
+    public void addsongs(View view) {
         Intent i = new Intent(getApplicationContext(), AddSong.class);
         Bundle extras = new Bundle();
-        extras.putString("PlaylistId",mPlaylistId);
-        extras.putString("URL",mPlaylistServerURL);
+        extras.putString("PlaylistId", mPlaylistId);
+        extras.putString("URL", mPlaylistServerURL);
         extras.putString("PlaylistName", mPlaylistName);
         i.putExtras(extras);
         startActivity(i);
@@ -91,12 +92,12 @@ public class PlaylistEdit extends AppCompatActivity {
 
     }
 
-    public void renamePlaylist(View view){
+    public void renamePlaylist(View view) {
 
         Intent i = new Intent(getApplicationContext(), NameRenamePlaylist.class);
         Bundle extras = new Bundle();
-        extras.putString("PlaylistId",mPlaylistId);
-        extras.putString("URL",mPlaylistServerURL);
+        extras.putString("PlaylistId", mPlaylistId);
+        extras.putString("URL", mPlaylistServerURL);
         extras.putString("Create", "0");
         i.putExtras(extras);
         startActivity(i);
@@ -107,7 +108,7 @@ public class PlaylistEdit extends AppCompatActivity {
     public void returnBack(View v) {
         Intent i = new Intent(this, PlayListFull.class);
         Bundle extras = new Bundle();
-        extras.putString("PlaylistIDs",mPlaylistId);
+        extras.putString("PlaylistIDs", mPlaylistId);
         i.putExtras(extras);
         startActivity(i);
         finish();
@@ -147,9 +148,9 @@ public class PlaylistEdit extends AppCompatActivity {
 
     private void deleteTrack(int position) {
         String trackId = songArrayList.get(position).id;
-        deleteTrackAsyncTask deleteTrackAsyncTask=new deleteTrackAsyncTask();
+        deleteTrackAsyncTask deleteTrackAsyncTask = new deleteTrackAsyncTask();
         deleteTrackAsyncTask.execute(trackId);
-        Toast.makeText(PlaylistEdit.this,"Track deleted from Playlist", Toast.LENGTH_LONG).show();
+        Toast.makeText(PlaylistEdit.this, "Track deleted from Playlist", Toast.LENGTH_LONG).show();
         return;
     }
 
@@ -160,20 +161,20 @@ public class PlaylistEdit extends AppCompatActivity {
         fetchPlaylist.execute();
     }
 
-    private void  setupRecyclerView(ArrayList<Song> songArrayList) {
+    private void setupRecyclerView(ArrayList<Song> songArrayList) {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new PlaylistEditAdapter(songArrayList, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private class FetchPlaylist extends AsyncTask<String, String, String > {
+    private class FetchPlaylist extends AsyncTask<String, String, String> {
 
         String mNamePlaylist;
 
 
         @Override
-        protected String  doInBackground(String... strings) {
+        protected String doInBackground(String... strings) {
             String string = Playlist(mNamePlaylist);
             return string;
         }
@@ -189,7 +190,7 @@ public class PlaylistEdit extends AppCompatActivity {
             super.onPostExecute(s);
             playlistName.setText(s);
             topPlaylistName.setText(s);
-            SongIDStringArray=new String[songArrayList.size()];
+            SongIDStringArray = new String[songArrayList.size()];
             for (int i = 0; i < songArrayList.size(); i++) {
                 SongIDStringArray[i] = songArrayList.get(i).id;
             }
@@ -228,7 +229,7 @@ public class PlaylistEdit extends AppCompatActivity {
                 String trackUrl = jsonObjectArray.get(i).getString("url");
                 String trackDuration = jsonObjectArray.get(i).getString("duration");
                 String trackImageUrl = jsonObjectArray.get(i).getString("imageUrl");
-                JSONArray artists =  jsonObjectArray.get(i).getJSONArray("artists");
+                JSONArray artists = jsonObjectArray.get(i).getJSONArray("artists");
 
                 ArrayList<JSONObject> jsonObjectArray1 = new ArrayList<>();
                 for (int j = 0; j < artists.length(); j++) {
@@ -237,13 +238,13 @@ public class PlaylistEdit extends AppCompatActivity {
                 }
                 ArrayList<String> artistIdArrayList = new ArrayList<>();
                 ArrayList<String> artistNameArrayList = new ArrayList<>();
-                for (int k=0; k <  jsonObjectArray1.size(); k++){
+                for (int k = 0; k < jsonObjectArray1.size(); k++) {
                     String Artist_id = jsonObjectArray1.get(k).getString("_id");
                     String Artist_name = jsonObjectArray1.get(k).getString("name");
                     artistIdArrayList.add(Artist_id);
                     artistNameArrayList.add(Artist_name);
                 }
-                JSONArray genres =  jsonObjectArray.get(i).getJSONArray("genres");
+                JSONArray genres = jsonObjectArray.get(i).getJSONArray("genres");
 
                 ArrayList<JSONObject> jsonObjectArray2 = new ArrayList<>();
                 for (int j = 0; j < genres.length(); j++) {
@@ -251,40 +252,34 @@ public class PlaylistEdit extends AppCompatActivity {
                     jsonObjectArray2.add(json);
                 }
                 ArrayList<String> genresIdarraylist = new ArrayList<>();
-                for (int k=0; k <  jsonObjectArray2.size(); k++){
+                for (int k = 0; k < jsonObjectArray2.size(); k++) {
                     String Genres_id = jsonObjectArray2.get(k).getString("_id");
                     genresIdarraylist.add(Genres_id);
                 }
                 Song mSong = new Song();
-                mSong.id=trackId;
-                mSong.description=trackDescription;
-                mSong.name=trackNames;
-                mSong.playcount=trackPlaycount;
-                mSong.url=trackUrl;
-                mSong.duration=trackDuration;
-                mSong.imageUrl=trackImageUrl;
-                mSong.artists=artistIdArrayList;
-                mSong.genres=genresIdarraylist;
-                mSong.artist_name=artistNameArrayList;
-                mSong.CreateImage=R.drawable.ic_add;
+                mSong.id = trackId;
+                mSong.description = trackDescription;
+                mSong.name = trackNames;
+                mSong.playcount = trackPlaycount;
+                mSong.url = trackUrl;
+                mSong.duration = trackDuration;
+                mSong.imageUrl = trackImageUrl;
+                mSong.artists = artistIdArrayList;
+                mSong.genres = genresIdarraylist;
+                mSong.artist_name = artistNameArrayList;
+                mSong.CreateImage = R.drawable.ic_add;
                 songArrayList.add(mSong);
             }
-        }
-
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-
-        catch (ExecutionException e) {
+        } catch (ExecutionException e) {
             e.printStackTrace();
-        }
-
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
 
-        return  mNamePlaylist ;
+        return mNamePlaylist;
 
     }
 
@@ -295,6 +290,7 @@ public class PlaylistEdit extends AppCompatActivity {
             super.onPreExecute();
 
         }
+
         @Override
         protected Void doInBackground(String... strings) {
             try {
@@ -306,18 +302,15 @@ public class PlaylistEdit extends AppCompatActivity {
         }
 
 
-
         @Override
-        protected void onPostExecute(Void v){
+        protected void onPostExecute(Void v) {
             super.onPostExecute(v);
             try {
                 Log.e("reached", "postexecute");
                 Log.e("result", result.toString());
                 if (result.getString("status").equals("success")) {
-                }
-                else
-                {
-                    Log.e("Post Data ","Response Failed");
+                } else {
+                    Log.e("Post Data ", "Response Failed");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -327,7 +320,10 @@ public class PlaylistEdit extends AppCompatActivity {
     }
 
     private JSONObject onSubmitDelete(String data) throws JSONException {
-        String URL=PLAYLIST_SERVER+"/"+mDeleteTrack+"/"+mPlaylistId+"/"+data;
+        final String ipAddress = PreferenceManager.getDefaultSharedPreferences(getBaseContext())
+                .getString("IpAddressTextPref", null);
+        String PLAYLIST_SERVER = "http://" + ipAddress + ":3000/api/v1/playlist";
+        String URL = PLAYLIST_SERVER + "/" + mDeleteTrack + "/" + mPlaylistId + "/" + data;
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         JSONObject deleteJsonInfo = new JSONObject();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PATCH, URL,
@@ -339,20 +335,18 @@ public class PlaylistEdit extends AppCompatActivity {
             JSONObject response = future.get();
             Log.e("post result", response.toString());
             if (response == null) {
-                Log.e("Response","error");
+                Log.e("Response", "error");
                 response = new JSONObject();
                 response.put("status", "Couldn't reach server");
                 return response;
-            }else {
+            } else {
                 response.put("status", "success");
                 return response;
             }
 
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-        catch (ExecutionException e) {
+        } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();

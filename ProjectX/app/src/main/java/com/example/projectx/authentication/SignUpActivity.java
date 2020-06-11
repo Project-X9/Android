@@ -156,7 +156,10 @@ public class SignUpActivity extends AppCompatActivity {
                 if (result.getString("status").equals("success")) {
                     storeCredentials(CREDENTIALS_FILE, result.getJSONObject("data").
                             getJSONObject("user").getString("_id"));
-
+                    loginCredentials = getSharedPreferences(CREDENTIALS_FILE, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = loginCredentials.edit();
+                    editor.putString("token", result.getJSONObject("data").getString("token"));
+                    editor.commit();
                     startActivity(new Intent(getBaseContext(), Confirmation.class));
                     finish();
                 }

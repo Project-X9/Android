@@ -42,6 +42,7 @@ public class MainActivity extends FragmentActivity {
     AlbumsFragment albumsFragment = new AlbumsFragment();
     ArtisttFragment artisttFragment = new ArtisttFragment();
     PlaylistFragment playlistFragment = new PlaylistFragment();
+    PlayListFull playListFull = new PlayListFull();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +105,7 @@ public class MainActivity extends FragmentActivity {
                 albumsFragment.setUserAlbum(myUser);
                 artisttFragment.setUserArtist(myUser);
                 playlistFragment.setUserId(myUser);
+                playListFull.setUserId(myUser);
                 return user;
 
             }catch(ExecutionException e){

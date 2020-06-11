@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,21 +36,23 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class PlayListFull extends AppCompatActivity implements SongAdapter.onSongListner{
+public class PlayListFull extends AppCompatActivity implements SongAdapter.onSongListner {
 
     public static String stringPlaylistName;
     private boolean playlistLiked;
-    private ImageButton likePlaylistButton,shareButton;
+    private ImageButton likePlaylistButton, shareButton;
     String PLAYLIST_FETCH_SERVER = "http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com:3000/api/v1/playlist/";
-    //http://ec2-3-21-218-250.us-east-2.compute.amazonaws.com
     String playlistId = "5e8741dadfdb0a35d429a128";
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private TextView playlistName,topPlaylistName;
-    static ArrayList<Song> songArrayList=new ArrayList<>();
+    private TextView playlistName, topPlaylistName;
+    static ArrayList<Song> songArrayList = new ArrayList<>();
     static String[] SongIDStringArray;
     static String ClickedSongId;
+    private Context context;
+    static ArrayList<String> UserId;
+    JSONObject result;
     static ImageView mPlaylistImage;
 
 
@@ -60,7 +65,7 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         Bundle b = intent.getExtras();
         String temp = b.getString("PlaylistIDs");
         playlistId = temp;
-        playlistLiked=false;
+        playlistLiked = false;
 
         FetchPlaylist fetchPlaylist = new FetchPlaylist();
         fetchPlaylist.execute();
@@ -69,13 +74,13 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         mRecyclerView = findViewById(R.id.songlists_list_rv);
         likePlaylistButton = findViewById(R.id.likeButton2_ib);
         shareButton = findViewById(R.id.sharePlaylist_ibt);
-        topPlaylistName=findViewById(R.id.top_playlistName_tv);
+        topPlaylistName = findViewById(R.id.top_playlistName_tv);
         mPlaylistImage = findViewById(R.id.playlist_image);
 
-
+        context = getApplicationContext();
+        likePlaylistButton.setImageResource(R.drawable.like_song_loading); //disable the like button until data is fetched.
+        shareButton.setImageResource(R.drawable.share_song_pressed); //disable the share button until data is fetched.
     }
-
-
 
 
     /* this is used for sharing playlist link*/
@@ -91,19 +96,10 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
     }
 
     public void likeButtonPressed(View V) {
-
-        if (playlistLiked)
-        {
-            likePlaylistButton.setImageResource(R.drawable.like_song);
-            playlistLiked = false;
-
-        } else {
-            likePlaylistButton.setImageResource(R.drawable.dislike_song);
-            playlistLiked = true;
-
-        }
+        UnFollowAsyncTask unFollowAsyncTask = new UnFollowAsyncTask();
+        unFollowAsyncTask.execute(UserId.get(0));
+        finish();
     }
-
 
 
     public void returnBack(View v) {
@@ -123,34 +119,41 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         startActivity(i);
     }
 
-    public void openEditPlaylist(View view){
+    public void openEditPlaylist(View view) {
         Intent i = new Intent(this, PlaylistEdit.class);
         Bundle extras = new Bundle();
-        extras.putString("PlaylistName",playlistName.toString());
-        extras.putString("URL",PLAYLIST_FETCH_SERVER+playlistId);
-        extras.putString("PlaylistId",playlistId);
+        extras.putString("PlaylistName", playlistName.toString());
+        extras.putString("URL", PLAYLIST_FETCH_SERVER + playlistId);
+        extras.putString("PlaylistId", playlistId);
         i.putExtras(extras);
         startActivity(i);
         finish();
     }
 
-    private void  setupRecyclerView(ArrayList<Song> songArrayList) {
+    private void setupRecyclerView(ArrayList<Song> songArrayList) {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new SongAdapter(songArrayList, getApplicationContext(), this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    public void setUserId(JSONObject userId) {
+        try {
+            UserId = new ArrayList<>();
+            UserId.add(userId.getJSONObject("data").getJSONObject("user").getString("_id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private class FetchPlaylist extends AsyncTask<String, String, String[]> {
 
-    private class FetchPlaylist extends AsyncTask<String, String, String []> {
-
-        String mNamePlaylist,mPlaylistImageURL;
+        String mNamePlaylist, mPlaylistImageURL;
 
 
         @Override
-        protected String [] doInBackground(String... strings) {
-            String [] string = Playlist(mNamePlaylist,mPlaylistImageURL);
+        protected String[] doInBackground(String... strings) {
+            String[] string = Playlist(mNamePlaylist, mPlaylistImageURL);
             return string;
         }
 
@@ -161,29 +164,27 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
         }
 
         @Override
-        protected void onPostExecute(String [] s) {
+        protected void onPostExecute(String[] s) {
             super.onPostExecute(s);
             playlistName.setText(s[0]);
             topPlaylistName.setText(s[0]);
-            mPlaylistImageURL=s[1];
+            mPlaylistImageURL = s[1];
             Picasso.with(getApplicationContext())
                     .load(mPlaylistImageURL)
                     .into(mPlaylistImage);
-            SongIDStringArray=new String[songArrayList.size()];
+            SongIDStringArray = new String[songArrayList.size()];
             for (int i = 0; i < songArrayList.size(); i++) {
                 SongIDStringArray[i] = songArrayList.get(i).id;
             }
 //            mAdapter.notifyDataSetChanged();
             setupRecyclerView(songArrayList);
-            likePlaylistButton.setImageResource(R.drawable.like_song);
+            likePlaylistButton.setImageResource(R.drawable.dislike_song);
             shareButton.setImageResource(R.drawable.share_song);
         }
 
     }
 
-    public String [] Playlist(String mNamePlaylist,String mPlaylistImageURL ) {
-//        likePlaylistButton.setImageResource(R.drawable.like_song_loading); //disable the like button until data is fetched.
-//        shareButton.setImageResource(R.drawable.share_song_pressed); //disable the share button until data is fetched.
+    public String[] Playlist(String mNamePlaylist, String mPlaylistImageURL) {
         songArrayList = new ArrayList<>();
         ArrayList<JSONObject> jsonObjectArray = new ArrayList<>();
 
@@ -212,7 +213,7 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
                 String trackUrl = jsonObjectArray.get(i).getString("url");
                 String trackDuration = jsonObjectArray.get(i).getString("duration");
                 String trackImageUrl = jsonObjectArray.get(i).getString("imageUrl");
-                JSONArray artists =  jsonObjectArray.get(i).getJSONArray("artists");
+                JSONArray artists = jsonObjectArray.get(i).getJSONArray("artists");
 
                 ArrayList<JSONObject> jsonObjectArray1 = new ArrayList<>();
                 for (int j = 0; j < artists.length(); j++) {
@@ -221,13 +222,13 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
                 }
                 ArrayList<String> artistIdArrayList = new ArrayList<>();
                 ArrayList<String> artistNameArrayList = new ArrayList<>();
-                for (int k=0; k <  jsonObjectArray1.size(); k++){
+                for (int k = 0; k < jsonObjectArray1.size(); k++) {
                     String Artist_id = jsonObjectArray1.get(k).getString("_id");
                     String Artist_name = jsonObjectArray1.get(k).getString("name");
                     artistIdArrayList.add(Artist_id);
                     artistNameArrayList.add(Artist_name);
                 }
-                JSONArray genres =  jsonObjectArray.get(i).getJSONArray("genres");
+                JSONArray genres = jsonObjectArray.get(i).getJSONArray("genres");
 
                 ArrayList<JSONObject> jsonObjectArray2 = new ArrayList<>();
                 for (int j = 0; j < genres.length(); j++) {
@@ -235,40 +236,96 @@ public class PlayListFull extends AppCompatActivity implements SongAdapter.onSon
                     jsonObjectArray2.add(json);
                 }
                 ArrayList<String> genresIdarraylist = new ArrayList<>();
-                for (int k=0; k <  jsonObjectArray2.size(); k++){
+                for (int k = 0; k < jsonObjectArray2.size(); k++) {
                     String Genres_id = jsonObjectArray2.get(k).getString("_id");
                     genresIdarraylist.add(Genres_id);
                 }
                 Song mSong = new Song();
-                mSong.id=trackId;
-                mSong.description=trackDescription;
-                mSong.name=trackNames;
-                mSong.playcount=trackPlaycount;
-                mSong.url=trackUrl;
-                mSong.duration=trackDuration;
-                mSong.imageUrl=trackImageUrl;
-                mSong.artists=artistIdArrayList;
-                mSong.genres=genresIdarraylist;
-                mSong.artist_name=artistNameArrayList;
+                mSong.id = trackId;
+                mSong.description = trackDescription;
+                mSong.name = trackNames;
+                mSong.playcount = trackPlaycount;
+                mSong.url = trackUrl;
+                mSong.duration = trackDuration;
+                mSong.imageUrl = trackImageUrl;
+                mSong.artists = artistIdArrayList;
+                mSong.genres = genresIdarraylist;
+                mSong.artist_name = artistNameArrayList;
                 songArrayList.add(mSong);
             }
-        }
-
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        catch (ExecutionException e) {
-            e.printStackTrace();
+        String[] result = {mNamePlaylist, mPlaylistImageURL};
+        return result;
+
+    }
+
+    private class UnFollowAsyncTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
         }
 
-        catch (JSONException e) {
-            e.printStackTrace();
+        @Override
+        protected Void doInBackground(String... strings) {
+            try {
+                result = onSubmitUnfollow(strings[0]);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
-        String [] result={mNamePlaylist,mPlaylistImageURL};
-        return result ;
+        @Override
+        protected void onPostExecute(Void v) {
+            super.onPostExecute(v);
+        }
+    }
 
+    private JSONObject onSubmitUnfollow(String data) throws JSONException {
+        final String ipAddress = PreferenceManager.getDefaultSharedPreferences(getBaseContext())
+                .getString("IpAddressTextPref", null);
+        String UnFollowURL = "http://" + ipAddress + ":3000/api/v1/follow/playlist/un/";
+        String URL = UnFollowURL + playlistId;
+        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+        JSONObject UnfollowInfo = new JSONObject();
+        UnfollowInfo.put("id", data);
+
+        Log.e("SendJson", UnfollowInfo.toString());
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PATCH, URL,
+                UnfollowInfo, future, future);
+        RequestQueue createPlaylistReq = Volley.newRequestQueue(context);
+        createPlaylistReq.add(request);
+
+        try {
+            JSONObject response = future.get();
+            Log.e("post result", response.toString());
+            if (response == null) {
+                Log.e("Response", "error");
+                response = new JSONObject();
+                response.put("status", "Couldn't reach server");
+                return response;
+            } else {
+                response.put("status", "success");
+                return response;
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

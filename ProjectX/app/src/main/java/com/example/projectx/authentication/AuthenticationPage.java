@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +31,7 @@ public class AuthenticationPage extends AppCompatActivity {
     final String CREDENTIALS_FILE = "loginCreds";
     CallbackManager callbackManager;
     public static Activity authenticationPage;
+    EditText mIp;
 
     boolean testing = true;
 
@@ -38,12 +42,15 @@ public class AuthenticationPage extends AppCompatActivity {
 
         setContentView(R.layout.activity_authentication_page);
         final Button signUpBt = (Button) findViewById(R.id.signUp_bt);
-
+        mIp = findViewById(R.id.ip_et);
         final Switch mockSwitch = (Switch) findViewById(R.id.mock);
         mockSwitch.setClickable(false);
         signUpBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                String mIP=mIp.getText().toString();
+                preferences.edit().putString("IpAddressTextPref",mIP).commit();
                 //starts the Sign up page if the user presses on the sign up button
                 startActivity(new Intent(getBaseContext(), SignUpActivity.class));
                 saveMockStatus(mockSwitch);

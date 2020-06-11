@@ -72,7 +72,8 @@ public class AlbumActivity extends AppCompatActivity implements SongAdapter.onSo
         shareButton = findViewById(R.id.sharePlaylist_ibt);
         topAlbumName=findViewById(R.id.top_albumName_tv);
         mAlbumImage = findViewById(R.id.album_image);
-
+        likeAlbumButton.setImageResource(R.drawable.like_song_loading); //disable the like button until data is fetched.
+        shareButton.setImageResource(R.drawable.share_song_pressed); //disable the share button until data is fetched.
         FetchAlbumList fetchAlbumsFragmentData = new FetchAlbumList();
         fetchAlbumsFragmentData.execute();
 
@@ -96,16 +97,16 @@ public class AlbumActivity extends AppCompatActivity implements SongAdapter.onSo
 
     public void likeButtonPressed(View V) {
 
-        if (albumLiked)
-        {
-            likeAlbumButton.setImageResource(R.drawable.like_song);
-            albumLiked = false;
-
-        } else {
-            likeAlbumButton.setImageResource(R.drawable.dislike_song);
-            albumLiked = true;
-
-        }
+//        if (albumLiked)
+//        {
+//            likeAlbumButton.setImageResource(R.drawable.like_song);
+//            albumLiked = false;
+//
+//        } else {
+//            likeAlbumButton.setImageResource(R.drawable.dislike_song);
+//            albumLiked = true;
+//
+//        }
     }
 
     @Override
@@ -166,6 +167,7 @@ public class AlbumActivity extends AppCompatActivity implements SongAdapter.onSo
             super.onPostExecute(o);
             if (dataObj == null) return;
             fillRecyclerView(albumActivity.albumNameKey);
+            likeAlbumButton.setImageResource(R.drawable.dislike_song);
         }
 
         private void fillRecyclerView(String albumID) {
@@ -254,7 +256,7 @@ public class AlbumActivity extends AppCompatActivity implements SongAdapter.onSo
             }
 //            mAdapter.notifyDataSetChanged();
             setupRecyclerView(songArrayList);
-            likeAlbumButton.setImageResource(R.drawable.like_song);
+            likeAlbumButton.setImageResource(R.drawable.dislike_song);
             shareButton.setImageResource(R.drawable.share_song);
         }
 
@@ -358,12 +360,6 @@ public class AlbumActivity extends AppCompatActivity implements SongAdapter.onSo
         return result ;
 
     }
-
-
-
-
-
-
 
 
 }

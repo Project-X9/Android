@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.UserHandle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 
@@ -51,28 +52,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class SignUpManager  {
+public class SignUpManager {
 
     Context context;
-    public SignUpManager(Context context){
+
+    public SignUpManager(Context context) {
         this.context = context;
     }
 
-    public JSONObject signUp(Boolean mockState, String name, String email, String age, String gender ,String password) {
-        final String SIGNUP_URL = "http://192.168.1.7:" +
+    public JSONObject signUp(Boolean mockState, String name, String email, String age, String gender, String password) {
+        final String ipAddress = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString("IpAddressTextPref", null);
+        final String SIGNUP_URL = "http://" + ipAddress + ":" +
                 "3000/api/v1/users/SignUp/";
-        final String MOCK_SIGNUP_URL = "http://192.168.1.15:8000/Users";
+        final String MOCK_SIGNUP_URL = "http://" + ipAddress + ":8000/Users";
         String usedUrl;
-        if (mockState){
+        if (mockState) {
             usedUrl = MOCK_SIGNUP_URL;
-        }
-        else {
+        } else {
             usedUrl = SIGNUP_URL;
         }
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
 
 
-            JSONObject userInfo = new JSONObject();
+        JSONObject userInfo = new JSONObject();
         try {
             userInfo.put("name", name);
             userInfo.put("email", email);
@@ -105,45 +108,40 @@ public class SignUpManager  {
         }
 
 
-            //JSONObject parameters = new JSONObject(userInfo);
-            Log.e("json", userInfo.toString());
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, usedUrl,
-                    userInfo, future, future);
-            Log.e("url", usedUrl);
-            RequestQueue signUpRq = Volley.newRequestQueue(this.context);
-            signUpRq.add(request);
+        //JSONObject parameters = new JSONObject(userInfo);
+        Log.e("json", userInfo.toString());
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, usedUrl,
+                userInfo, future, future);
+        Log.e("url", usedUrl);
+        RequestQueue signUpRq = Volley.newRequestQueue(this.context);
+        signUpRq.add(request);
 
-            try {
-                JSONObject response = future.get();
-                Log.e("post result", response.toString());
-                if (!mockState) {
-                        return response;
-                }
-                else {
-                    if (response == null) {
-                        response = new JSONObject();
-                        response.put("status", "Couldn't reach mock server");
-                        return response;
-                    }
-                    else {
-                        response.put("status", "success");
-                        return response;
-                    }
+        try {
+            JSONObject response = future.get();
+            Log.e("post result", response.toString());
+            if (!mockState) {
+                return response;
+            } else {
+                if (response == null) {
+                    response = new JSONObject();
+                    response.put("status", "Couldn't reach mock server");
+                    return response;
+                } else {
+                    response.put("status", "success");
+                    return response;
                 }
             }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
 
-
-    }
+}
 
 

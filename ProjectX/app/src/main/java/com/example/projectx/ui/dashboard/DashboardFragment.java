@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -50,10 +51,11 @@ public class DashboardFragment extends Fragment {
     private ArrayList<String> urls = new ArrayList<>();
     private ArrayList<String> types = new ArrayList<>();
     private ArrayList<String> Ids = new ArrayList<>();
-    private ArrayList<AsyncTask> threads = new ArrayList<AsyncTask> ();
+    private ArrayList<AsyncTask> threads = new ArrayList<AsyncTask>();
     SearchRecyclerViewAdapter adapter;
     Switch album;
     static ProgressDialog progDialog;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         dashboardViewModel =
@@ -72,13 +74,12 @@ public class DashboardFragment extends Fragment {
                 } else {
                     album.setText("Turn on to search for albums");
                 }
-            }});
-        searchBar.addTextChangedListener(new TextWatcher()
-        {
+            }
+        });
+        searchBar.addTextChangedListener(new TextWatcher() {
             @Override
-            public void afterTextChanged(Editable mEdit)
-            {
-                for (AsyncTask e : threads){
+            public void afterTextChanged(Editable mEdit) {
+                for (AsyncTask e : threads) {
                     e.cancel(true);
                 }
                 names.clear();
@@ -92,21 +93,19 @@ public class DashboardFragment extends Fragment {
                     urls.clear();
                     Ids.clear();
                     types.clear();
-                    if (album.isChecked()){
+                    if (album.isChecked()) {
                         SearchAlbumAsyncTask sat = new SearchAlbumAsyncTask(getContext(), mEdit.toString());
 
                         sat.execute();
                         threads.add(sat);
-                    }
-                    else{
+                    } else {
                         SearchAsyncTask sat = new SearchAsyncTask(getContext(), mEdit.toString());
 
                         sat.execute();
                         threads.add(sat);
                     }
 
-                }
-                else{
+                } else {
                     Log.e("tag", "ArrayList is now" + names);
                     names.clear();
                     urls.clear();
@@ -123,9 +122,11 @@ public class DashboardFragment extends Fragment {
                 }
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-            public void onTextChanged(CharSequence s, int start, int before, int count){}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
         });
         return root;
     }
@@ -134,8 +135,10 @@ public class DashboardFragment extends Fragment {
         private Context context;
         private String query;
         String[] trackIds;
+
         public SearchAsyncTask(Context c, String query) {
-            this.context = c;this.query = query;
+            this.context = c;
+            this.query = query;
         }
 
         @Override
@@ -146,7 +149,9 @@ public class DashboardFragment extends Fragment {
         @Override
         protected Void doInBackground(String... strings) {
             RequestFuture<JSONObject> future = RequestFuture.newFuture();
-            String url = "http://192.168.1.7:3000/api/v1/search/track?q=" + query;
+            final String ipAddress = PreferenceManager.getDefaultSharedPreferences(context)
+                    .getString("IpAddressTextPref", null);
+            String url = "http://" + ipAddress + ":3000/api/v1/search/track?q=" + query;
             JsonObjectRequest artistsRequest = new JsonObjectRequest(Request.Method.GET, url,
                     null, future, future);
             RequestQueue getUserQueue = Volley.newRequestQueue(this.context);
@@ -155,11 +160,11 @@ public class DashboardFragment extends Fragment {
                 Log.e("url", url);
                 JSONObject tracks = future.get();
                 JSONArray tracksArray = tracks.getJSONArray("tracks");
-                 trackIds = new String[tracks.length()];
+                trackIds = new String[tracks.length()];
                 for (int i = 0; i < tracksArray.length(); i++) {
-                    if(tracksArray.getJSONObject(i).getString("name").toLowerCase().contains(query.toLowerCase())|| tracksArray.getJSONObject(i).getString("name").toUpperCase().contains(query.toUpperCase())){
+                    if (tracksArray.getJSONObject(i).getString("name").toLowerCase().contains(query.toLowerCase()) || tracksArray.getJSONObject(i).getString("name").toUpperCase().contains(query.toUpperCase())) {
                         names.add(tracksArray.getJSONObject(i).getString("name"));
-                       // types.add(tracksArray.getJSONObject(i).getString("Type"));
+                        // types.add(tracksArray.getJSONObject(i).getString("Type"));
                         urls.add(tracksArray.getJSONObject(i).getString("imageUrl"));
                         Ids.add(tracksArray.getJSONObject(i).getString("_id"));
                     }
@@ -197,8 +202,10 @@ public class DashboardFragment extends Fragment {
         private Context context;
         private String query;
         String[] trackIds;
+
         public SearchAlbumAsyncTask(Context c, String query) {
-            this.context = c;this.query = query;
+            this.context = c;
+            this.query = query;
         }
 
         @Override
@@ -209,7 +216,9 @@ public class DashboardFragment extends Fragment {
         @Override
         protected Void doInBackground(String... strings) {
             RequestFuture<JSONObject> future = RequestFuture.newFuture();
-            String url = "http://192.168.1.7:3000/api/v1/search/Album?q=" + query;
+            final String ipAddress = PreferenceManager.getDefaultSharedPreferences(context)
+                    .getString("IpAddressTextPref", null);
+            String url = "http://" + ipAddress + ":3000/api/v1/search/Album?q=" + query;
             JsonObjectRequest artistsRequest = new JsonObjectRequest(Request.Method.GET, url,
                     null, future, future);
             RequestQueue getUserQueue = Volley.newRequestQueue(this.context);
@@ -220,7 +229,7 @@ public class DashboardFragment extends Fragment {
                 JSONArray tracksArray = tracks.getJSONArray("albums");
                 trackIds = new String[tracks.length()];
                 for (int i = 0; i < tracksArray.length(); i++) {
-                    if(tracksArray.getJSONObject(i).getString("name").toLowerCase().contains(query.toLowerCase())|| tracksArray.getJSONObject(i).getString("name").toUpperCase().contains(query.toUpperCase())){
+                    if (tracksArray.getJSONObject(i).getString("name").toLowerCase().contains(query.toLowerCase()) || tracksArray.getJSONObject(i).getString("name").toUpperCase().contains(query.toUpperCase())) {
                         names.add(tracksArray.getJSONObject(i).getString("name"));
                         // types.add(tracksArray.getJSONObject(i).getString("Type"));
                         urls.add(tracksArray.getJSONObject(i).getString("image"));
@@ -254,9 +263,6 @@ public class DashboardFragment extends Fragment {
             Log.e("tag", "ArrayList is now" + names);
         }
     }
-
-
-
 
 
 }
