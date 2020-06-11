@@ -399,7 +399,7 @@ public class MusicPlayer extends AppCompatActivity {
      * Updates if song is liked, blacklisted and downloaded
      */
     private void updateSongStats() {
-        getIsSongLiked();
+//        getIsSongLiked();
         songBlacklisted = false;
         songDownloaded = false;
     }
@@ -542,9 +542,13 @@ public class MusicPlayer extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 likeLoading = false;
                 if (unlike.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Couldn't like song, please try again.", Toast.LENGTH_SHORT).show();
+                    likeSongButton.setImageResource(R.drawable.dislike_song);
+                    songLiked = true;
+                    Toast.makeText(getApplicationContext(), "Song already liked", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Couldn't dislike song, please try again.", Toast.LENGTH_SHORT).show();
+                    likeSongButton.setImageResource(R.drawable.like_song);
+                    songLiked = false;
+                    Toast.makeText(getApplicationContext(), "Song already disliked", Toast.LENGTH_SHORT).show();
                 }
             }
         }) {

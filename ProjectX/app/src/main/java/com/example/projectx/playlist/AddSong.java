@@ -1,18 +1,18 @@
 package com.example.projectx.playlist;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,8 +22,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.projectx.R;
 import com.example.projectx.RecyclerTouchListener;
 import com.example.projectx.Song;
-import com.example.projectx.SongAdapter;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,18 +32,16 @@ import java.util.concurrent.ExecutionException;
 
 public class AddSong extends AppCompatActivity {
 
-    String TRACKS_FETCH_SERVER = "http://192.168.43.253:3000/api/v1/track";
-    String PLAYLIST_SERVER = "http://192.168.43.253:3000/api/v1/playlist";
     private RecyclerView mRecyclerView;
     private AddSongAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private SearchView mSearchView;
     private Context context;
-    ArrayList<Song> songArrayList=new ArrayList<>();
+    ArrayList<Song> songArrayList = new ArrayList<>();
     static String[] SongIDStringArray;
     static String ClickedSongId;
     JSONObject result;
-    String PlaylistName,PlaylistId,mPlaylistURL,Tracks="tracks";
+    String PlaylistName, PlaylistId, mPlaylistURL, Tracks = "tracks";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +49,7 @@ public class AddSong extends AppCompatActivity {
         setContentView(R.layout.activity_add_song);
         mRecyclerView = findViewById(R.id.addSong_list_rv);
         mSearchView = findViewById(R.id.search_field);
-        context=getApplicationContext();
+        context = getApplicationContext();
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
         String PlaylistNameR = b.getString("PlaylistName");
@@ -84,7 +80,7 @@ public class AddSong extends AppCompatActivity {
                 String trackId = songArrayList.get(position).id;
                 addTrackAsyncTask addTrackAsyncTask = new addTrackAsyncTask();
                 addTrackAsyncTask.execute(trackId);
-                Toast.makeText(AddSong.this,"Track added to Playlist", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddSong.this, "Track added to Playlist", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -98,15 +94,15 @@ public class AddSong extends AppCompatActivity {
     public void returnBack(View v) {
         Intent i = new Intent(this, PlaylistEdit.class);
         Bundle extras = new Bundle();
-        extras.putString("PlaylistId",PlaylistId);
-        extras.putString("URL",mPlaylistURL);
+        extras.putString("PlaylistId", PlaylistId);
+        extras.putString("URL", mPlaylistURL);
         extras.putString("PlaylistName", PlaylistName);
         i.putExtras(extras);
         startActivity(i);
         finish();
     }
 
-    private void  setupRecyclerView(ArrayList<Song> songArrayList) {
+    private void setupRecyclerView(ArrayList<Song> songArrayList) {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new AddSongAdapter(songArrayList, getApplicationContext());
@@ -130,7 +126,7 @@ public class AddSong extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void v) {
             super.onPostExecute(v);
-            SongIDStringArray=new String[songArrayList.size()];
+            SongIDStringArray = new String[songArrayList.size()];
             for (int i = 0; i < songArrayList.size(); i++) {
                 SongIDStringArray[i] = songArrayList.get(i).id;
             }
@@ -144,6 +140,9 @@ public class AddSong extends AppCompatActivity {
         songArrayList = new ArrayList<>();
         ArrayList<JSONObject> jsonObjectArray = new ArrayList<>();
 
+        final String ipAddress = PreferenceManager.getDefaultSharedPreferences(getBaseContext())
+                .getString("IpAddressTextPref", null);
+        String TRACKS_FETCH_SERVER = "http://" + ipAddress + ":3000/api/v1/track";
         final String PlayList_URL = TRACKS_FETCH_SERVER;
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, PlayList_URL, null, future, future);
@@ -166,30 +165,24 @@ public class AddSong extends AppCompatActivity {
                 String trackUrl = jsonObjectArray.get(i).getString("url");
                 String trackDuration = jsonObjectArray.get(i).getString("duration");
                 String trackImageUrl = jsonObjectArray.get(i).getString("imageUrl");
-                JSONArray artists =  jsonObjectArray.get(i).getJSONArray("artists");
+                JSONArray artists = jsonObjectArray.get(i).getJSONArray("artists");
 
                 Song mSong = new Song();
-                mSong.id=trackId;
-                mSong.description=trackDescription;
-                mSong.name=trackNames;
-                mSong.playcount=trackPlaycount;
-                mSong.url=trackUrl;
-                mSong.duration=trackDuration;
-                mSong.imageUrl=trackImageUrl;
-                mSong.CreateImage=R.drawable.ic_add;
+                mSong.id = trackId;
+                mSong.description = trackDescription;
+                mSong.name = trackNames;
+                mSong.playcount = trackPlaycount;
+                mSong.url = trackUrl;
+                mSong.duration = trackDuration;
+                mSong.imageUrl = trackImageUrl;
+                mSong.CreateImage = R.drawable.ic_add;
                 songArrayList.add(mSong);
             }
-        }
-
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-
-        catch (ExecutionException e) {
+        } catch (ExecutionException e) {
             e.printStackTrace();
-        }
-
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
@@ -201,6 +194,7 @@ public class AddSong extends AppCompatActivity {
             super.onPreExecute();
 
         }
+
         @Override
         protected Void doInBackground(String... strings) {
             try {
@@ -212,18 +206,15 @@ public class AddSong extends AppCompatActivity {
         }
 
 
-
         @Override
-        protected void onPostExecute(Void v){
+        protected void onPostExecute(Void v) {
             super.onPostExecute(v);
             try {
                 Log.e("reached", "postexecute");
                 Log.e("result", result.toString());
                 if (result.getString("status").equals("success")) {
-                }
-                else
-                {
-                    Log.e("Post Data ","Response Failed");
+                } else {
+                    Log.e("Post Data ", "Response Failed");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -233,7 +224,11 @@ public class AddSong extends AppCompatActivity {
     }
 
     private JSONObject onSubmitAdd(String data) throws JSONException {
-        String URL=PLAYLIST_SERVER+"/"+Tracks+"/"+PlaylistId+"/"+data;
+        final String ipAddress = PreferenceManager.getDefaultSharedPreferences(getBaseContext())
+                .getString("IpAddressTextPref", null);
+
+        String PLAYLIST_SERVER = "http://" + ipAddress + ":3000/api/v1/playlist";
+        String URL = PLAYLIST_SERVER + "/" + Tracks + "/" + PlaylistId + "/" + data;
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         JSONObject addJsonInfo = new JSONObject();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PATCH, URL,
@@ -245,20 +240,18 @@ public class AddSong extends AppCompatActivity {
             JSONObject response = future.get();
             Log.e("post result", response.toString());
             if (response == null) {
-                Log.e("Response","error");
+                Log.e("Response", "error");
                 response = new JSONObject();
                 response.put("status", "Couldn't reach server");
                 return response;
-            }else {
+            } else {
                 response.put("status", "success");
                 return response;
             }
 
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-        catch (ExecutionException e) {
+        } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();

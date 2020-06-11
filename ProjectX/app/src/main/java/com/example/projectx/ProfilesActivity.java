@@ -67,7 +67,9 @@ public class ProfilesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int Position) {
                 Intent intent = new Intent(getApplicationContext(), UserActivity.class);
-
+                intent.putExtra("UserId", userIds[Position]);
+                startActivity(intent);
+//                finish();
             }
         });
     }
@@ -123,6 +125,15 @@ public class ProfilesActivity extends AppCompatActivity {
             int followers = user.getJSONArray("followers").length();
             users.add(new ThreeDataItem(R.drawable.profile_image_placeholder, name, Integer.toString(followers)));
             mAdapter = new ThreeDataItemAdapter(users);
+            mAdapter.setOnItemClickListener(new ThreeDataItemAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int Position) {
+                    Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                    intent.putExtra("UserId", userIds[Position]);
+                    startActivity(intent);
+//                finish();
+                }
+            });
             profilesRecyclerView.setAdapter(mAdapter);
         } catch (JSONException e) {
             e.printStackTrace();

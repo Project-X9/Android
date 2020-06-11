@@ -102,7 +102,7 @@ public class Profile extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                loading = true;
+                loading = false;
                 makeToast("Error downloading data, make sure you're connected to the internet.");
             }
         }) {
