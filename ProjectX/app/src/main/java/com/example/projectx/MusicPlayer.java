@@ -420,6 +420,7 @@ public class MusicPlayer extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    Toast.makeText(getApplicationContext(),"success",Toast.LENGTH_SHORT).show();
                     Log.d("TAG", "onResponse: success" + response.getBoolean("data"));
                     if (response.getBoolean("data")) {
                         likeSongButton.setImageResource(R.drawable.dislike_song);
@@ -433,25 +434,25 @@ public class MusicPlayer extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
                 Log.d("TAG", "onErrorResponse: " + error.toString());
             }
         }) {
             @Override
             public HashMap<String, String> getHeaders() {
                 String token = loginCredentials.getString("token", null);
-                String arg = "Bearer " + token;
                 HashMap<String, String> params = new HashMap<>();
                 params.put("Content-Type", "application/json; charset=UTF-8");
                 params.put("Authorization", token);
                 return params;
             }
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String, String> params = new HashMap<>();
-                params.put("id", userId);
-                return params;
-            }
+//
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                HashMap<String, String> params = new HashMap<>();
+//                params.put("id", userId);
+//                return params;
+//            }
 
             @Override
             public byte[] getBody() {
